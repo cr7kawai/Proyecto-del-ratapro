@@ -1,0 +1,65 @@
+@use "./variables" as *;
+@use "./mixin" as *;
+
+.sec-home {
+    @include flex(center, center);
+    padding: 3.5rem;
+    gap: 2rem;
+    height: 100vh;
+    background-color: white;
+    color: $color-text-home;
+
+    .home-info {
+        margin-top: 3rem;
+        margin-bottom: 3rem;
+        .info-text {
+            font-size: 0.9rem;
+            color: $color-main;
+        }
+        .home-title {
+            width: 20rem;
+            font-size: 3rem;
+        }
+        .home-description {
+            width:19rem;
+            font-size: 1.1rem;
+        }
+    }
+
+    .home-img {
+
+        img {
+            max-width: 25rem;
+        }
+    }
+}
+
+@media (max-width: 768px) { 
+    .sec-home {
+        @include background-project();
+        color: $color-text;
+        .home-info {
+            margin-top: 5rem;
+            .info-text {
+                font-size: 0.7rem;
+            }
+            .home-title {
+                width: 17rem;
+                font-size: 1.7rem;
+            }
+            .home-description {
+                width:16rem;
+                font-size: 0.8rem;
+            }
+        }
+    }
+
+}
+
+@media (max-width: 575.98px) { 
+
+    .sec-home {
+        height: 60vh;
+    }
+}
+

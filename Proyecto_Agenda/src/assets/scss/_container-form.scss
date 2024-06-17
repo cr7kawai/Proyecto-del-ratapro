@@ -1,0 +1,52 @@
+@use "./variables" as *;
+@use "./mixin" as *;
+
+
+.container-form {
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    color: $color-text-form;
+    
+    .form-projects {
+        @include border-card();
+        legend {
+            text-align: center;
+            padding: 1rem;
+            
+        }
+        .form-floating{
+            .form-control{
+                background: none;
+                outline: none; 
+                color: $color-text-form;  
+            }
+        }
+       
+        .modal-newTask {
+            padding: 1rem 0 2rem 0;
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+           
+            .form-text {
+                margin-top: 0;
+                font-size: 0.7rem;
+                color: $color-title-card;
+            }
+            .btn-newtask {
+                padding: 0 0.4rem;
+                font-size: 1rem; 
+            }
+        }
+    }
+}
+
+@media (min-width: 767.98px) { 
+
+    .container-form {
+        margin-top: -3rem;
+        
+    }
+}

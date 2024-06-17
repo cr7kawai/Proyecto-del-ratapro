@@ -1,0 +1,37 @@
+
+@use "./assets/scss/variables" as *;
+@use "./assets/scss/mixin" as *;
+@use "./assets/scss/sec-nav";
+@use "./assets/scss/sec-home";
+@use "./assets/scss/sec-details";
+@use "./assets/scss/sec-footer";
+@use "./assets/scss/sec-projectList";
+@use "./assets/scss/container-form";
+
+
+body {
+    margin: 0;
+    padding: 0;
+    color: $color-text;
+    box-sizing: border-box;
+    @include background-project();
+
+}
+
+.sec-nav {
+    @include section-base();
+}
+
+.sec-home {
+    @include section-base();
+}
+
+.sec-details {
+    @include section-base();
+}
+
+.sec-footer {
+    @include section-base();
+}
+
+

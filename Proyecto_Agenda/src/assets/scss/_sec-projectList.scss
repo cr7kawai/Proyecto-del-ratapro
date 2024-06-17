@@ -1,0 +1,101 @@
+@use "./variables" as *;
+@use "./mixin" as *;
+
+.list-project {
+    .link-title{
+        padding-top: 1rem;
+        color: $color-title-card;
+        h1{
+            font-size: 2rem;
+            text-transform: uppercase;
+        }
+    }
+    .card{
+        background: #232526;  /* fallback for old browsers */
+        background: -webkit-linear-gradient(to right, #414345, #232526);  /* Chrome 10-25, Safari 5.1-6 */
+        background: linear-gradient(to right, #414345, #232526); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+        box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;
+        .card-header {
+            .card-title {
+                font-size: 1.2rem;
+                margin-bottom: 0;
+                text-transform: uppercase;
+                color: $color-title-card;
+            } 
+        }
+        .card-body{
+            border-bottom: 1px solid rgba(226, 221, 221, 0.459);
+            .card-title-task{
+                color: $color-title-card;
+                font-size: 1rem; 
+            }
+            .card-text{
+                font-size: 0.8rem;  
+                span{
+                    color: $color-title-card;
+                    font-weight: 600;
+                    font-size: 0.9rem;  
+                }
+                   
+            }
+        }
+    }
+}
+
+.no-Data {
+    @include flex(center, center);
+    margin-top: 2rem;
+    padding: 2rem;
+    .img-no-Data {
+        max-width: 8rem;
+    }
+    h3 {
+        color: $color-text;
+        font-size: 1rem;
+        padding: 0.5rem;
+    }
+}
+
+.mens-null{
+    color:#41434500;
+}
+
+@media (max-width: 767.98px) { 
+    .list-project {
+        margin-top: 4rem;
+        .link-title{
+            h1{
+                font-size: 1rem;
+            }
+        }
+        .card{
+            .card-header {
+                .card-title {
+                    font-size: 0.7rem;
+                    margin-bottom: 0;
+                } 
+            }
+            .card-body{
+                border-bottom: 0.1rem solid rgba(165, 163, 163, 0.199);
+                .card-title-task{
+                    font-size: 0.7rem; 
+                }
+                .card-text{
+                    font-size: 0.7rem; 
+                    span{
+                        font-size: 0.7rem;  
+                    }     
+                }
+            }
+        }
+    }
+
+    .no-Data {
+        .img-no-Data {
+            max-width: 5rem;
+        }
+        h3 {
+            font-size: 0.8rem;
+        }
+    }
+}
