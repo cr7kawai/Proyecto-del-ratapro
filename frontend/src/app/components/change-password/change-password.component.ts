@@ -2,6 +2,10 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { MatStepper } from '@angular/material/stepper';
+import { ToastrService } from 'ngx-toastr';
+import { UsuarioService } from '../../services/usuario.service';
+import { Usuario } from '../../models/usuario.inteface';
 
 @Component({
   selector: 'app-change-password',
@@ -19,7 +23,7 @@ export class ChangePasswordComponent implements OnInit{
   email: string = '';
   codigoRecibido: string = '';
   password: string = '';
-  //usuario: Usuario = {};
+  usuario: Usuario = {};
 
   codigo: string = '';
   resultado: any = [];
@@ -28,10 +32,10 @@ export class ChangePasswordComponent implements OnInit{
   datoSesion: any;
 
   constructor(
-    private http: HttpClient, 
-    //private usuarioService: UsuarioService,
+    private http: HttpClient,
+    private usuarioService: UsuarioService,
     private router: Router,
-    //private toastr: ToastrService,
+    private toastr: ToastrService,
     private authService: AuthService
   ) { }
 
@@ -49,8 +53,6 @@ export class ChangePasswordComponent implements OnInit{
     this.captchaValidate = true;
   }
 
-  validarCodigo(){}
-/*
   avanzarStepper(stepper: MatStepper) {
       stepper.next();
   }
@@ -71,7 +73,7 @@ export class ChangePasswordComponent implements OnInit{
 
     this.usuarioService.obtenerUsuarioEmail(this.email).subscribe(res=>{
       this.usuario = res;
-      this.usuarioService.enviarEmailConfirmacion(this.email).subscribe((res: RegistroResponse) =>{
+      this.usuarioService.enviarEmailConfirmacion(this.email).subscribe(res =>{
         this.emailDatos = true;
         this.codigo = res.insertedId;
         setTimeout(() => {
@@ -100,6 +102,7 @@ export class ChangePasswordComponent implements OnInit{
     }
   }
 
+  /*
   cambiarPassword(){
     if (!this.password || this.password.length < 8 || this.password.length > 16) {
       this.toastr.error('La contraseña debe tener entre 8 y 16 caractéres', 'Error', {timeOut: 3000});
@@ -132,7 +135,7 @@ export class ChangePasswordComponent implements OnInit{
     }
 
     this.usuario.password = this.password;
-    this.usuarioService.modificarUsuario(this.usuario.pk_usuario, this.usuario).subscribe(res=>{
+    this.usuarioService.modificarUsuario(this.usuario.id, this.usuario).subscribe(res=>{
       this.toastr.success('Se ha cambiado la contraseña correctamente', 'Exito', {timeOut: 3000});
       setTimeout(() => {
         window.location.href = '/';

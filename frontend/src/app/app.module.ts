@@ -15,6 +15,8 @@ import { NgxCaptchaModule } from 'ngx-captcha';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatCardModule } from '@angular/material/card';
 import { MatInputModule } from '@angular/material/input';
+import { ToastrModule } from 'ngx-toastr';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -24,7 +26,7 @@ import { MatInputModule } from '@angular/material/input';
     HomeComponent,
     LoginComponent,
     RegisterComponent,
-    ChangePasswordComponent
+    ChangePasswordComponent,
   ],
   imports: [
     BrowserModule,
@@ -35,6 +37,8 @@ import { MatInputModule } from '@angular/material/input';
     MatCardModule,
     MatStepperModule,
     MatInputModule,
+    FormsModule,
+    ToastrModule.forRoot()
   ],
   providers: [
     provideClientHydration()
