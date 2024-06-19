@@ -1,17 +1,17 @@
 <div class="body">
     <main id="container">
-        <div class="reCaptcha" *ngIf="captchaValidate">
+        <div class="reCaptcha" *ngIf="!captchaValidate">
             <ngx-recaptcha2 #captchaElem [siteKey]="siteKey" (success)="mostrarFormulario()">
             </ngx-recaptcha2>
         </div>
-        <div class="registerForm" *ngIf="!captchaValidate">
-            <form id="registerForm" (ngSubmit)="register()">
+        <div class="registerForm" *ngIf="captchaValidate">
+            <form id="registerForm" (ngSubmit)="validarDatos()">
                 <!-- FORM HEADER -->
                 <div id="form_header">
                     <h1>Registro de Empresa</h1>
                 </div>
                 <div class="section">
-                    <h4>Datos de la empresa</h4>
+                    <h4 style="margin-bottom: 5px;">Datos de la empresa</h4>
                     <div id="inputs">
                         <!-- NOMBRE COMPLETO -->
                         <div class="input-row">
@@ -20,7 +20,7 @@
                                     Nombre
                                     <div class="input-field">
                                         <i class="fa-solid fa-user"></i>
-                                        <input type="text" id="empresa" name="nombre" [(ngModel)]="empresa.nombre">
+                                        <input type="text" id="empresa" style="width: 300px;" name="nombre" [(ngModel)]="empresa.nombre">
                                     </div>
                                 </label>
                             </div>
@@ -29,7 +29,7 @@
                 </div>
 
                 <div class="section">
-                    <h4>Datos del administrador</h4>
+                    <h4 style="margin-bottom: 5px;">Datos del administrador</h4>
                     <!-- INPUTS -->
                     <div id="inputs">
                         <!-- NOMBRE COMPLETO -->
@@ -63,35 +63,38 @@
                             </div>
                         </div>
 
-                        <!-- INFORMACIÓN DE CONTACTO -->
                         <div class="input-row row">
-                            <div class="input-box col-md-4">
-                                <label for="email">
-                                    E-mail
-                                    <div class="input-field">
-                                        <i class="fa-solid fa-envelope"></i>
-                                        <input type="email" id="email" name="email" [(ngModel)]="usuario.email">
-                                    </div>
-                                </label>
-                            </div>
-                            <div class="input-box col-md-4">
-                                <label for="telefono">
-                                    Teléfono
-                                    <div class="input-field">
-                                        <i class="fa-solid fa-phone"></i>
-                                        <input type="text" id="telefono" name="telefono" [(ngModel)]="usuario.telefono">
-                                    </div>
-                                </label>
-                            </div>
-                            <div class="input-box col-md-4">
+                            <div class="input-box col-md-12">
                                 <label for="fechaNach">
                                     Fecha de Nacimiento
                                     <div class="input-field">
                                         <i class="fa-solid fa-calendar"></i>
-                                        <input type="date" id="fechaNach" name="fechaNach" [(ngModel)]="usuario.fechaNach">
+                                        <input type="date" style="width: 300px;" id="fechaNach" name="fechaNach" [(ngModel)]="usuario.fechaNac">
                                     </div>
                                 </label>
                             </div>
+                        </div>
+
+                        <div class="input-row row">
+                            <div class="input-box col-md-6">
+                                <label for="email">
+                                    E-mail
+                                    <div class="input-field">
+                                        <i class="fa-solid fa-envelope"></i>
+                                        <input type="text" id="email" name="email" style="width: 300px;" class="dobles" [(ngModel)]="usuario.email">
+                                    </div>
+                                </label>
+                            </div>
+                            <div class="input-box col-md-6">
+                                <label for="telefono">
+                                    Teléfono
+                                    <div class="input-field">
+                                        <i class="fa-solid fa-phone"></i>
+                                        <input type="text" id="telefono" name="telefono" style="width: 300px;" class="dobles" [(ngModel)]="usuario.telefono">
+                                    </div>
+                                </label>
+                            </div>
+                            
                         </div>
 
                         <!-- CONTRASEÑA -->
@@ -101,7 +104,7 @@
                                     Password
                                     <div class="input-field">
                                         <i class="fa-solid fa-key"></i>
-                                        <input type="password" id="password" name="password" [(ngModel)]="usuario.password">
+                                        <input type="password" id="password" name="password" style="width: 300px;" class="dobles" [(ngModel)]="usuario.password">
                                     </div>
                                 </label>
                             </div>
@@ -110,16 +113,21 @@
                                     Confirmar Password
                                     <div class="input-field">
                                         <i class="fa-solid fa-key"></i>
-                                        <input type="password" id="confirmPassword" name="confirmPassword" [(ngModel)]="confirmPassword">
+                                        <input type="password" id="confirmPassword" name="confirmPassword" style="width: 300px;" class="dobles" [(ngModel)]="confirmPassword">
                                     </div>
                                 </label>
                             </div>
+                        </div>
+                        <div class="links">
+                            <a href="/login">
+                                ¿Ya tienes una cuenta? inicia sesión.
+                            </a>
                         </div>
                     </div>
                 </div>
 
                 <!-- REGISTER BUTTON -->
-                <button type="submit" id="register_button">
+                <button type="submit" id="register_button" [disabled]="btnDisable">
                     Registrar
                 </button>
             </form>

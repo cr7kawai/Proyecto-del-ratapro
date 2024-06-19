@@ -17,6 +17,9 @@ import { MatCardModule } from '@angular/material/card';
 import { MatInputModule } from '@angular/material/input';
 import { ToastrModule } from 'ngx-toastr';
 import { FormsModule } from '@angular/forms';
+import { SesionComponent } from './components/sesion/sesion.component';
+import { AreasComponent } from './components/areas/areas.component';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [
@@ -27,6 +30,8 @@ import { FormsModule } from '@angular/forms';
     LoginComponent,
     RegisterComponent,
     ChangePasswordComponent,
+    SesionComponent,
+    AreasComponent,
   ],
   imports: [
     BrowserModule,
@@ -38,7 +43,8 @@ import { FormsModule } from '@angular/forms';
     MatStepperModule,
     MatInputModule,
     FormsModule,
-    ToastrModule.forRoot()
+    ToastrModule.forRoot(),
+    MatDialogModule
   ],
   providers: [
     provideClientHydration()
