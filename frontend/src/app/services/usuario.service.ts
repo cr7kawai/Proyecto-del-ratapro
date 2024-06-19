@@ -26,9 +26,29 @@ export class UsuarioService {
     return this.http.get<Usuario>(url);
   }
 
-  enviarEmailConfirmacion(email: string): Observable<Usuario>{
+  enviarEmailConfirmacion(email: string): Observable<Object>{
     const url = `${this.apiUrl}/password/${email}`;
-    return this.http.get<Usuario>(url);
+    return this.http.get<Object>(url);
+  }
+
+  registrarUsuario(usuario: Usuario) {
+    return this.http.post(`${this.apiUrl}/`, usuario);
+  }
+
+  modificarUsuario(id: any, usuarioActualizado: Usuario): Observable<Object> {
+    return this.http.put(`${this.apiUrl}/${id}`, usuarioActualizado);
+  }
+
+  eliminarUsuario(id: any) {
+    return this.http.delete(`${this.apiUrl}/${id}`);
+  }
+
+  cambiarContrasena(id: any, email: any, usuarioActualizado: Usuario): Observable<Object> {
+    return this.http.put(`${this.apiUrl}/password/${id}/${email}`,usuarioActualizado);
+  }
+
+  validarEmailTel(usuario: Usuario) {
+    return this.http.post(`${this.apiUrl}/validarEmailTel`, usuario);
   }
 
   /*addUsuario(usuario: Usuario): Observable<Usuario> {

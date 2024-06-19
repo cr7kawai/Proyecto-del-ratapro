@@ -6,6 +6,7 @@ import { MatStepper } from '@angular/material/stepper';
 import { ToastrService } from 'ngx-toastr';
 import { UsuarioService } from '../../services/usuario.service';
 import { Usuario } from '../../models/usuario.inteface';
+import { RegistroResponse } from '../../models/RegistroResponse.interface';
 
 @Component({
   selector: 'app-change-password',
@@ -73,7 +74,7 @@ export class ChangePasswordComponent implements OnInit{
 
     this.usuarioService.obtenerUsuarioEmail(this.email).subscribe(res=>{
       this.usuario = res;
-      this.usuarioService.enviarEmailConfirmacion(this.email).subscribe(res =>{
+      this.usuarioService.enviarEmailConfirmacion(this.email).subscribe((res: RegistroResponse) =>{
         this.emailDatos = true;
         this.codigo = res.insertedId;
         setTimeout(() => {
@@ -102,7 +103,6 @@ export class ChangePasswordComponent implements OnInit{
     }
   }
 
-  /*
   cambiarPassword(){
     if (!this.password || this.password.length < 8 || this.password.length > 16) {
       this.toastr.error('La contraseña debe tener entre 8 y 16 caractéres', 'Error', {timeOut: 3000});
@@ -142,5 +142,4 @@ export class ChangePasswordComponent implements OnInit{
       }, 2000);
     })
   }
-    */
 }
