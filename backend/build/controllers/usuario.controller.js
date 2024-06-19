@@ -41,6 +41,16 @@ class UsuarioController {
             res.status(404).json({ text: "El usuario no existe" });
         });
     }
+    obtenerUsuarioEmail(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { email } = req.params;
+            const usuario = yield connection_1.default.query("SELECT id, email FROM usuario WHERE email = ?", [email]);
+            if (usuario.length > 0) {
+                return res.json(usuario[0]);
+            }
+            res.status(404).json({ text: "El email no está registrado" });
+        });
+    }
     obtenerCredenciales(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { id } = req.params;

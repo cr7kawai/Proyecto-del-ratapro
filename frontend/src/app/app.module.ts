@@ -8,6 +8,15 @@ import { FooterComponent } from './components/footer/footer.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { HomeComponent } from './components/home/home.component';
+import { LoginComponent } from './components/login/login.component';
+import { RegisterComponent } from './components/register/register.component';
+import { ChangePasswordComponent } from './components/change-password/change-password.component';
+import { NgxCaptchaModule } from 'ngx-captcha';
+import { MatStepperModule } from '@angular/material/stepper';
+import { MatCardModule } from '@angular/material/card';
+import { MatInputModule } from '@angular/material/input';
+import { ToastrModule } from 'ngx-toastr';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -15,14 +24,21 @@ import { HomeComponent } from './components/home/home.component';
     NavbarComponent,
     FooterComponent,
     HomeComponent,
-
+    LoginComponent,
+    RegisterComponent,
+    ChangePasswordComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     HttpClientModule,
-    
+    NgxCaptchaModule, 
+    MatCardModule,
+    MatStepperModule,
+    MatInputModule,
+    FormsModule,
+    ToastrModule.forRoot()
   ],
   providers: [
     provideClientHydration()

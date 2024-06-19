@@ -15,6 +15,7 @@ class UsuarioRoutes {
         this.router.get('/', auth_middleware_1.verifyToken, usuario_controller_1.default.obtenerUsuarios);
         this.router.get('/:id', auth_middleware_1.verifyToken, usuario_controller_1.default.verUsuario);
         this.router.get('/credenciales/:id', auth_middleware_1.verifyToken, usuario_controller_1.default.obtenerCredenciales);
+        this.router.get('/getByEmail/:email', usuario_controller_1.default.obtenerUsuarioEmail);
         this.router.post('/', usuario_controller_1.default.registrarUsuario);
         this.router.put('/:id', usuario_controller_1.default.modificarUsuario);
         this.router.delete('/:id', auth_middleware_1.verifyToken, usuario_controller_1.default.eliminarUsuario);
