@@ -19,7 +19,7 @@ export class NavbarComponent implements OnInit{
     this.datosUsuario = this.authService.getUserData();
     if (this.datosUsuario) {
       this.usuario = this.datosUsuario.nombre;
-      this.rol = this.datosUsuario.fk_rol;
+      this.rol = this.datosUsuario.idRol;
       this.plan = this.datosUsuario.fk_suscripcion;
     }
   }

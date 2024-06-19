@@ -1,59 +1,126 @@
-<div class="body">   
+<div class="body">
     <main id="container">
-        <div class="reCaptcha" *ngIf="!captchaValidate">
-        <ngx-recaptcha2 #captchaElem
-            [siteKey]="siteKey"
-            (success)="mostrarFormulario()">
-        </ngx-recaptcha2> 
+        <div class="reCaptcha" *ngIf="captchaValidate">
+            <ngx-recaptcha2 #captchaElem [siteKey]="siteKey" (success)="mostrarFormulario()">
+            </ngx-recaptcha2>
         </div>
-        <div class="registerForm" *ngIf="captchaValidate">
-            <form id="login_form">
+        <div class="registerForm" *ngIf="!captchaValidate">
+            <form id="registerForm" (ngSubmit)="register()">
                 <!-- FORM HEADER -->
                 <div id="form_header">
                     <h1>Registro de Empresa</h1>
                 </div>
-    
-                <!-- INPUTS -->
-                <div id="inputs">
-                    <!-- EMAIL -->
-                    <div class="input-box">
-                        <label for="email">
-                            E-mail
-                            <div class="input-field">
-                                <i class="fa-solid fa-envelope"></i>
-                                <input type="email" id="email" name="email">
+                <div class="section">
+                    <h4>Datos de la empresa</h4>
+                    <div id="inputs">
+                        <!-- NOMBRE COMPLETO -->
+                        <div class="input-row">
+                            <div class="input-box">
+                                <label for="nombre">
+                                    Nombre
+                                    <div class="input-field">
+                                        <i class="fa-solid fa-user"></i>
+                                        <input type="text" id="empresa" name="nombre" [(ngModel)]="empresa.nombre">
+                                    </div>
+                                </label>
                             </div>
-                        </label>
-                    </div>
-                    
-                    <!-- PASSWORD -->
-                    <div class="input-box">
-                        <label for="password">
-                            Password
-                            <div class="input-field">
-                                <i class="fa-solid fa-key"></i>
-                                <input type="password" id="password" name="password">
-                            </div>
-                        </label>
-                        <!-- FORGOT PASSWORD -->
-                        <div class="links">
-                            <a href="/changePassword">
-                                ¿Olvidaste tu contraseña? recupérala aquí.
-                            </a>
-                        </div>
-    
-                        <!-- NEW ACCOUNT -->
-                        <div class="links">
-                            <a href="/register">
-                                ¿Quiéres registrar tu empresa? hazlo auí.
-                            </a>
                         </div>
                     </div>
                 </div>
-    
-                <!-- LOGIN BUTTON -->
-                <button type="submit" id="login_button">
-                    Login
+
+                <div class="section">
+                    <h4>Datos del administrador</h4>
+                    <!-- INPUTS -->
+                    <div id="inputs">
+                        <!-- NOMBRE COMPLETO -->
+                        <div class="input-row row">
+                            <div class="input-box col-md-4">
+                                <label for="nombre">
+                                    Nombre(s)
+                                    <div class="input-field">
+                                        <i class="fa-solid fa-user"></i>
+                                        <input type="text" id="nombre" name="nombre" [(ngModel)]="usuario.nombre">
+                                    </div>
+                                </label>
+                            </div>
+                            <div class="input-box col-md-4">
+                                <label for="apePaterno">
+                                    Apellido Paterno
+                                    <div class="input-field">
+                                        <i class="fa-solid fa-user"></i>
+                                        <input type="text" id="apePaterno" name="apePaterno" [(ngModel)]="usuario.apePaterno">
+                                    </div>
+                                </label>
+                            </div>
+                            <div class="input-box col-md-4">
+                                <label for="apeMaterno">
+                                    Apellido Materno
+                                    <div class="input-field">
+                                        <i class="fa-solid fa-user"></i>
+                                        <input type="text" id="apeMaterno" name="apeMaterno" [(ngModel)]="usuario.apeMaterno">
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- INFORMACIÓN DE CONTACTO -->
+                        <div class="input-row row">
+                            <div class="input-box col-md-4">
+                                <label for="email">
+                                    E-mail
+                                    <div class="input-field">
+                                        <i class="fa-solid fa-envelope"></i>
+                                        <input type="email" id="email" name="email" [(ngModel)]="usuario.email">
+                                    </div>
+                                </label>
+                            </div>
+                            <div class="input-box col-md-4">
+                                <label for="telefono">
+                                    Teléfono
+                                    <div class="input-field">
+                                        <i class="fa-solid fa-phone"></i>
+                                        <input type="text" id="telefono" name="telefono" [(ngModel)]="usuario.telefono">
+                                    </div>
+                                </label>
+                            </div>
+                            <div class="input-box col-md-4">
+                                <label for="fechaNach">
+                                    Fecha de Nacimiento
+                                    <div class="input-field">
+                                        <i class="fa-solid fa-calendar"></i>
+                                        <input type="date" id="fechaNach" name="fechaNach" [(ngModel)]="usuario.fechaNach">
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- CONTRASEÑA -->
+                        <div class="input-row row">
+                            <div class="input-box col-md-6">
+                                <label for="password">
+                                    Password
+                                    <div class="input-field">
+                                        <i class="fa-solid fa-key"></i>
+                                        <input type="password" id="password" name="password" [(ngModel)]="usuario.password">
+                                    </div>
+                                </label>
+                            </div>
+                            <div class="input-box col-md-6">
+                                <label for="confirmPassword">
+                                    Confirmar Password
+                                    <div class="input-field">
+                                        <i class="fa-solid fa-key"></i>
+                                        <input type="password" id="confirmPassword" name="confirmPassword" [(ngModel)]="confirmPassword">
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- REGISTER BUTTON -->
+                <button type="submit" id="register_button">
+                    Registrar
                 </button>
             </form>
         </div>
