@@ -1,5 +1,8 @@
 import { NgModule } from '@angular/core';
-import { BrowserModule, provideClientHydration } from '@angular/platform-browser';
+import {
+  BrowserModule,
+  provideClientHydration,
+} from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -8,6 +11,7 @@ import { FooterComponent } from './components/footer/footer.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { HomeComponent } from './components/home/home.component';
+import { HttpClientModule } from '@angular/common/http';
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { ChangePasswordComponent } from './components/change-password/change-password.component';
@@ -22,6 +26,7 @@ import { AreasComponent } from './components/areas/areas.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { TokenInterceptor } from './services/HttpInterceptor.service';
 import { PoliticaPrivacidadComponent } from './components/politica-privacidad/politica-privacidad.component';
+import { HomeComponent } from './components/home/home.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +46,7 @@ import { PoliticaPrivacidadComponent } from './components/politica-privacidad/po
     AppRoutingModule,
     BrowserAnimationsModule,
     HttpClientModule,
-    NgxCaptchaModule, 
+    NgxCaptchaModule,
     MatCardModule,
     MatStepperModule,
     MatInputModule,
@@ -57,6 +62,7 @@ import { PoliticaPrivacidadComponent } from './components/politica-privacidad/po
       multi: true
     }
   ],
-  bootstrap: [AppComponent]
+  providers: [provideClientHydration()],
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

@@ -1,29 +1,30 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { HomeComponent } from './components/home/home.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { ChangePasswordComponent } from './components/change-password/change-password.component';
 import { AreasComponent } from './components/areas/areas.component';
 import { PoliticaPrivacidadComponent } from './components/politica-privacidad/politica-privacidad.component';
+import { HomeComponent } from './components/home/home.component';
+
 
 const routes: Routes = [
   {
     path: '',
-    component: HomeComponent
+    component: HomeComponent,
   },
   {
     path: 'login',
-    component: LoginComponent
+    component: LoginComponent,
   },
   {
     path: 'register',
-    component: RegisterComponent
+    component: RegisterComponent,
   },
   {
     path: 'changePassword',
-    component: ChangePasswordComponent
+    component: ChangePasswordComponent,
   },
   {
     path: 'areas',
@@ -35,16 +36,16 @@ const routes: Routes = [
   },
   {
     path: 'notFound',
-    component: NotFoundComponent
+    component: NotFoundComponent,
   },
   {
     path: '**',
-    redirectTo: '/notFound'
-  }
+    redirectTo: '/notFound',
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}
