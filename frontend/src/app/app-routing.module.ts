@@ -8,7 +8,6 @@ import { AreasComponent } from './components/areas/areas.component';
 import { PoliticaPrivacidadComponent } from './components/politica-privacidad/politica-privacidad.component';
 import { HomeComponent } from './components/home/home.component';
 
-
 const routes: Routes = [
   {
     path: '',
@@ -28,11 +27,11 @@ const routes: Routes = [
   },
   {
     path: 'areas',
-    component: AreasComponent
+    component: AreasComponent,
   },
   {
     path: 'politica-privacidad',
-    component: PoliticaPrivacidadComponent
+    component: PoliticaPrivacidadComponent,
   },
   {
     path: 'notFound',

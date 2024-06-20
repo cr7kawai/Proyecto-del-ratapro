@@ -9,8 +9,7 @@ import { AppComponent } from './app.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
-import { HomeComponent } from './components/home/home.component';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { HttpClientModule } from '@angular/common/http';
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
@@ -39,7 +38,7 @@ import { HomeComponent } from './components/home/home.component';
     ChangePasswordComponent,
     SesionComponent,
     AreasComponent,
-    PoliticaPrivacidadComponent
+    PoliticaPrivacidadComponent,
   ],
   imports: [
     BrowserModule,
@@ -52,17 +51,17 @@ import { HomeComponent } from './components/home/home.component';
     MatInputModule,
     FormsModule,
     ToastrModule.forRoot(),
-    MatDialogModule
+    MatDialogModule,
   ],
   providers: [
     provideClientHydration(),
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,
-      multi: true
-    }
+      multi: true,
+    },
   ],
-  providers: [provideClientHydration()],
+
   bootstrap: [AppComponent],
 })
 export class AppModule {}
