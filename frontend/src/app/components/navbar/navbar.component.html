@@ -24,7 +24,7 @@
               href="/equipo-area"
               routerLink="/equipo-area"
               routerLinkActive="active-link"
-              >Equipos/Áreas</a
+              >Áreas</a
             >
           </li>
           <li class="nav-item" *ngIf="rol != 4 && rol != null">
@@ -33,25 +33,7 @@
               href="/usuarios"
               routerLink="/usuarios"
               routerLinkActive="active-link"
-              >Empleados</a
-            >
-          </li>
-          <li class="nav-item" *ngIf="rol != null">
-            <a
-              class="nav-link active"
-              href="/proyectos"
-              routerLink="/proyectos"
-              routerLinkActive="active-link"
-              >Proyectos</a
-            >
-          </li>
-          <li class="nav-item" *ngIf="rol == 3 || rol == 4">
-            <a
-              class="nav-link active"
-              href="/notificaciones"
-              routerLink="/notificaciones"
-              routerLinkActive="active-link"
-              >Notificaciones</a
+              >Usuarios</a
             >
           </li>
         </ul>

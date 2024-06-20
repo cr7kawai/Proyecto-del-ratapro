@@ -72,19 +72,19 @@
               <a href="/" class="text-reset">Inicio</a>
             </p>
             <p *ngIf="rol != 4 && rol !=3 && rol != null">
-              <a href="/equipos-areas" class="text-reset">Equipos/Áreas</a>
+              <a href="/areas" class="text-reset">Áreas</a>
             </p>
             <p *ngIf="rol != 4 && rol != null">
-              <a href="/usuarios" class="text-reset">Empleados</a>
+              <a href="/usuarios" class="text-reset">Usuarios</a>
             </p>
             <p *ngIf="rol != null">
-                <a href="/proyectos" class="text-reset">Proyectos</a>
+                <a href="/mantenimientos" class="text-reset">Mantenimientos</a>
             </p>
             <p *ngIf="rol == null">
                 <a href="/login" class="text-reset">Inicio de Sesión</a>
             </p>
             <p *ngIf="rol == null">
-                <a href="/registro-empresa" class="text-reset">Registro de Empresa</a>
+                <a href="/register" class="text-reset">Registro de Empresa</a>
             </p>
           </div>
           <!-- Grid column -->

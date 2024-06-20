@@ -21,8 +21,8 @@ export class SesionComponent implements OnInit {
   usuario: Usuario = {};
 
   datoSesion: any;
-  pk_empleado = null;
-  rol: any = null;
+  idUsuario = null;
+  idRol: any = null;
 
   constructor(
     private usuarioService: UsuarioService,
@@ -35,12 +35,12 @@ export class SesionComponent implements OnInit {
     this.datoSesion = this.authService.getUserData();
 
     if (this.datoSesion) {
-      this.pk_empleado = this.datoSesion.pk_usuario;
-      this.rol = this.datoSesion.fk_rol;
+      this.idUsuario = this.datoSesion.id;
+      this.idRol = this.datoSesion.idRol;
     }
 
-    if(this.pk_empleado != null){
-      this.usuarioService.obtenerCredenciales(this.pk_empleado).subscribe(res =>{
+    if(this.idUsuario != null){
+      this.usuarioService.obtenerCredenciales(this.idUsuario).subscribe(res =>{
         this.usuario = res;
         console.log(res);
         this.iniciarTemporizador();

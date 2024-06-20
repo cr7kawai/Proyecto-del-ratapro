@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
@@ -20,6 +20,8 @@ import { FormsModule } from '@angular/forms';
 import { SesionComponent } from './components/sesion/sesion.component';
 import { AreasComponent } from './components/areas/areas.component';
 import { MatDialogModule } from '@angular/material/dialog';
+import { TokenInterceptor } from './services/HttpInterceptor.service';
+import { PoliticaPrivacidadComponent } from './components/politica-privacidad/politica-privacidad.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +34,7 @@ import { MatDialogModule } from '@angular/material/dialog';
     ChangePasswordComponent,
     SesionComponent,
     AreasComponent,
+    PoliticaPrivacidadComponent
   ],
   imports: [
     BrowserModule,
@@ -47,7 +50,12 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatDialogModule
   ],
   providers: [
-    provideClientHydration()
+    provideClientHydration(),
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi: true
+    }
   ],
   bootstrap: [AppComponent]
 })
