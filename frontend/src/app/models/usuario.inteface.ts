@@ -6,8 +6,8 @@ export interface Usuario{
     email?: string,
     password?: string,
     telefono?: string,
-    fechaNach?: Date,
-    rolFk?: number,
+    fechaNac?: Date,
+    rolFk?: any,
     empresaFk?: number,
-    areaFk?: number
+    areaFk?: any
 }

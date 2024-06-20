@@ -26,6 +26,10 @@ export class UsuarioService {
     return this.http.get<Usuario>(url);
   }
 
+  obtenerCredenciales(id_user: any){
+    return this.http.get(`${this.apiUrl}/credenciales/${id_user}`);
+  }
+
   enviarEmailConfirmacion(email: string): Observable<Object>{
     const url = `${this.apiUrl}/password/${email}`;
     return this.http.get<Object>(url);

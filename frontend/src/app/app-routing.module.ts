@@ -4,7 +4,10 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { ChangePasswordComponent } from './components/change-password/change-password.component';
+import { AreasComponent } from './components/areas/areas.component';
+import { PoliticaPrivacidadComponent } from './components/politica-privacidad/politica-privacidad.component';
 import { HomeComponent } from './components/home/home.component';
+
 
 const routes: Routes = [
   {
@@ -22,6 +25,14 @@ const routes: Routes = [
   {
     path: 'changePassword',
     component: ChangePasswordComponent,
+  },
+  {
+    path: 'areas',
+    component: AreasComponent
+  },
+  {
+    path: 'politica-privacidad',
+    component: PoliticaPrivacidadComponent
   },
   {
     path: 'notFound',

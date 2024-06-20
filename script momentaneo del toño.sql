@@ -27,7 +27,7 @@ USE `agenda` ;
 DROP TABLE IF EXISTS `agenda`.`empresa` ;
 
 CREATE TABLE IF NOT EXISTS `agenda`.`empresa` (
-  `id` INT NOT NULL,
+  `id` INT NOT NULL auto_increment,
   `nombre` VARCHAR(45) NULL DEFAULT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB
@@ -41,7 +41,7 @@ COLLATE = utf8mb4_0900_ai_ci;
 DROP TABLE IF EXISTS `agenda`.`rol` ;
 
 CREATE TABLE IF NOT EXISTS `agenda`.`rol` (
-  `id` INT NOT NULL,
+  `id` INT NOT NULL auto_increment,
   `nombre` VARCHAR(20) NULL DEFAULT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB
@@ -55,7 +55,7 @@ COLLATE = utf8mb4_0900_ai_ci;
 DROP TABLE IF EXISTS `agenda`.`area` ;
 
 CREATE TABLE IF NOT EXISTS `agenda`.`area` (
-  `id` INT NOT NULL,
+  `id` INT NOT NULL auto_increment,
   `nombre` VARCHAR(50) NULL,
   `empresaFk` INT NOT NULL,
   PRIMARY KEY (`id`),
@@ -74,7 +74,7 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `agenda`.`usuario` ;
 
 CREATE TABLE IF NOT EXISTS `agenda`.`usuario` (
-  `id` INT NOT NULL,
+  `id` INT NOT NULL auto_increment,
   `nombre` VARCHAR(50) NULL DEFAULT NULL,
   `apePaterno` VARCHAR(50) NULL DEFAULT NULL,
   `apeMaterno` VARCHAR(50) NULL DEFAULT NULL,
@@ -153,7 +153,7 @@ COLLATE = utf8mb4_0900_ai_ci;
 DROP TABLE IF EXISTS `agenda`.`comentario` ;
 
 CREATE TABLE IF NOT EXISTS `agenda`.`comentario` (
-  `id` INT NOT NULL,
+  `id` INT NOT NULL auto_increment,
   `descripcion` VARCHAR(500) NULL,
   `fecha` DATE NULL,
   `mantenimientoFk` INT NOT NULL,
@@ -192,7 +192,7 @@ INSERT INTO `agenda`.`area` (`id`, `nombre`, `empresaFk`) VALUES
 
 -- Inserta datos en la tabla `usuario`
 INSERT INTO `agenda`.`usuario` (`id`, `nombre`, `apePaterno`, `apeMaterno`, `email`, `password`, `telefono`, `fechaNac`, `rolFk`, `empresaFk`, `areaFk`) VALUES 
-(1, 'Admin', 'Admin', 'Admin', 'admin@empresa.com', 'admin123', '1234567890', '1980-01-01', 1, 1, NULL),  -- Administrador
+(1, 'Admin', 'Admin', 'Admin', 'rojassanchezo63@gmail.com', 'admin123', '1234567890', '1980-01-01', 1, 1, NULL),  -- Administrador
 (2, 'Empleado1', 'Perez', 'Gomez', 'empleado1@empresa.com', 'empleado123', '1234567891', '1990-01-01', 2, 1, 1),  -- Empleado de Empresa A en Area 1
 (3, 'Empleado2', 'Lopez', 'Martinez', 'empleado2@empresa.com', 'empleado123', '1234567892', '1992-01-01', 2, 2, 3),  -- Empleado de Empresa B en Area 3
 (4, 'Cliente1', 'Garcia', 'Fernandez', 'cliente1@empresa.com', 'cliente123', '1234567893', '2000-01-01', 3, 1, NULL);  -- Cliente de Empresa A
