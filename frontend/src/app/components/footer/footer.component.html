@@ -113,14 +113,14 @@
           </h6>
           <div id="linksMenu" class="collapse">
             <p><a href="/" class="text-reset">Inicio</a></p>
-            <p *ngIf="rol != 4 && rol != 3 && rol != null">
-              <a href="/equipos-areas" class="text-reset">Equipos/Áreas</a>
+            <p *ngIf="rol != 3 && rol != null">
+              <a href="/areas" class="text-reset">Áreas</a>
             </p>
-            <p *ngIf="rol != 4 && rol != null">
-              <a href="/usuarios" class="text-reset">Empleados</a>
+            <p *ngIf="rol == 1 && rol != null">
+              <a href="/usuarios" class="text-reset">Usuarios</a>
             </p>
-            <p *ngIf="rol != null">
-              <a href="/proyectos" class="text-reset">Proyectos</a>
+            <p *ngIf="rol != 1">
+              <a href="/mantenimientos" class="text-reset">Mantenimientos</a>
             </p>
             <p *ngIf="rol == null">
               <a href="/login" class="text-reset">Inicio de Sesión</a>
@@ -148,7 +148,7 @@
           </h6>
           <div id="contactLinks" class="collapse">
             <p><i class="fas fa-home me-3"></i> Dolores Hidalgo, Gto, MX.</p>
-            <p><i class="fas fa-envelope me-3"></i> jarttorres2.com</p>
+            <p><i class="fas fa-envelope me-3"></i> {{'jarttorres2@gmail.com'}}</p>
             <p><i class="fas fa-phone me-3"></i> +55 418 118 8147</p>
           </div>
         </div>

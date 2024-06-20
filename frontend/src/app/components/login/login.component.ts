@@ -99,13 +99,13 @@ export class LoginComponent implements OnInit{
     this.datoSesion = this.authService.getUserData();
     switch (this.datoSesion.fk_rol) {
       case 1:
-        window.location.href = '/areas';
+        window.location.href = '/usuarios';
         break;
       case 2:
-        window.location.href = '/notFound';
+        window.location.href = '/mantenimientos';
         break;
       case 3:
-        window.location.href = '/';
+        window.location.href = '/mantenimientos';
         break;
       default:
         window.location.href = '/';

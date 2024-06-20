@@ -7,6 +7,7 @@ import { ChangePasswordComponent } from './components/change-password/change-pas
 import { AreasComponent } from './components/areas/areas.component';
 import { PoliticaPrivacidadComponent } from './components/politica-privacidad/politica-privacidad.component';
 import { HomeComponent } from './components/home/home.component';
+import { MapaComponent } from './components/mapa/mapa.component';
 
 const routes: Routes = [
   {
@@ -24,6 +25,10 @@ const routes: Routes = [
   {
     path: 'changePassword',
     component: ChangePasswordComponent,
+  },
+  {
+    path: 'mapa-del-sitio',
+    component: MapaComponent
   },
   {
     path: 'areas',

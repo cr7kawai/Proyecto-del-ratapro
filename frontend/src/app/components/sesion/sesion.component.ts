@@ -15,7 +15,7 @@ export class SesionComponent implements OnInit {
 
   extensionModalAbierto: boolean = false;
   caducadaModalAbierto: boolean = false;
-  tiempoRestante: number = 60; // tiempo en segundos
+  tiempoRestante: number = 60;
   intervalo: any;
 
   usuario: Usuario = {};
@@ -50,7 +50,7 @@ export class SesionComponent implements OnInit {
     // Restaurar tiempo restante desde localStorage si existe
     const tiempoGuardado = localStorage.getItem('tiempoRestante');
 
-    if (tiempoGuardado) {
+    if (tiempoGuardado && this.idUsuario) {
       this.tiempoRestante = parseInt(tiempoGuardado, 10);
       if(this.tiempoRestante <= 30 && this.tiempoRestante > 3){
         this.extensionModalAbierto = true;

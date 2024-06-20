@@ -26,6 +26,8 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { TokenInterceptor } from './services/HttpInterceptor.service';
 import { PoliticaPrivacidadComponent } from './components/politica-privacidad/politica-privacidad.component';
 import { HomeComponent } from './components/home/home.component';
+import { BuscadorComponent } from './components/buscador/buscador.component';
+import { MapaComponent } from './components/mapa/mapa.component';
 
 @NgModule({
   declarations: [
@@ -39,6 +41,8 @@ import { HomeComponent } from './components/home/home.component';
     SesionComponent,
     AreasComponent,
     PoliticaPrivacidadComponent,
+    BuscadorComponent,
+    MapaComponent
   ],
   imports: [
     BrowserModule,

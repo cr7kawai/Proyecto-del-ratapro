@@ -5,6 +5,11 @@ body {
     #1b263b 0%,
     #415a77 100%
   ); /* Degradado diagonal de azul oscuro a azul metálico */
+  height: 100%;
+  width: 100%;
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
 }
 html,
 body {
