@@ -31,17 +31,17 @@
   }
   
   label {
-    color: #020061;
+    color: #415a77;
   }
   
   .texto:focus {
-    border: 1px solid #020061;
-    box-shadow: 0 0 5px #020061;
+    border: 1px solid #415a77;
+    box-shadow: 0 0 5px #415a77;
   }
   
   select:focus {
-    border: 1px solid #020061;
-    box-shadow: 0 0 5px #020061;
+    border: 1px solid #415a77;
+    box-shadow: 0 0 5px #415a77;
   }
   
   .btn-large {
