@@ -33,7 +33,7 @@ const routes: Routes = [
     component: RegisterClienteComponent
   },
   {
-    path: 'changePassword',
+    path: 'cambiar-contrasena',
     component: ChangePasswordComponent,
   },
   {

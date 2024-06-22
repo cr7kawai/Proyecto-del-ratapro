@@ -50,11 +50,17 @@ export class BuscadorComponent implements OnInit {
       const loginKeywords = ['Login', 'Inicio de Sesión'];
       this.keywordService.addKeywords('/login', loginKeywords);
 
-      const registroKeywords = ['Registro','Nueva Empresa'];
-      this.keywordService.addKeywords('/register', registroKeywords);
+      const registroKeywords = ['Registro','Nueva Cuenta'];
+      this.keywordService.addKeywords('/registro', registroKeywords);
 
-      const passwordKeywords = ['Cambiar Contraseña'];
-      this.keywordService.addKeywords('/changePassword', passwordKeywords)
+      const registroCliente = ['Registro Cliente','Nuevo Cliente'];
+      this.keywordService.addKeywords('/registro-cliente', registroCliente);
+
+      const registroEmpresa = ['Registro Empresa','Nueva Empresa'];
+      this.keywordService.addKeywords('/registro-empresa', registroEmpresa);
+
+      const passwordKeywords = ['Cambiar Contraseña','Nueva Contraseña'];
+      this.keywordService.addKeywords('/cambiar-contrasena', passwordKeywords)
     }
 
     // Privilegios de admin y cliente
@@ -91,6 +97,7 @@ export class BuscadorComponent implements OnInit {
   onClick(event: MouseEvent) {
     if (!this.elementRef.nativeElement.contains(event.target)) {
       this.showResults = false;
+      this.searchQuery = ''
     }
   }
 
