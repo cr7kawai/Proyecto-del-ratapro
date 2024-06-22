@@ -1,27 +1,23 @@
 import { Component, OnInit } from '@angular/core';
 import { Usuario } from '../../models/usuario.inteface';
-import { Empresa } from '../../models/empresa.interface';
 import { HttpClient } from '@angular/common/http';
 import { UsuarioService } from '../../services/usuario.service';
 import { LoginService } from '../../services/login.service';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
-import { EmpresaService } from '../../services/empresa.service';
-import { RegistroResponse } from '../../models/RegistroResponse.interface';
 
 @Component({
-  selector: 'app-register',
-  templateUrl: './register.component.html',
-  styleUrl: './register.component.css'
+  selector: 'app-register-cliente',
+  templateUrl: './register-cliente.component.html',
+  styleUrl: './register-cliente.component.css'
 })
-export class RegisterComponent implements OnInit {
+export class RegisterClienteComponent implements OnInit {
 
   captchaValidate: boolean = false;
   siteKey: string = '6LeF-_spAAAAAKKhS4KriR-VZLrY5atl2n0jt3g6';
   
   usuario: Usuario = {}
-  empresa: Empresa = {}
   confirmPassword: string = '';
   datoSesion: any;
 
@@ -29,8 +25,7 @@ export class RegisterComponent implements OnInit {
 
   constructor(
     private http: HttpClient, 
-    private usuarioService: UsuarioService, 
-    private empresaService: EmpresaService, 
+    private usuarioService: UsuarioService,
     private loginService: LoginService, 
     private toastr: ToastrService,
     private router: Router,
@@ -50,12 +45,6 @@ export class RegisterComponent implements OnInit {
   }
 
   validarDatos(){
-    // Validación del nombre de la empresa
-    if (!this.empresa || !this.empresa.nombre || this.empresa.nombre.length < 2 || this.empresa.nombre.length > 50) {
-      this.toastr.error('El nombre de la empresa debe tener entre 2 y 50 caractéres', 'Error', {timeOut: 3000});
-      return;
-    }
-
     // Validación del nombre completo del usuario
     if (!this.usuario || !this.usuario.nombre || !this.usuario.apePaterno || !this.usuario.apeMaterno || 
       this.usuario.nombre.length < 3 || this.usuario.apePaterno.length < 3 || this.usuario.apeMaterno.length < 3 ||
@@ -153,17 +142,11 @@ export class RegisterComponent implements OnInit {
   register(){
     this.usuario.areaFk =  null;
     this.usuario.rolFk = 1;
-
-    this.empresaService.registrarEmpresa(this.empresa).subscribe((res: RegistroResponse) => {
-      this.usuario.empresaFk = res.insertedId;
-      this.usuarioService.registrarUsuario(this.usuario).subscribe(res =>{
-        this.login()
-      },err =>{
-        this.btnDisable = false;
-        this.toastr.error('No se pudieron registrar los datos correctamente, por favor comuníquese con nosotros','Error',{timeOut: 5000})
-      })
+    this.usuarioService.registrarUsuario(this.usuario).subscribe(res =>{
+      this.login()
     },err =>{
       this.btnDisable = false;
+      this.toastr.error('No se pudieron registrar los datos correctamente, por favor comuníquese con nosotros','Error',{timeOut: 5000})
     })
   }
 

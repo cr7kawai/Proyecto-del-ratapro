@@ -12,7 +12,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { HttpClientModule } from '@angular/common/http';
 import { LoginComponent } from './components/login/login.component';
-import { RegisterComponent } from './components/register/register.component';
 import { ChangePasswordComponent } from './components/change-password/change-password.component';
 import { NgxCaptchaModule } from 'ngx-captcha';
 import { MatStepperModule } from '@angular/material/stepper';
@@ -28,6 +27,9 @@ import { PoliticaPrivacidadComponent } from './components/politica-privacidad/po
 import { HomeComponent } from './components/home/home.component';
 import { BuscadorComponent } from './components/buscador/buscador.component';
 import { MapaComponent } from './components/mapa/mapa.component';
+import { RegisterEmpresaComponent } from './components/register-empresa/register-empresa.component';
+import { RegisterClienteComponent } from './components/register-cliente/register-cliente.component';
+import { RegisterWhoComponent } from './components/register-who/register-who.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +38,9 @@ import { MapaComponent } from './components/mapa/mapa.component';
     FooterComponent,
     HomeComponent,
     LoginComponent,
-    RegisterComponent,
+    RegisterWhoComponent,
+    RegisterEmpresaComponent,
+    RegisterClienteComponent,
     ChangePasswordComponent,
     SesionComponent,
     AreasComponent,

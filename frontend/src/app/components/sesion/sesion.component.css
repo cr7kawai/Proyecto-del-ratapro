@@ -52,6 +52,20 @@
   .guardar {
     margin-left: 20px;
   }
+
+  .btn-principal{
+    border: none;
+    background: linear-gradient(45deg, #1b263b 0%,#415a77 50%);
+    cursor: pointer;
+    color: #FFF;
+  }
+
+  .btn-secundario{
+    border: none;
+    background: linear-gradient(45deg, #565657 0%,#61758b 50%);
+    cursor: pointer;
+    color: #FFF;
+  }
   
   @media (max-width: 291px) {
     .guardar{
