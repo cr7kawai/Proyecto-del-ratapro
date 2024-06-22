@@ -74,6 +74,10 @@ export class SesionComponent implements OnInit {
         localStorage.removeItem('tiempoRestante');
         this.caducadaModalAbierto = true;
         this.extensionModalAbierto = false;
+        setTimeout(() => {
+          window.location.href = '/login'; 
+          this.caducadaModalAbierto = false;
+        }, 5000);
         clearInterval(this.intervalo);
 
       } else if (this.tiempoRestante == 30) {

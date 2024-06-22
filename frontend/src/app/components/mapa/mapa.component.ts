@@ -52,8 +52,10 @@ export class MapaComponent implements OnInit {
     // Cuando aún no tienen cuenta ni se han logueado
     this.siteMap['sesion'] = [ 
       ['Inicio de Sesión','/login'],
-      ['Registro','/register'],
-      ['Cambio de Contraseña','/changePassword']
+      ['Cambio de Contraseña','/cambiar-contrasena'],
+      ['Registro','/registro'],
+      ['Registro de Empresa','/registro-empresa'],
+      ['Registro de Cliente','/registro-cliente']
     ];
 
     // Privilegios solo de admin, y CEO
