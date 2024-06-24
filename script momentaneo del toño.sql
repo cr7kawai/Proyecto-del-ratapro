@@ -44,6 +44,7 @@ DROP TABLE IF EXISTS `agenda`.`area` ;
 CREATE TABLE IF NOT EXISTS `agenda`.`area` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `nombre` VARCHAR(50) NULL DEFAULT NULL,
+  `descripcion` VARCHAR(500) NULL DEFAULT NULL,
   `empresaFk` INT NOT NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_area_empresa1_idx` (`empresaFk` ASC) VISIBLE,
@@ -190,14 +191,18 @@ INSERT INTO `agenda`.`rol` (`id`, `nombre`) VALUES (2, 'Empleado');
 INSERT INTO `agenda`.`rol` (`id`, `nombre`) VALUES (3, 'Cliente');
 
 -- Datos de prueba para la tabla `usuario`
-INSERT INTO `agenda`.`usuario` (`id`, `nombre`, `apePaterno`, `apeMaterno`, `email`, `password`, `telefono`, `fechaNac`, `rolFk`, `empresaFk`, `areaFk`) VALUES (1, 'Juan', 'Pérez', 'García', 'rojassanchezo63@gmail.com', 'password123', '5551234567', '1980-01-01', 1, 1, 1);
+INSERT INTO `agenda`.`usuario` (`id`, `nombre`, `apePaterno`, `apeMaterno`, `email`, `password`, `telefono`, `fechaNac`, `rolFk`, `empresaFk`, `areaFk`) VALUES (1, 'Juan', 'Pérez', 'García', 'rojassanchezo63@gmail.com', 'password123', '5551234567', '1980-01-01', 1, 1, NULL);
 INSERT INTO `agenda`.`usuario` (`id`, `nombre`, `apePaterno`, `apeMaterno`, `email`, `password`, `telefono`, `fechaNac`, `rolFk`, `empresaFk`, `areaFk`) VALUES (2, 'Ana', 'López', 'Martínez', 'ana.lopez@example.com', 'password123', '5559876543', '1990-02-02', 2, 2, 2);
 INSERT INTO `agenda`.`usuario` (`id`, `nombre`, `apePaterno`, `apeMaterno`, `email`, `password`, `telefono`, `fechaNac`, `rolFk`, `empresaFk`, `areaFk`) VALUES (3, 'Carlos', 'Gómez', 'Rodríguez', 'carlos.gomez@example.com', 'password123', '5551122334', '1985-03-03', 3, NULL, NULL);
 INSERT INTO `agenda`.`usuario` (`id`, `nombre`, `apePaterno`, `apeMaterno`, `email`, `password`, `telefono`, `fechaNac`, `rolFk`, `empresaFk`, `areaFk`) VALUES (4, 'María', 'Hernández', 'Sánchez', 'maria.hernandez@example.com', 'password123', '5554433221', '1995-04-04', 3, NULL, NULL);
 
 -- Datos de prueba para la tabla `mantenimiento`
 INSERT INTO `agenda`.`mantenimiento` (`id`, `nombre`, `descripcion`, `direccion`, `fechaRegistro`, `aceptado`, `costo`, `estadoPago`, `finalizado`, `fechaFin`, `usuarioFk`, `areaFk`, `empleadoFk`) VALUES (1, 'Mantenimiento 1', 'Descripción del mantenimiento 1', 'Dirección 1', '2024-06-20', 1, 100.0, 'Pagado', 0, NULL, 3, 1, 2);
-INSERT INTO `agenda`.`mantenimiento` (`id`, `nombre`, `descripcion`, `direccion`, `fechaRegistro`, `aceptado`, `costo`, `estadoPago`, `finalizado`, `fechaFin`, `usuarioFk`, `areaFk`, `empleadoFk`) VALUES (2, 'Mantenimiento 2', 'Descripción del mantenimiento 2', 'Dirección 2', '2024-06-21', 1, 200.0, 'Pendiente', 0, NULL, 4, 2, 2);
+INSERT INTO `agenda`.`mantenimiento` (`id`, `nombre`, `descripcion`, `direccion`, `fechaRegistro`, `aceptado`, `costo`, `estadoPago`, `finalizado`, `fechaFin`, `usuarioFk`, `areaFk`, `empleadoFk`) VALUES (2, 'Mantenimiento 2', 'Descripción del mantenimiento 2', 'Dirección 2', '2024-06-21', 1, 200.0, 'Pendiente', 1, '2024-06-30', 4, 2, 2);
+INSERT INTO `agenda`.`mantenimiento` (`id`, `nombre`, `descripcion`, `direccion`, `fechaRegistro`, `aceptado`, `costo`, `estadoPago`, `finalizado`, `fechaFin`, `usuarioFk`, `areaFk`, `empleadoFk`) VALUES (3, 'Mantenimiento 3', 'Descripción del mantenimiento 3', 'Dirección 3', '2024-06-28', 1, 100.0, 'Pagado', 1, '2024-06-28', 3, 1, 2);
+INSERT INTO `agenda`.`mantenimiento` (`id`, `nombre`, `descripcion`, `direccion`, `fechaRegistro`, `aceptado`, `costo`, `estadoPago`, `finalizado`, `fechaFin`, `usuarioFk`, `areaFk`, `empleadoFk`) VALUES (4, 'Mantenimiento 4', 'Descripción del mantenimiento 4', 'Dirección 4', '2024-06-19', 1, 200.0, 'Pendiente', NULL, NULL, 4, 2, 2);
+INSERT INTO `agenda`.`mantenimiento` (`id`, `nombre`, `descripcion`, `direccion`, `fechaRegistro`, `aceptado`, `costo`, `estadoPago`, `finalizado`, `fechaFin`, `usuarioFk`, `areaFk`, `empleadoFk`) VALUES (5, 'Mantenimiento 5', 'Descripción del mantenimiento 5', 'Dirección 5', '2024-06-19', 0, 200.0, 'Pendiente', 1, '2024-06-12', 4, 2, 2);
+INSERT INTO `agenda`.`mantenimiento` (`id`, `nombre`, `descripcion`, `direccion`, `fechaRegistro`, `aceptado`, `costo`, `estadoPago`, `finalizado`, `fechaFin`, `usuarioFk`, `areaFk`, `empleadoFk`) VALUES (6, 'Mantenimiento 6', 'Descripción del mantenimiento 6', 'Dirección 6', '2024-06-16', NULL, NULL, NULL, NULL, NULL, 4, 2, 2);
 
 -- Datos de prueba para la tabla `comentario`
 INSERT INTO `agenda`.`comentario` (`id`, `descripcion`, `fecha`, `mantenimientoFk`, `usuarioFk`) VALUES (1, 'Comentario 1 para Mantenimiento 1', '2024-06-22', 1, 3);
