@@ -21,8 +21,8 @@ class UsuarioController {
 
   // Obtener todos los usuarios de una empresa
   public async obtenerUsuarios(req: Request, res: Response) {
-    const {empresaFk} = req.params
-    const usuarios = await pool.query("SELECT * from usuario WHERE empresaFk = ?",empresaFk);
+    const {idEmpresa} = req.params
+    const usuarios = await pool.query("SELECT u.*, a.nombre as nombreArea from usuario as u LEFT JOIN area as a ON u.areaFk = a.id WHERE u.empresaFk = ?",idEmpresa);
     if (usuarios.length > 0) {
       return res.json(usuarios);
     }
@@ -264,7 +264,7 @@ class UsuarioController {
           nomArea: user.nomArea
         };
 
-        const token = jwt.sign(payload, 'oxIJjs8XYPjNk1hXsaeoybsVU9tx90byhpU6FSa90--6iWM45UlsDkFG5X9q4Rs3', { expiresIn: '1h' });
+        const token = jwt.sign(payload, 'oxIJjs8XYPjNk1hXsaeoybsVU9tx90byhpU6FSa90--6iWM45UlsDkFG5X9q4Rs3', { expiresIn: '24h' });
         res.status(200).json({ message: 'El usuario se ha logueado', token });
       } else {
         res.status(401).json({ message: 'Credenciales incorrectas' });
@@ -301,7 +301,7 @@ class UsuarioController {
           nomArea: user.nomArea
         };
 
-        const token = jwt.sign(payload, 'oxIJjs8XYPjNk1hXsaeoybsVU9tx90byhpU6FSa90--6iWM45UlsDkFG5X9q4Rs3', { expiresIn: '1h' });
+        const token = jwt.sign(payload, 'oxIJjs8XYPjNk1hXsaeoybsVU9tx90byhpU6FSa90--6iWM45UlsDkFG5X9q4Rs3', { expiresIn: '24h' });
 
         const transporter = nodemailer.createTransport({
           service: "Gmail",

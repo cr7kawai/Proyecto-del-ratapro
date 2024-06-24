@@ -4,6 +4,7 @@ import {
   TemplateRef,
   AfterViewInit,
   ChangeDetectorRef,
+  OnInit
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
@@ -11,22 +12,23 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Area } from '../../models/area.interface';
 import { Mantenimiento } from '../../models/mantenimiento.interface';
+import { AuthService } from '../../services/auth.service';
+import { AreaService } from '../../services/area.service';
+import { ToastrService } from 'ngx-toastr';
+import { MantenimientoService } from '../../services/mantenimiento.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-areas',
   templateUrl: './areas.component.html',
   styleUrls: ['./areas.component.css'],
 })
-export class AreasComponent implements AfterViewInit {
+export class AreasComponent implements AfterViewInit, OnInit {
   @ViewChild('addAreaDialog') addAreaDialog!: TemplateRef<any>;
   @ViewChild('mantenimientosDialog') mantenimientosDialog!: TemplateRef<any>;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  areas: Area[] = [
-    { id: 1, nombre: 'Área 1', descripcion: 'Descripción del Área 1' },
-    { id: 2, nombre: 'Área 2', descripcion: 'Descripción del Área 2' },
-    { id: 3, nombre: 'Área 3', descripcion: 'Descripción del Área 3' },
-  ];
+  areas: Area[] = [];
 
   mantenimientos: Mantenimiento[] = [
     {
@@ -278,7 +280,7 @@ export class AreasComponent implements AfterViewInit {
   displayedColumns: string[] = [
     'nombre',
     'descripcion',
-    'empleadoFk',
+    'empleado',
     'fechaRegistro',
     'fechaFin',
     'aceptado',
@@ -294,15 +296,39 @@ export class AreasComponent implements AfterViewInit {
   dialogRef!: MatDialogRef<any>;
   mantenimientosDialogRef!: MatDialogRef<any>;
 
+  datoSesion: any;
+  idUsuario: any = null;
+  idEmpresa: any = null;
+  idRol: any = null;
+
   constructor(
     private fb: FormBuilder,
     public dialog: MatDialog,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private authService: AuthService,
+    private areaService: AreaService,
+    private mantenimientoService: MantenimientoService,
+    private toastr: ToastrService,
+    private router: Router
   ) {
     this.addAreaForm = this.fb.group({
       nombre: ['', Validators.required],
       descripcion: ['', Validators.required],
     });
+  }
+
+  ngOnInit() {
+    this.datoSesion = this.authService.getUserData();
+
+    if (this.datoSesion) {
+      this.idUsuario = this.datoSesion.id;
+      this.idEmpresa = this.datoSesion.idEmpresa;
+      this.idRol = this.datoSesion.idRol;
+
+      this.loadAreas();
+    } else{
+      window.location.href = '/'
+    }
   }
 
   ngAfterViewInit(): void {
@@ -319,16 +345,27 @@ export class AreasComponent implements AfterViewInit {
     });
   }
 
+  loadAreas(){
+    this.areaService.obtenerAreas(this.idEmpresa).subscribe(res =>{
+      this.areas = res;
+      this.filterAreas()
+    })
+  }
+
   saveArea(): void {
     if (this.addAreaForm.valid) {
       const newArea: Area = {
         ...this.addAreaForm.value,
-        id: this.areas.length + 1,
       };
-      this.areas.push(newArea);
-      this.filterAreas(); // Ensure areas are filtered after adding a new area
-      this.addAreaForm.reset();
-      this.dialogRef.close();
+      newArea.empresaFk = this.idEmpresa;
+      this.areaService.registrarArea(newArea).subscribe(res =>{
+        this.loadAreas()
+        this.addAreaForm.reset();
+        this.dialogRef.close();
+        this.toastr.success('Área registrada exitosamente', 'Éxito');
+      },err =>{
+        this.toastr.error('No se ha podido registrar la área', 'Error');
+      })
     }
   }
 
@@ -368,21 +405,20 @@ export class AreasComponent implements AfterViewInit {
   }
 
   openMantenimientosDialog(area: Area): void {
-    this.dataSource.data = this.mantenimientos.filter(
-      (m) => m.areaFk === area.id // Use area.id instead of area.nombre
-    );
-    this.mantenimientosDialogRef = this.dialog.open(this.mantenimientosDialog, {
-      width: '1200px',
-      data: { area: area },
-    });
+    this.mantenimientoService.obtenerMantenimientosArea(area.id).subscribe(res => {
+      this.dataSource.data = res;
+      this.mantenimientosDialogRef = this.dialog.open(this.mantenimientosDialog, {
+        width: '1200px',
+        data: { area: area },
+      });
 
-    this.mantenimientosDialogRef.afterOpened().subscribe(() => {
-      this.dataSource.paginator = this.paginator;
-      console.log('Paginator after dialog open:', this.paginator);
-      console.log(
-        'DataSource Paginator after dialog open:',
-        this.dataSource.paginator
-      );
+      this.mantenimientosDialogRef.afterOpened().subscribe(() => {
+        this.dataSource.paginator = this.paginator;
+        console.log('Paginator after dialog open:', this.paginator);
+        console.log('DataSource Paginator after dialog open:', this.dataSource.paginator);
+      });
+    }, err => {
+      this.toastr.error('Error al cargar los mantenimientos del área', 'Error');
     });
   }
 }

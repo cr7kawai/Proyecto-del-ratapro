@@ -16,10 +16,20 @@
           placeholder="Buscar mantenimiento"
         />
       </mat-form-field>
+      <!-- Dropdown para filtrar mantenimientos -->
+      <mat-form-field appearance="outline" style="margin-left: 10px;">
+        <mat-label>Filtrar por</mat-label>
+        <mat-select [(value)]="selectedFilter" (selectionChange)="applyStatusFilter($event)">
+          <mat-option value="pendiente">Pendientes</mat-option>
+          <mat-option value="completado">Completados</mat-option>
+          <mat-option value="solicitud">Solicitudes</mat-option>
+        </mat-select>
+      </mat-form-field>
     </div>
   </div>
   <div class="table-wrapper">
     <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+      <!-- Define columns as before -->
       <!-- Nombre Column -->
       <ng-container matColumnDef="nombre">
         <th mat-header-cell *matHeaderCellDef class="sticky-header">Nombre</th>
@@ -185,6 +195,7 @@
     showFirstLastButtons
   ></mat-paginator>
 </div>
+
 
 <ng-template #aceptMantenimientoDialog>
   <div class="modal-content">

@@ -18,6 +18,7 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import Swal from 'sweetalert2';
 import { Comentario } from '../../models/comentario.interface';
+import { MatSelectChange } from '@angular/material/select';
 
 @Component({
   selector: 'app-mantenimientos-empleado',
@@ -52,6 +53,8 @@ export class MantenimientosEmpleadoComponent implements AfterViewInit {
     'estadoPago',
     'acciones',
   ];
+
+  selectedFilter: string = 'pendiente'
 
   dataSource = new MatTableDataSource<Mantenimiento>([
     {
@@ -248,6 +251,13 @@ export class MantenimientosEmpleadoComponent implements AfterViewInit {
       this.dataSource.paginator.firstPage();
     }
   }
+  
+  // FILTRO DE MANTENIMIENTOS
+  applyStatusFilter(event: MatSelectChange) {
+    const filterValue = event.value;
+
+    console.log(filterValue);
+  }
 
   finalizarMantenimiento(element: Mantenimiento) {
     Swal.fire({
@@ -330,6 +340,7 @@ export class MantenimientosEmpleadoComponent implements AfterViewInit {
       }
     });
   }
+  
   openAceptMantenimientoDialog(element: Mantenimiento) {
     this.selectedMantenimiento = element;
     this.dialogRef = this.dialog.open(this.aceptMantenimientoDialog, {

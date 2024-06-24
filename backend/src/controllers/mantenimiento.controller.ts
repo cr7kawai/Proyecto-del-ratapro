@@ -6,6 +6,13 @@ const nodemailer = require("nodemailer");
 
 class MantenimientoController{
 
+    // Obtener mantenimientos por área
+    public async obtenerMantenimientosArea(req: Request, res: Response) {
+        const { idArea } = req.params;
+        const mantenimientos = await pool.query("SELECT m.id, m.nombre, m.descripcion, m.fechaRegistro, CASE m.aceptado WHEN 0 THEN 'Pendiente' WHEN 1 THEN 'Aceptado' END AS aceptado, m.costo, m.estadoPago, CASE m.finalizado WHEN 0 THEN 'Pendiente' WHEN 1 THEN 'Finalizado' END AS finalizado, m.fechaFin, concat(e.nombre,' ',e.apePaterno,' ',e.apeMaterno) as empleado  FROM mantenimiento as m INNER JOIN usuario as e ON e.id = m.empleadoFk WHERE m.areaFk = ? ORDER BY m.fechaRegistro DESC", [idArea]);
+        res.json(mantenimientos);
+    }
+
     // Obtener mantenimientos completados para cliente y empleado
     public async obtenerMentenimientosCompletosCliente(req: Request, res: Response) {
         const { idCliente } = req.params;

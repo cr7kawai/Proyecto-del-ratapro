@@ -14,13 +14,13 @@ export class UsuarioService {
   constructor(private http: HttpClient) { }
 
   // Obtener todos los usuarios
-  getUsuarios(): Observable<Usuario[]> {
-    return this.http.get<Usuario[]>(this.apiUrl);
+  getUsuarios(idEmpresa: any): Observable<Usuario[]> {
+    return this.http.get<Usuario[]>(`${this.apiUrl}/${idEmpresa}`);
   }
 
   // Obtener un usuario por ID
   getUsuario(id: number): Observable<Usuario> {
-    const url = `${this.apiUrl}/${id}`;
+    const url = `${this.apiUrl}/verUsuario${id}`;
     return this.http.get<Usuario>(url);
   }
 
@@ -48,13 +48,13 @@ export class UsuarioService {
   }
 
   // Modificar un usuario existente
-  modificarUsuario(id: number, usuarioActualizado: Usuario): Observable<any> {
+  modificarUsuario(id: any, usuarioActualizado: Usuario): Observable<any> {
     const url = `${this.apiUrl}/${id}`;
     return this.http.put<any>(url, usuarioActualizado);
   }
 
   // Eliminar un usuario
-  eliminarUsuario(id: number): Observable<any> {
+  eliminarUsuario(id: any): Observable<any> {
     const url = `${this.apiUrl}/${id}`;
     return this.http.delete<any>(url);
   }
@@ -66,7 +66,7 @@ export class UsuarioService {
   }
 
   // Cambiar contraseña de un usuario
-  cambiarContrasena(id: number, email: string, usuarioActualizado: Usuario): Observable<any> {
+  cambiarContrasena(id: any, email: string, usuarioActualizado: Usuario): Observable<any> {
     const url = `${this.apiUrl}/password/${id}/${email}`;
     return this.http.put<any>(url, usuarioActualizado);
   }

@@ -3,6 +3,7 @@ import {
   Component,
   ViewChild,
   TemplateRef,
+  OnInit,
 } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
@@ -19,13 +20,15 @@ import { Area } from '../../models/area.interface';
 import Swal from 'sweetalert2';
 import { ToastrService } from 'ngx-toastr';
 import { UsuarioService } from '../../services/usuario.service';
+import { AuthService } from '../../services/auth.service';
+import { AreaService } from '../../services/area.service';
 
 @Component({
   selector: 'app-usuario',
   templateUrl: './usuario.component.html',
   styleUrls: ['./usuario.component.css'],
 })
-export class UsuarioComponent implements AfterViewInit {
+export class UsuarioComponent implements AfterViewInit, OnInit {
   @ViewChild('addUserDialog') addUserDialog!: TemplateRef<any>;
   @ViewChild('editUserDialog') editUserDialog!: TemplateRef<any>;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -38,7 +41,7 @@ export class UsuarioComponent implements AfterViewInit {
     'email',
     'telefono',
     'fechaNac',
-    'areaFk',
+    'nombreArea',
     'acciones',
   ];
   dataSource = new MatTableDataSource<Usuario>([]);
@@ -46,16 +49,21 @@ export class UsuarioComponent implements AfterViewInit {
   addUserForm: FormGroup;
   editUserForm: FormGroup;
   dialogRef!: MatDialogRef<any>;
-  areas: Area[] = [
-    { id: 1, nombre: 'Área 1', descripcion: 'Descripción del Área 1' },
-    { id: 2, nombre: 'Área 2', descripcion: 'Descripción del Área 2' },
-  ];
+  areas: Area[] = [];
+
+  // Datos de la sesion
+  datoSesion: any;
+  idUsuario: any = null;
+  idEmpresa: any = null;
+  idRol: any = null;
 
   constructor(
     private fb: FormBuilder,
     public dialog: MatDialog,
     private toastr: ToastrService,
-    private usuarioService: UsuarioService
+    private usuarioService: UsuarioService,
+    private authService: AuthService,
+    private areaService: AreaService
   ) {
     this.addUserForm = this.fb.group(
       {
@@ -137,6 +145,21 @@ export class UsuarioComponent implements AfterViewInit {
     });
   }
 
+  ngOnInit() {
+    this.datoSesion = this.authService.getUserData();
+
+    if (this.datoSesion) {
+      this.idUsuario = this.datoSesion.id;
+      this.idEmpresa = this.datoSesion.idEmpresa;
+      this.idRol = this.datoSesion.idRol;
+
+      this.areaService.obtenerAreas(this.idEmpresa).subscribe(res =>{
+        this.areas = res
+      })
+    }
+  }
+
+
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
@@ -144,7 +167,7 @@ export class UsuarioComponent implements AfterViewInit {
   }
 
   loadUsuarios() {
-    this.usuarioService.getUsuarios().subscribe(
+    this.usuarioService.getUsuarios(this.idEmpresa).subscribe(
       (usuarios) => {
         this.dataSource.data = usuarios;
       },
@@ -190,26 +213,32 @@ export class UsuarioComponent implements AfterViewInit {
         telefono: formValue.telefono,
         password: formValue.password,
         rolFk: 2,
-        empresaFk: 1,
+        empresaFk: this.idEmpresa,
       };
-      this.usuarioService.registrarUsuario(newUser).subscribe(
-        (response) => {
-          this.toastr.success('Usuario registrado exitosamente');
-          this.loadUsuarios();
-          this.addUserForm.reset();
-          this.dialogRef.close();
-        },
-        (error) => {
-          this.toastr.error('Error al registrar el usuario', 'Error');
-        }
-      );
+      this.usuarioService.validarEmailTel(newUser).subscribe(res => {
+        this.usuarioService.registrarUsuario(newUser).subscribe(
+          (response) => {
+            this.toastr.success('Usuario registrado exitosamente', 'Éxito');
+            this.loadUsuarios();
+            this.addUserForm.reset();
+            this.dialogRef.close();
+          },
+          (error) => {
+            this.toastr.error('Error al registrar el usuario', 'Error');
+          }
+        );
+      },err => {
+        console.log(err);
+        this.toastr.error(err.error.message,'Error',{timeOut: 3000})
+        return;
+      })
     }
   }
 
   updateUser(): void {
     if (this.editUserForm.valid) {
       const updatedUser = this.editUserForm.value;
-      this.usuarioService
+        this.usuarioService
         .modificarUsuario(updatedUser.id, updatedUser)
         .subscribe(
           (response) => {
@@ -259,7 +288,17 @@ export class UsuarioComponent implements AfterViewInit {
   }
 
   editUser(user: Usuario): void {
+    const formattedDate = this.formatDate(user.fechaNac);
+    user.fechaNac = formattedDate;
     this.openEditUserDialog(user);
+  }
+
+  formatDate(dateString: any): string {
+    const date = new Date(dateString);
+    const year = date.getUTCFullYear();
+    const month = ('0' + (date.getUTCMonth() + 1)).slice(-2);
+    const day = ('0' + date.getUTCDate()).slice(-2);
+    return `${year}-${month}-${day}`;
   }
 
   deleteUser(user: Usuario): void {

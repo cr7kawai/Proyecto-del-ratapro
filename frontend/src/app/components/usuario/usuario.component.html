@@ -78,9 +78,9 @@
       </ng-container>
 
       <!-- Area Column -->
-      <ng-container matColumnDef="areaFk">
+      <ng-container matColumnDef="nombreArea">
         <th mat-header-cell *matHeaderCellDef class="sticky-header">Área</th>
-        <td mat-cell *matCellDef="let element">{{ element.areaFk }}</td>
+        <td mat-cell *matCellDef="let element">{{ element.nombreArea }}</td>
       </ng-container>
 
       <!-- Acciones Column -->
@@ -98,6 +98,7 @@
           </button>
           <button
             mat-icon-button
+            [disabled]="element.rolFk == 1"
             (click)="deleteUser(element)"
             matTooltip="Eliminar Empleado"
           >
