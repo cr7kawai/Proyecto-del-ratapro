@@ -10,6 +10,7 @@ import { MapaComponent } from './components/mapa/mapa.component';
 import { RegisterEmpresaComponent } from './components/register-empresa/register-empresa.component';
 import { RegisterWhoComponent } from './components/register-who/register-who.component';
 import { RegisterClienteComponent } from './components/register-cliente/register-cliente.component';
+import { UsuarioComponent } from './components/usuario/usuario.component';
 
 const routes: Routes = [
   {
@@ -22,7 +23,7 @@ const routes: Routes = [
   },
   {
     path: 'registro',
-    component: RegisterWhoComponent
+    component: RegisterWhoComponent,
   },
   {
     path: 'registro-empresa',
@@ -30,15 +31,19 @@ const routes: Routes = [
   },
   {
     path: 'registro-cliente',
-    component: RegisterClienteComponent
+    component: RegisterClienteComponent,
   },
   {
     path: 'cambiar-contrasena',
     component: ChangePasswordComponent,
   },
   {
+    path: 'usuario',
+    component: UsuarioComponent,
+  },
+  {
     path: 'mapa-del-sitio',
-    component: MapaComponent
+    component: MapaComponent,
   },
   {
     path: 'areas',
