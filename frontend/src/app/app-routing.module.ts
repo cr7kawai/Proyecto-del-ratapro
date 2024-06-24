@@ -11,6 +11,7 @@ import { RegisterEmpresaComponent } from './components/register-empresa/register
 import { RegisterWhoComponent } from './components/register-who/register-who.component';
 import { RegisterClienteComponent } from './components/register-cliente/register-cliente.component';
 import { UsuarioComponent } from './components/usuario/usuario.component';
+import { MantenimientosEmpleadoComponent } from './components/mantenimientos-empleado/mantenimientos-empleado.component';
 
 const routes: Routes = [
   {
@@ -48,6 +49,10 @@ const routes: Routes = [
   {
     path: 'areas',
     component: AreasComponent,
+  },
+  {
+    path: 'mantenimiento',
+    component: MantenimientosEmpleadoComponent,
   },
   {
     path: 'politica-privacidad',

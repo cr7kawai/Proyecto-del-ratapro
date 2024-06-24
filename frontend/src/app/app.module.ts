@@ -38,6 +38,7 @@ import { MatSortModule } from '@angular/material/sort';
 import { UsuarioComponent } from './components/usuario/usuario.component';
 import { MatIcon } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MantenimientosEmpleadoComponent } from './components/mantenimientos-empleado/mantenimientos-empleado.component';
 
 @NgModule({
   declarations: [
@@ -56,6 +57,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     PoliticaPrivacidadComponent,
     BuscadorComponent,
     MapaComponent,
+    MantenimientosEmpleadoComponent,
   ],
   imports: [
     BrowserModule,
