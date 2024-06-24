@@ -12,8 +12,8 @@ class UsuarioRoutes{
     }
 
     config(): void {
-        this.router.get('/',verifyToken, usuarioController.obtenerUsuarios);
-        this.router.get('/:id',verifyToken, usuarioController.verUsuario);
+        this.router.get('/:idEmpresa',verifyToken, usuarioController.obtenerUsuarios);
+        this.router.get('/verUsuario/:id',verifyToken, usuarioController.verUsuario);
         this.router.get('/empleadosArea/:idArea',verifyToken, usuarioController.obtenerEmpleadosArea);
         this.router.get('/credenciales/:id',verifyToken, usuarioController.obtenerCredenciales);
         this.router.get('/getByEmail/:email',usuarioController.obtenerUsuarioEmail);

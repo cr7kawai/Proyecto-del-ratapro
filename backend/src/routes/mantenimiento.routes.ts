@@ -11,6 +11,9 @@ class MantenimientoRoutes {
     }
 
     config(): void {
+        // Obtener mantenimientos area
+        this.router.get('/area/:idArea', verifyToken, mantenimientoController.obtenerMantenimientosArea)
+
         // Obtener mantenimientos completados
         this.router.get('/completos/cliente/:idCliente', verifyToken, mantenimientoController.obtenerMentenimientosCompletosCliente);
         this.router.get('/completos/empleado/:idEmpleado', verifyToken, mantenimientoController.obtenerMentenimientosCompletosEmpleado);

@@ -39,6 +39,8 @@ import { UsuarioComponent } from './components/usuario/usuario.component';
 import { MatIcon } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MantenimientosEmpleadoComponent } from './components/mantenimientos-empleado/mantenimientos-empleado.component';
+import { MatSelectModule } from '@angular/material/select';
+import { MatOptionModule } from '@angular/material/core';
 
 @NgModule({
   declarations: [
@@ -79,6 +81,8 @@ import { MantenimientosEmpleadoComponent } from './components/mantenimientos-emp
     MatSortModule,
     MatIcon,
     MatTooltipModule,
+    MatSelectModule,
+    MatOptionModule
   ],
   providers: [
     provideClientHydration(),

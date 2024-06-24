@@ -12,6 +12,12 @@ export class MantenimientoService {
 
   constructor(private http: HttpClient) { }
 
+  // Obtener mantenimientos por área
+  obtenerMantenimientosArea(idArea: any): Observable<Object[]> {
+    const url = `${this.apiUrl}/area/${idArea}`;
+    return this.http.get<Object[]>(url);
+  }
+
   // Obtener mantenimientos completados para cliente
   obtenerMantenimientosCompletosCliente(idCliente: number): Observable<Mantenimiento[]> {
     const url = `${this.apiUrl}/completos/cliente/${idCliente}`;

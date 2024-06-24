@@ -15,19 +15,26 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.empresaController = void 0;
 const connection_1 = __importDefault(require("../connection"));
 class EmpresaController {
+    // Obtener todas las empresas
     obtenerEmpresas(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const empresas = yield connection_1.default.query('SELECT * FROM empresa');
             res.json(empresas);
         });
     }
-    filtrarEmpresa(req, res) {
+    // Obtener solo una empresa
+    verEmpresa(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { id_empresa } = req.params;
-            const empresa = yield connection_1.default.query('SELECT * FROM empresa WHERE pk_empresa = ?', [id_empresa]);
+            const { id } = req.params;
+            const empresa = yield connection_1.default.query('SELECT * FROM empresa WHERE id = ?', [id]);
             res.json(empresa);
+            if (empresa.length > 0) {
+                return res.json(empresa[0]);
+            }
+            res.status(404).json({ text: "La empresa no existe" });
         });
     }
+    // Registrar empresa
     registrarEmpresa(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
@@ -40,11 +47,12 @@ class EmpresaController {
             }
         });
     }
+    // Modificar empresa
     modificarEmpresa(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const { id_empresa } = req.params;
-                yield connection_1.default.query('UPDATE empresa SET ? WHERE pk_empresa = ?', [req.body, id_empresa]);
+                const { id } = req.params;
+                yield connection_1.default.query('UPDATE empresa SET ? WHERE id = ?', [req.body, id]);
                 res.json({ message: 'La empresa ha sido actualizado' });
             }
             catch (error) {
@@ -53,11 +61,12 @@ class EmpresaController {
             }
         });
     }
+    // Eliminar empresa
     eliminarEmpresa(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const { id_empresa } = req.params;
-                yield connection_1.default.query('DELETE FROM empresa WHERE pk_empresa = ?', [id_empresa]);
+                const { id } = req.params;
+                yield connection_1.default.query('DELETE FROM empresa WHERE id = ?', [id]);
                 res.json({ message: 'La empresa ha sido eliminada' });
             }
             catch (error) {

@@ -12,8 +12,9 @@ class UsuarioRoutes {
         this.config();
     }
     config() {
-        this.router.get('/', auth_middleware_1.verifyToken, usuario_controller_1.default.obtenerUsuarios);
-        this.router.get('/:id', auth_middleware_1.verifyToken, usuario_controller_1.default.verUsuario);
+        this.router.get('/:idEmpresa', auth_middleware_1.verifyToken, usuario_controller_1.default.obtenerUsuarios);
+        this.router.get('/verUsuario/:id', auth_middleware_1.verifyToken, usuario_controller_1.default.verUsuario);
+        this.router.get('/empleadosArea/:idArea', auth_middleware_1.verifyToken, usuario_controller_1.default.obtenerEmpleadosArea);
         this.router.get('/credenciales/:id', auth_middleware_1.verifyToken, usuario_controller_1.default.obtenerCredenciales);
         this.router.get('/getByEmail/:email', usuario_controller_1.default.obtenerUsuarioEmail);
         this.router.post('/', usuario_controller_1.default.registrarUsuario);

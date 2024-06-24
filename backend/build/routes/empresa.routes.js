@@ -13,10 +13,10 @@ class NotaRoutes {
     }
     config() {
         this.router.get('/', auth_middleware_1.verifyToken, empresa_controller_1.default.obtenerEmpresas);
-        this.router.get('/:id_empresa', auth_middleware_1.verifyToken, empresa_controller_1.default.filtrarEmpresa);
+        this.router.get('/:id', auth_middleware_1.verifyToken, empresa_controller_1.default.verEmpresa);
         this.router.post('/', empresa_controller_1.default.registrarEmpresa);
-        this.router.put('/:id_empresa', auth_middleware_1.verifyToken, empresa_controller_1.default.modificarEmpresa);
-        this.router.delete('/:id_empresa', auth_middleware_1.verifyToken, empresa_controller_1.default.eliminarEmpresa);
+        this.router.put('/:id', auth_middleware_1.verifyToken, empresa_controller_1.default.modificarEmpresa);
+        this.router.delete('/:id', auth_middleware_1.verifyToken, empresa_controller_1.default.eliminarEmpresa);
     }
 }
 const notaRoutes = new NotaRoutes();

@@ -43,7 +43,6 @@ export class SesionComponent implements OnInit {
         .obtenerCredenciales(this.idUsuario)
         .subscribe((res) => {
           this.usuario = res;
-          console.log(res);
           this.iniciarTemporizador();
         });
     }
