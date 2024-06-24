@@ -41,6 +41,9 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MantenimientosEmpleadoComponent } from './components/mantenimientos-empleado/mantenimientos-empleado.component';
 import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
+import { SolicitarMantenimientoComponent } from './components/solicitar-mantenimiento/solicitar-mantenimiento.component';
+import { AreasClienteComponent } from './components/areas-cliente/areas-cliente.component';
+import { MisMantenimientosComponent } from './components/mis-mantenimientos/mis-mantenimientos.component';
 
 @NgModule({
   declarations: [
@@ -60,6 +63,9 @@ import { MatOptionModule } from '@angular/material/core';
     BuscadorComponent,
     MapaComponent,
     MantenimientosEmpleadoComponent,
+    SolicitarMantenimientoComponent,
+    AreasClienteComponent,
+    MisMantenimientosComponent,
   ],
   imports: [
     BrowserModule,
@@ -82,7 +88,7 @@ import { MatOptionModule } from '@angular/material/core';
     MatIcon,
     MatTooltipModule,
     MatSelectModule,
-    MatOptionModule
+    MatOptionModule,
   ],
   providers: [
     provideClientHydration(),

@@ -1,0 +1,51 @@
+<div class="page-title">
+  <h1>Empresas</h1>
+</div>
+<div class="breadcrumbs"><a href="/">Inicio</a> &gt;<span>Empresas</span></div>
+<div class="empresas-container">
+  <div class="card white-card">
+    <div class="header">
+      <div id="form_header">
+        <h2>Lista de Empresas</h2>
+      </div>
+      <div class="filter-add-container">
+        <div class="filter-container">
+          <input
+            type="text"
+            class="filter-input"
+            placeholder="Buscar empresa..."
+            [(ngModel)]="filterText"
+            (input)="filterEmpresas()"
+            (focus)="showDropdown = filterText.trim().length > 0"
+          />
+          <button
+            *ngIf="filterText"
+            class="clear-button"
+            (click)="clearFilter()"
+          >
+            x
+          </button>
+          <ul
+            *ngIf="showDropdown && filterText.trim().length > 0"
+            class="dropdown"
+          >
+            <li
+              *ngFor="let suggestion of filteredEmpresas"
+              (click)="selectEmpresa(suggestion)"
+            >
+              {{ suggestion.nombre }}
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="cards-container">
+      <div class="card blue-card" *ngFor="let empresa of filteredEmpresas">
+        <h3>{{ empresa.nombre }}</h3>
+        <button class="view-button" (click)="verAreas(empresa)">
+          Ver Áreas
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

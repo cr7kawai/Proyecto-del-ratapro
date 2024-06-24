@@ -1,0 +1,269 @@
+/* General */
+* {
+  font-family: "Poppins", sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Título de la página */
+.page-title {
+  text-align: center;
+  margin-top: 20px;
+  margin-bottom: 0;
+  background-color: #fff;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  animation: slideInTitle 1s ease-in-out;
+}
+
+.page-title h1 {
+  font-size: 2.5em;
+  color: #1b263b;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Migas de pan */
+.breadcrumbs {
+  margin: 0;
+  padding: 10px;
+  background-color: #f8fafc;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: center;
+  position: relative;
+  top: -10px;
+}
+
+.breadcrumbs a {
+  color: #1b263b;
+  text-decoration: none;
+  margin-right: 10px;
+  position: relative;
+  transition: color 0.3s ease, background-color 0.3s ease;
+}
+
+.breadcrumbs a::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: #273240;
+  transition: width 0.3s ease;
+}
+
+.breadcrumbs a:hover::after {
+  width: 100%;
+}
+
+.breadcrumbs a:hover {
+  color: #273240;
+}
+
+.breadcrumbs span {
+  color: #7ba4ad;
+}
+
+/* Contenedor de empresas */
+.empresas-container {
+  padding: 20px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.filter-add-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.filter-container {
+  position: relative;
+}
+
+.filter-input {
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+}
+
+.dropdown {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  background-color: #ffffff;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  position: absolute;
+  z-index: 1000;
+  width: 100%;
+}
+
+.dropdown li {
+  padding: 10px;
+  cursor: pointer;
+}
+
+.dropdown li:hover {
+  background-color: #7ba4ad;
+}
+
+.clear-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #999;
+}
+
+.clear-button:hover {
+  color: #333;
+}
+
+/* Estilos de la card */
+.card {
+  display: flex;
+  width: 100%;
+  max-width: 900px;
+  flex-direction: column;
+  background-color: #f8fafc;
+  padding: 20px 30px;
+  border-radius: 8px;
+  gap: 30px;
+  box-shadow: 5px 5px 8px rgba(0, 0, 0, 0.336);
+}
+
+.white-card {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.cards-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.cards-container .card {
+  background-color: #3e4a61;
+  padding: 20px;
+  border-radius: 10px;
+  width: calc(33.333% - 20px);
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease;
+}
+
+.cards-container .card:hover {
+  transform: scale(1.05);
+}
+
+.cards-container .card h3 {
+  margin-top: 0;
+  color: #f8f2e2;
+  animation: fadeIn 1.5s ease-in-out, slideIn 1s ease-out;
+}
+
+.cards-container .card p {
+  color: #d1d9e6;
+}
+
+.view-button {
+  background-color: #1b263b;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.view-button:hover {
+  background-color: #415a77;
+}
+
+/* Animaciones */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideInTitle {
+  from {
+    transform: translateY(-50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+/* Form Header */
+#form_header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+#form_header h1 {
+  font-size: 40px;
+  position: relative;
+}
+
+#form_header h2 {
+  font-size: 37px;
+  position: relative;
+}
+
+#form_header h1::before {
+  position: absolute;
+  content: "";
+  width: 95%;
+  height: 3px;
+  background-color: #7ba4ad;
+  bottom: 4px;
+  border-radius: 5px;
+}
+
+#form_header h2::before {
+  position: absolute;
+  content: "";
+  width: 95%;
+  height: 3px;
+  background-color: #7ba4ad;
+  bottom: 4px;
+  border-radius: 5px;
+}

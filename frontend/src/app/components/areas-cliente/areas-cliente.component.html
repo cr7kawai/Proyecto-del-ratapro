@@ -1,0 +1,174 @@
+<div class="page-title">
+  <h1>Áreas y Mantenimientos</h1>
+</div>
+<div class="breadcrumbs">
+  <a href="/">Inicio</a> &gt; <a href="/empresas">Empresas</a> &gt;<span
+    >Áreas y Mantenimientos</span
+  >
+</div>
+<div class="areas-container">
+  <div class="card white-card">
+    <div class="header">
+      <div id="form_header">
+        <h2>Lista de Áreas</h2>
+      </div>
+      <div class="filter-add-container">
+        <div class="filter-container">
+          <input
+            type="text"
+            class="filter-input"
+            placeholder="Buscar área..."
+            [(ngModel)]="filterText"
+            (input)="filterAreas()"
+            (focus)="showDropdown = filterText.trim().length > 0"
+          />
+          <button
+            *ngIf="filterText"
+            class="clear-button"
+            (click)="clearFilter()"
+          >
+            x
+          </button>
+          <ul
+            *ngIf="showDropdown && filterText.trim().length > 0"
+            class="dropdown"
+          >
+            <li
+              *ngFor="let suggestion of filteredAreas"
+              (click)="selectArea(suggestion)"
+            >
+              {{ suggestion.nombre }}
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="cards-container">
+      <div class="card blue-card" *ngFor="let area of filteredAreas">
+        <h3>{{ area.nombre }}</h3>
+        <p>{{ area.descripcion }}</p>
+        <button class="view-button" (click)="solicitarMantenimiento(area)">
+          Solicitar Mantenimiento
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #mantenimientoModal>
+  <div class="modal-content">
+    <div class="modal-body">
+      <div class="card" id="registerForm">
+        <div id="form_header">
+          <h2>Registrar Mantenimiento</h2>
+        </div>
+        <form
+          [formGroup]="addMantenimientoForm"
+          (ngSubmit)="saveMantenimiento()"
+        >
+          <div class="input-box">
+            <label for="nombre">Nombre del Mantenimiento</label>
+            <div class="input-field">
+              <input type="text" id="nombre" formControlName="nombre" />
+            </div>
+            <mat-error
+              *ngIf="addMantenimientoForm.get('nombre')?.hasError('required')"
+              >Este campo es obligatorio.</mat-error
+            >
+            <mat-error
+              *ngIf="addMantenimientoForm.get('nombre')?.hasError('minlength')"
+              >Debe tener al menos 3 caracteres.</mat-error
+            >
+            <mat-error
+              *ngIf="addMantenimientoForm.get('nombre')?.hasError('maxlength')"
+              >No puede tener más de 50 caracteres.</mat-error
+            >
+          </div>
+          <div class="input-box">
+            <label for="descripcion">Descripción del Mantenimiento</label>
+            <div class="input-field">
+              <textarea
+                id="descripcion"
+                formControlName="descripcion"
+              ></textarea>
+            </div>
+            <mat-error
+              *ngIf="
+                addMantenimientoForm.get('descripcion')?.hasError('required')
+              "
+              >Este campo es obligatorio.</mat-error
+            >
+            <mat-error
+              *ngIf="
+                addMantenimientoForm.get('descripcion')?.hasError('minlength')
+              "
+              >Debe tener al menos 3 caracteres.</mat-error
+            >
+            <mat-error
+              *ngIf="
+                addMantenimientoForm.get('descripcion')?.hasError('maxlength')
+              "
+              >No puede tener más de 255 caracteres.</mat-error
+            >
+          </div>
+          <div class="input-box">
+            <label for="direccion">Dirección del Solicitante</label>
+            <div class="input-field">
+              <input type="text" id="direccion" formControlName="direccion" />
+            </div>
+            <mat-error
+              *ngIf="
+                addMantenimientoForm.get('direccion')?.hasError('required')
+              "
+              >Este campo es obligatorio.</mat-error
+            >
+            <mat-error
+              *ngIf="
+                addMantenimientoForm.get('direccion')?.hasError('minlength')
+              "
+              >Debe tener al menos 5 caracteres.</mat-error
+            >
+            <mat-error
+              *ngIf="
+                addMantenimientoForm.get('direccion')?.hasError('maxlength')
+              "
+              >No puede tener más de 255 caracteres.</mat-error
+            >
+          </div>
+          <div class="input-box">
+            <label for="empleadoFk"
+              >Empleado Que Atenderá el Mantenimiento</label
+            >
+            <div class="input-field">
+              <mat-select formControlName="empleadoFk">
+                <mat-option
+                  *ngFor="let empleado of empleados"
+                  [value]="empleado.id"
+                  >{{ empleado.nombre }}</mat-option
+                >
+              </mat-select>
+            </div>
+            <mat-error
+              *ngIf="
+                addMantenimientoForm.get('empleadoFk')?.hasError('required')
+              "
+              >Este campo es obligatorio.</mat-error
+            >
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="close()">
+              Cancelar
+            </button>
+            <button
+              type="submit"
+              class="btn btn-primary"
+              [disabled]="addMantenimientoForm.invalid"
+            >
+              Registrar
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</ng-template>
