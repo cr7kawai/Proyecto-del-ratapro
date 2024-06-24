@@ -12,6 +12,9 @@ import { RegisterWhoComponent } from './components/register-who/register-who.com
 import { RegisterClienteComponent } from './components/register-cliente/register-cliente.component';
 import { UsuarioComponent } from './components/usuario/usuario.component';
 import { MantenimientosEmpleadoComponent } from './components/mantenimientos-empleado/mantenimientos-empleado.component';
+import { SolicitarMantenimientoComponent } from './components/solicitar-mantenimiento/solicitar-mantenimiento.component';
+import { AreasClienteComponent } from './components/areas-cliente/areas-cliente.component';
+import { MisMantenimientosComponent } from './components/mis-mantenimientos/mis-mantenimientos.component';
 
 const routes: Routes = [
   {
@@ -51,8 +54,17 @@ const routes: Routes = [
     component: AreasComponent,
   },
   {
+    path: 'empresas',
+    component: SolicitarMantenimientoComponent,
+  },
+  { path: 'areas-cliente/:id', component: AreasClienteComponent },
+  {
     path: 'mantenimiento',
     component: MantenimientosEmpleadoComponent,
+  },
+  {
+    path: 'mis-mantenimientos',
+    component: MisMantenimientosComponent,
   },
   {
     path: 'politica-privacidad',

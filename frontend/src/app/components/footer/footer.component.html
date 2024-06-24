@@ -120,7 +120,12 @@
               <a href="/usuario" class="text-reset">Empleados</a>
             </p>
             <p *ngIf="rol != 1">
-              <a href="/mantenimientos" class="text-reset">Mantenimientos</a>
+              <a href="/empresas" class="text-reset">Empresas</a>
+            </p>
+            <p *ngIf="rol != 1">
+              <a href="/mis-mantenimientos" class="text-reset"
+                >Mis Mantenimientos</a
+              >
             </p>
             <p *ngIf="rol == null">
               <a href="/login" class="text-reset">Inicio de Sesión</a>

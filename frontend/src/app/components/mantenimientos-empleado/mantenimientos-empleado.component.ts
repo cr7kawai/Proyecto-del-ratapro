@@ -63,7 +63,10 @@ export class MantenimientosEmpleadoComponent implements AfterViewInit, OnInit {
   ];
 
   selectedFilter: string = 'pendiente';
+<<<<<<< funcionalidades2
   mantenimientos: Object[] = [];
+=======
+>>>>>>> main
 
   dataSource = new MatTableDataSource<Mantenimiento>([]);
 
@@ -111,7 +114,7 @@ export class MantenimientosEmpleadoComponent implements AfterViewInit, OnInit {
       this.dataSource.paginator.firstPage();
     }
   }
-  
+
   // FILTRO DE MANTENIMIENTOS
   applyStatusFilter(event: MatSelectChange) {
     const filterValue = event.value;
@@ -238,7 +241,7 @@ export class MantenimientosEmpleadoComponent implements AfterViewInit, OnInit {
       }
     });
   }
-  
+
   openAceptMantenimientoDialog(element: Mantenimiento) {
     this.selectedMantenimiento = element.id;
     this.dialogRef = this.dialog.open(this.aceptMantenimientoDialog, {
