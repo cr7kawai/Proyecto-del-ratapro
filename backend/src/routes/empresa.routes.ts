@@ -13,10 +13,10 @@ class NotaRoutes{
 
     config(): void {
         this.router.get('/',verifyToken, empresaController.obtenerEmpresas);
-        this.router.get('/:id_empresa',verifyToken, empresaController.filtrarEmpresa)
+        this.router.get('/:id',verifyToken, empresaController.verEmpresa)
         this.router.post('/',empresaController.registrarEmpresa);
-        this.router.put('/:id_empresa',verifyToken, empresaController.modificarEmpresa);
-        this.router.delete('/:id_empresa',verifyToken, empresaController.eliminarEmpresa);
+        this.router.put('/:id',verifyToken, empresaController.modificarEmpresa);
+        this.router.delete('/:id',verifyToken, empresaController.eliminarEmpresa);
     }
 }
 

@@ -19,13 +19,27 @@ class UsuarioController {
     this.verifyOtp = this.verifyOtp.bind(this);
   }
 
+  // Obtener todos los usuarios de una empresa
   public async obtenerUsuarios(req: Request, res: Response) {
-    const usuarios = await pool.query("SELECT * from usuario");
+    const {empresaFk} = req.params
+    const usuarios = await pool.query("SELECT * from usuario WHERE empresaFk = ?",empresaFk);
     if (usuarios.length > 0) {
       return res.json(usuarios);
     }
   }
 
+  // Obtener empleados de un área
+  public async obtenerEmpleadosArea (req: Request, res: Response){
+    const { idArea } = req.params;
+    const empleados = await pool.query("SELECT * FROM usuario WHERE areaFk = ?",[idArea]);
+    if (empleados.length > 0) {
+      res.json(empleados);
+    }else{
+      res.status(404).json({ text: "Seleccione otra área, esta no tiene empleados" });
+    }
+  }
+
+  // Ver un usuario en específico
   public async verUsuario(req: Request, res: Response): Promise<any> {
     const { id } = req.params;
     const usuario = await pool.query(
@@ -37,6 +51,7 @@ class UsuarioController {
     res.status(404).json({ text: "El usuario no existe" });
   }
 
+  // Verificar el email de un usuario en específico
   public async obtenerUsuarioEmail(req: Request, res: Response): Promise<any> {
     const { email } = req.params;
     const usuario = await pool.query(
@@ -48,6 +63,7 @@ class UsuarioController {
     res.status(404).json({ text: "El email no está registrado" });
   }
 
+  // Obtener credenciales de acceso del usuario
   public async obtenerCredenciales(req: Request, res: Response): Promise<any> {
     const { id } = req.params;
     const usuario = await pool.query(
@@ -60,7 +76,7 @@ class UsuarioController {
     res.status(404).json({ text: "El usuario no existe" });
   }
 
-
+  // Registrar usuario
   public async registrarUsuario(req: Request, res: Response): Promise<void> {
     try {
       const usuario = req.body;
@@ -106,6 +122,7 @@ class UsuarioController {
     }
   }
 
+  // Email de confirmación pa cambiar la contra
   public async enviarEmailConfirmacion(req: Request, res: Response): Promise<void> {
     function generateVerificationCode() {
       return Math.floor(100000 + Math.random() * 900000).toString();
@@ -154,6 +171,7 @@ class UsuarioController {
     }
   }
 
+  // Cambio de contra
   public async cambiarContrasena(req: Request, res: Response): Promise<void> {
     try {
       const { id, email } = req.params;
@@ -197,6 +215,7 @@ class UsuarioController {
     }
   }
 
+  // Update usuario
   public async modificarUsuario(req: Request, res: Response): Promise<void> {
     try {
       const { id } = req.params;
@@ -211,6 +230,7 @@ class UsuarioController {
     }
   }
 
+  // Eliminar un usuario
   public async eliminarUsuario(req: Request, res: Response): Promise<void> {
     try {
       const { id } = req.params;
@@ -222,11 +242,12 @@ class UsuarioController {
     }
   }
 
+  // Inicio de sesión sin OTP yasta chido
   public async inicio_sesion(req: Request, res: Response): Promise<void> {
     try {
       const { email, password } = req.body;
       const result = await pool.query(
-        "SELECT u.id, CONCAT(u.nombre,' ',u.apePaterno,' ',u.apeMaterno) as nombre, r.id as idRol, r.nombre as nomRol FROM usuario as u INNER JOIN rol as r ON r.id = u.rolFk WHERE u.email = ? and u.password = ?",
+        "SELECT u.id, CONCAT(u.nombre,' ',u.apePaterno,' ',u.apeMaterno) as nombre, r.id as idRol, r.nombre as nomRol,u.empresaFk as idEmpresa,e.nombre as nomEmpresa, u.areaFk as idArea, a.nombre as nomArea FROM usuario as u INNER JOIN rol as r ON r.id = u.rolFk LEFT JOIN empresa as e ON e.id = u.empresaFk LEFT JOIN area as a ON a.id = u.areaFk WHERE u.email = ? and u.password = ?",
         [email, password]
       );
   
@@ -236,7 +257,11 @@ class UsuarioController {
           id: user.id,
           nombre: user.nombre,
           idRol: user.idRol,
-          nomRol: user.nomRol
+          nomRol: user.nomRol,
+          idEmpresa: user.idEmpresa,
+          nomEmpresa: user.nomEmpresa,
+          idArea: user.idArea,
+          nomArea: user.nomArea
         };
 
         const token = jwt.sign(payload, 'oxIJjs8XYPjNk1hXsaeoybsVU9tx90byhpU6FSa90--6iWM45UlsDkFG5X9q4Rs3', { expiresIn: '1h' });
@@ -250,11 +275,12 @@ class UsuarioController {
     }
   }
 
+  // Login con OTP ya esta chido
   public async login(req: Request, res: Response): Promise<void> {
     try {
       const { email, password } = req.body;
       const result = await pool.query(
-        "SELECT u.id, CONCAT(u.nombre,' ',u.apePaterno,' ',u.apeMaterno) as nombre, r.id as idRol, r.nombre as nomRol FROM usuario as u INNER JOIN rol as r ON r.id = u.rolFk WHERE u.email = ? and u.password = ?",
+        "SELECT u.id, CONCAT(u.nombre,' ',u.apePaterno,' ',u.apeMaterno) as nombre, r.id as idRol, r.nombre as nomRol,u.empresaFk as idEmpresa,e.nombre as nomEmpresa, u.areaFk as idArea, a.nombre as nomArea FROM usuario as u INNER JOIN rol as r ON r.id = u.rolFk LEFT JOIN empresa as e ON e.id = u.empresaFk LEFT JOIN area as a ON a.id = u.areaFk WHERE u.email = ? and u.password = ?",
         [email, password]
       );
 
@@ -268,7 +294,11 @@ class UsuarioController {
           id: user.id,
           nombre: user.nombre,
           idRol: user.idRol,
-          nomRol: user.nomRol
+          nomRol: user.nomRol,
+          idEmpresa: user.idEmpresa,
+          nomEmpresa: user.nomEmpresa,
+          idArea: user.idArea,
+          nomArea: user.nomArea
         };
 
         const token = jwt.sign(payload, 'oxIJjs8XYPjNk1hXsaeoybsVU9tx90byhpU6FSa90--6iWM45UlsDkFG5X9q4Rs3', { expiresIn: '1h' });
@@ -315,7 +345,7 @@ class UsuarioController {
     }
   }
 
-
+  // Validación de teléfono y email
   public async validarTelefonoEmail(req: Request, res: Response): Promise<any> {
     try {
       const { email, telefono } = req.body;
@@ -341,11 +371,13 @@ class UsuarioController {
     }
   }
 
+  // Genera el OTP, ta chido
   public generateOtp(): string {
     const otp = Math.floor(100000 + Math.random() * 900000);
     return otp.toString();
   }
 
+  // Verificar el OTP ta chido
   public verifyOtp(req: Request, res: Response): void {
     const { email, otp } = req.body;
     if (

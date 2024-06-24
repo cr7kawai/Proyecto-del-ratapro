@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Usuario } from '../models/usuario.inteface';
 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -12,62 +13,81 @@ export class UsuarioService {
 
   constructor(private http: HttpClient) { }
 
+  // Obtener todos los usuarios
   getUsuarios(): Observable<Usuario[]> {
     return this.http.get<Usuario[]>(this.apiUrl);
   }
 
+  // Obtener un usuario por ID
   getUsuario(id: number): Observable<Usuario> {
     const url = `${this.apiUrl}/${id}`;
     return this.http.get<Usuario>(url);
   }
 
-  obtenerUsuarioEmail(email: string): Observable<Usuario>{
+  // Obtener usuarios por área
+  obtenerEmpleadosArea(idArea: number): Observable<Usuario[]> {
+    const url = `${this.apiUrl}/empleadosArea/${idArea}`;
+    return this.http.get<Usuario[]>(url);
+  }
+
+  // Obtener credenciales de un usuario
+  obtenerCredenciales(id: number): Observable<any> {
+    const url = `${this.apiUrl}/credenciales/${id}`;
+    return this.http.get<any>(url);
+  }
+
+  // Obtener un usuario por email
+  obtenerUsuarioEmail(email: string): Observable<Usuario> {
     const url = `${this.apiUrl}/getByEmail/${email}`;
     return this.http.get<Usuario>(url);
   }
 
-  obtenerCredenciales(id_user: any){
-    return this.http.get(`${this.apiUrl}/credenciales/${id_user}`);
+  // Registrar un nuevo usuario
+  registrarUsuario(usuario: Usuario): Observable<any> {
+    return this.http.post<any>(this.apiUrl, usuario);
   }
 
-  enviarEmailConfirmacion(email: string): Observable<Object>{
+  // Modificar un usuario existente
+  modificarUsuario(id: number, usuarioActualizado: Usuario): Observable<any> {
+    const url = `${this.apiUrl}/${id}`;
+    return this.http.put<any>(url, usuarioActualizado);
+  }
+
+  // Eliminar un usuario
+  eliminarUsuario(id: number): Observable<any> {
+    const url = `${this.apiUrl}/${id}`;
+    return this.http.delete<any>(url);
+  }
+
+  // Enviar email de confirmación para cambio de contraseña
+  enviarEmailConfirmacion(email: string): Observable<any> {
     const url = `${this.apiUrl}/password/${email}`;
-    return this.http.get<Object>(url);
+    return this.http.get<any>(url);
   }
 
-  registrarUsuario(usuario: Usuario) {
-    return this.http.post(`${this.apiUrl}/`, usuario);
+  // Cambiar contraseña de un usuario
+  cambiarContrasena(id: number, email: string, usuarioActualizado: Usuario): Observable<any> {
+    const url = `${this.apiUrl}/password/${id}/${email}`;
+    return this.http.put<any>(url, usuarioActualizado);
   }
 
-  modificarUsuario(id: any, usuarioActualizado: Usuario): Observable<Object> {
-    return this.http.put(`${this.apiUrl}/${id}`, usuarioActualizado);
+  // Validar email y teléfono
+  validarEmailTel(usuario: Usuario): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/validarEmailTel`, usuario);
   }
 
-  eliminarUsuario(id: any) {
-    return this.http.delete(`${this.apiUrl}/${id}`);
+  // Iniciar sesión (registro y cambio de suscripción)
+  inicioSesion(usuario: Usuario): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/inicio_sesion`, usuario);
   }
 
-  cambiarContrasena(id: any, email: any, usuarioActualizado: Usuario): Observable<Object> {
-    return this.http.put(`${this.apiUrl}/password/${id}/${email}`,usuarioActualizado);
+  // Login normal
+  login(usuario: Usuario): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/login`, usuario);
   }
 
-  validarEmailTel(usuario: Usuario) {
-    return this.http.post(`${this.apiUrl}/validarEmailTel`, usuario);
+  // Verificar OTP
+  verifyOtp(otp: any): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/verify-otp`, otp);
   }
-
-  /*addUsuario(usuario: Usuario): Observable<Usuario> {
-    return this.http.post<Usuario>(this.apiUrl, usuario);
-  }
-
-  updateUsuario(id: number, usuario: Usuario): Observable<Usuario> {
-    const url = `${this.apiUrl}/${id}`;
-    return this.http.put<Usuario>(url, usuario);
-  }
-
-  deleteUsuario(id: number): Observable<void> {
-    const url = `${this.apiUrl}/${id}`;
-    return this.http.delete<void>(url);
-  }*/
-
-
 }
