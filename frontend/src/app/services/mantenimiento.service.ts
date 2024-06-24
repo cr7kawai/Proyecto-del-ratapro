@@ -19,43 +19,43 @@ export class MantenimientoService {
   }
 
   // Obtener mantenimientos completados para cliente
-  obtenerMantenimientosCompletosCliente(idCliente: number): Observable<Mantenimiento[]> {
+  obtenerMantenimientosCompletosCliente(idCliente: any): Observable<Mantenimiento[]> {
     const url = `${this.apiUrl}/completos/cliente/${idCliente}`;
     return this.http.get<Mantenimiento[]>(url);
   }
 
   // Obtener mantenimientos completados para empleado
-  obtenerMantenimientosCompletosEmpleado(idEmpleado: number): Observable<Mantenimiento[]> {
+  obtenerMantenimientosCompletosEmpleado(idEmpleado: any): Observable<Mantenimiento[]> {
     const url = `${this.apiUrl}/completos/empleado/${idEmpleado}`;
     return this.http.get<Mantenimiento[]>(url);
   }
 
   // Obtener mantenimientos incompletos para cliente
-  obtenerMantenimientosIncompletosCliente(idCliente: number): Observable<Mantenimiento[]> {
+  obtenerMantenimientosIncompletosCliente(idCliente: any): Observable<Mantenimiento[]> {
     const url = `${this.apiUrl}/incompletos/cliente/${idCliente}`;
     return this.http.get<Mantenimiento[]>(url);
   }
 
   // Obtener mantenimientos incompletos para empleado
-  obtenerMantenimientosIncompletosEmpleado(idEmpleado: number): Observable<Mantenimiento[]> {
+  obtenerMantenimientosIncompletosEmpleado(idEmpleado: any): Observable<Mantenimiento[]> {
     const url = `${this.apiUrl}/incompletos/empleado/${idEmpleado}`;
     return this.http.get<Mantenimiento[]>(url);
   }
 
   // Obtener solicitudes de mantenimientos para cliente
-  obtenerSolicitudesCliente(idCliente: number): Observable<Mantenimiento[]> {
+  obtenerSolicitudesCliente(idCliente: any): Observable<Mantenimiento[]> {
     const url = `${this.apiUrl}/solicitudes/cliente/${idCliente}`;
     return this.http.get<Mantenimiento[]>(url);
   }
 
   // Obtener solicitudes de mantenimientos para empleado
-  obtenerSolicitudesEmpleado(idEmpleado: number): Observable<Mantenimiento[]> {
+  obtenerSolicitudesEmpleado(idEmpleado: any): Observable<Mantenimiento[]> {
     const url = `${this.apiUrl}/solicitudes/empleado/${idEmpleado}`;
     return this.http.get<Mantenimiento[]>(url);
   }
 
   // Ver detalles de un mantenimiento
-  verMantenimiento(id: number): Observable<Mantenimiento> {
+  verMantenimiento(id: any): Observable<Mantenimiento> {
     const url = `${this.apiUrl}/${id}`;
     return this.http.get<Mantenimiento>(url);
   }
@@ -66,31 +66,37 @@ export class MantenimientoService {
   }
 
   // Modificar un mantenimiento
-  modificarMantenimiento(id: number, mantenimiento: Mantenimiento): Observable<any> {
+  modificarMantenimiento(id: any, mantenimiento: Mantenimiento): Observable<any> {
     const url = `${this.apiUrl}/${id}`;
     return this.http.put<any>(url, mantenimiento);
   }
 
   // Aceptar un mantenimiento
-  aceptarMantenimiento(id: number, costo: number, fechaFin: string): Observable<any> {
+  aceptarMantenimiento(id: any, costo: any, fechaFin: any): Observable<any> {
     const url = `${this.apiUrl}/aceptar/${id}/${costo}/${fechaFin}`;
     return this.http.put<any>(url, {});
   }
 
   // Rechazar un mantenimiento
-  rechazarMantenimiento(id: number): Observable<any> {
+  rechazarMantenimiento(id: any): Observable<any> {
     const url = `${this.apiUrl}/rechazar/${id}`;
     return this.http.put<any>(url, {});
   }
 
   // Terminar un mantenimiento
-  terminarMantenimiento(id: number): Observable<any> {
+  terminarMantenimiento(id: any): Observable<any> {
     const url = `${this.apiUrl}/terminar/${id}`;
     return this.http.put<any>(url, {});
   }
 
+  // Cancelar un mantenimiento
+  cancelarMantenimiento(id: any): Observable<any> {
+    const url = `${this.apiUrl}/cancelar/${id}`;
+    return this.http.put<any>(url, {});
+  }
+
   // Eliminar un mantenimiento
-  eliminarMantenimiento(id: number): Observable<any> {
+  eliminarMantenimiento(id: any): Observable<any> {
     const url = `${this.apiUrl}/${id}`;
     return this.http.delete<any>(url);
   }

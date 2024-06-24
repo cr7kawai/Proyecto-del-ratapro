@@ -41,6 +41,9 @@ class MantenimientoRoutes {
         // Rechazar un mantenimiento
         this.router.put('/rechazar/:id', verifyToken, mantenimientoController.rechazarMantenimiento);
 
+        // Cancelar un manyenimiento
+        this.router.put('/cancelar/:id', verifyToken, mantenimientoController.cancelarMantenimiento);
+
         // Terminar un mantenimiento
         this.router.put('/terminar/:id', verifyToken, mantenimientoController.terminarMantenimiento);
 

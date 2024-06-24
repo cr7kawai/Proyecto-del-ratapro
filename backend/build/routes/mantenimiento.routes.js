@@ -33,6 +33,8 @@ class MantenimientoRoutes {
         this.router.put('/aceptar/:id/:costo/:fechaFin', auth_middleware_1.verifyToken, mantenimiento_controller_1.default.aceptarMantenimiento);
         // Rechazar un mantenimiento
         this.router.put('/rechazar/:id', auth_middleware_1.verifyToken, mantenimiento_controller_1.default.rechazarMantenimiento);
+        // Cancelar un manyenimiento
+        this.router.put('/cancelar/:id', auth_middleware_1.verifyToken, mantenimiento_controller_1.default.cancelarMantenimiento);
         // Terminar un mantenimiento
         this.router.put('/terminar/:id', auth_middleware_1.verifyToken, mantenimiento_controller_1.default.terminarMantenimiento);
         // Eliminar un mantenimiento
