@@ -13,13 +13,13 @@ export class ComentarioService {
   constructor(private http: HttpClient) { }
 
   // Obtener comentarios de un mantenimiento
-  obtenerComentarios(idMantenimiento: number): Observable<Comentario[]> {
+  obtenerComentarios(idMantenimiento: any): Observable<Comentario[]> {
     const url = `${this.apiUrl}/${idMantenimiento}`;
     return this.http.get<Comentario[]>(url);
   }
 
   // Ver detalles de un comentario
-  verComentario(id: number): Observable<Comentario> {
+  verComentario(id: any): Observable<Comentario> {
     const url = `${this.apiUrl}/verComentario/${id}`;
     return this.http.get<Comentario>(url);
   }
@@ -30,13 +30,13 @@ export class ComentarioService {
   }
 
   // Modificar un comentario
-  modificarComentario(id: number, comentario: Comentario): Observable<any> {
+  modificarComentario(id: any, comentario: Comentario): Observable<any> {
     const url = `${this.apiUrl}/${id}`;
     return this.http.put<any>(url, comentario);
   }
 
   // Eliminar un comentario
-  eliminarComentario(id: number): Observable<any> {
+  eliminarComentario(id: any): Observable<any> {
     const url = `${this.apiUrl}/${id}`;
     return this.http.delete<any>(url);
   }

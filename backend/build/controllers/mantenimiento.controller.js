@@ -43,14 +43,14 @@ class MantenimientoController {
     obtenerMentenimientoIncompletosCliente(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { idCliente } = req.params;
-            const mantenimientos = yield connection_1.default.query("SELECT m.*, emp.nombre as empresa, a.nombre as area, concat(e.nombre,' ',e.apePaterno,' ',e.apeMaterno) as empleado FROM mantenimiento as m INNER JOIN usuario as e ON m.empleadoFk = e.id INNER JOIN area as a ON a.id = m.areaFk INNER JOIN empresa as emp ON emp.id = a.empresaFk WHERE m.usuarioFk = ? and m.finalizado = 0 ORDER BY m.aceptado DESC, m.fechaFin ASC;", [idCliente]);
+            const mantenimientos = yield connection_1.default.query("SELECT m.*, emp.nombre as empresa, a.nombre as area, concat(e.nombre,' ',e.apePaterno,' ',e.apeMaterno) as empleado FROM mantenimiento as m INNER JOIN usuario as e ON m.empleadoFk = e.id INNER JOIN area as a ON a.id = m.areaFk INNER JOIN empresa as emp ON emp.id = a.empresaFk WHERE m.usuarioFk = ? and m.finalizado = 0 and aceptado = 1 ORDER BY m.aceptado DESC, m.fechaFin ASC;", [idCliente]);
             res.json(mantenimientos);
         });
     }
     obtenerMentenimientosIncompletosEmpleado(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { idEmpleado } = req.params;
-            const mantenimientos = yield connection_1.default.query("SELECT m.*, emp.nombre as empresa, a.nombre as area, concat(c.nombre,' ',c.apePaterno,' ',c.apeMaterno) as cliente FROM mantenimiento as m INNER JOIN usuario as c ON m.usuarioFk = c.id INNER JOIN area as a ON a.id = m.areaFk INNER JOIN empresa as emp ON emp.id = a.empresaFk WHERE empleadoFk = ? AND finalizado = 0 ORDER BY m.aceptado DESC, m.fechaFin ASC;", [idEmpleado]);
+            const mantenimientos = yield connection_1.default.query("SELECT m.*, emp.nombre as empresa, a.nombre as area, concat(c.nombre,' ',c.apePaterno,' ',c.apeMaterno) as cliente FROM mantenimiento as m INNER JOIN usuario as c ON m.usuarioFk = c.id INNER JOIN area as a ON a.id = m.areaFk INNER JOIN empresa as emp ON emp.id = a.empresaFk WHERE empleadoFk = ? AND finalizado = 0 AND aceptado = 1 ORDER BY m.aceptado DESC, m.fechaFin ASC;", [idEmpleado]);
             res.json(mantenimientos);
         });
     }
@@ -192,6 +192,55 @@ class MantenimientoController {
                         else {
                             console.log("Correo electrónico enviado: " + info.response);
                             return res.status(200).json({ message: "El mantenimiento ha sido rechazado y se ha enviado la notificación al cliente" });
+                        }
+                    });
+                }
+                else {
+                    res.status(404).json({ message: "Usuario no encontrado" });
+                }
+            }
+            catch (error) {
+                console.error('Error al rechazar el mantenimiento:', error);
+                res.status(500).json({ message: 'Error al rechazar el mantenimiento' });
+            }
+        });
+    }
+    // Cancelar un manteniminto
+    cancelarMantenimiento(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const { id } = req.params;
+                // Actualizar el mantenimiento
+                yield connection_1.default.query("UPDATE mantenimiento SET aceptado = 0, costo = 0, estadoPago = 'Pagado', finalizado = 1, fechaFin = CURDATE() WHERE id = ?", [id]);
+                // Obtener el email y el nombre del usuario
+                const [rows] = yield connection_1.default.query("SELECT u.email, concat(u.nombre, ' ', u.apePaterno, ' ', u.apeMaterno) as cliente, m.nombre as mantenimiento FROM usuario u INNER JOIN mantenimiento m ON u.id = m.usuarioFk WHERE m.id = ?", [id]);
+                if (rows) {
+                    const email = rows.email;
+                    const nombre = rows.cliente; // Alias cliente usado en la consulta
+                    const mantenimiento = rows.mantenimiento;
+                    const transporter = nodemailer.createTransport({
+                        service: "Gmail",
+                        auth: {
+                            user: "agendajart@gmail.com",
+                            pass: "hrwp tjwr emfp hwqz",
+                        },
+                    });
+                    const mailOptions = {
+                        from: "agendajart@gmail.com",
+                        to: email,
+                        subject: "Tu mantenimiento ha sido cancelado",
+                        html: `<H2>Hola ${nombre},</H2>
+                           <p>Lamentamos informarte que tu mantenimiento llamado "${mantenimiento}" ha sido cancelado por el empleado asignado.</p>
+                           <p>Te recomendamos buscar otras opciones para que recibas tu mantenimiento</p>`,
+                    };
+                    transporter.sendMail(mailOptions, (error, info) => {
+                        if (error) {
+                            console.error("Error al enviar el correo electrónico:", error);
+                            return res.status(500).json({ message: "Error al enviar el correo electrónico" });
+                        }
+                        else {
+                            console.log("Correo electrónico enviado: " + info.response);
+                            return res.status(200).json({ message: "El mantenimiento ha sido cancelado y se ha enviado la notificación al cliente" });
                         }
                     });
                 }
