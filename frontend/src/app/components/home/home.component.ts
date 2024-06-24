@@ -33,6 +33,6 @@ export class HomeComponent {
   }
 
   redirectToRegister(): void {
-    this.router.navigate(['/register']);
+    this.router.navigate(['/registro']);
   }
 }

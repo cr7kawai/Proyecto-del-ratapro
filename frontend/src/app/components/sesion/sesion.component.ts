@@ -9,13 +9,12 @@ import { LoginService } from '../../services/login.service';
 @Component({
   selector: 'app-sesion',
   templateUrl: './sesion.component.html',
-  styleUrls: ['./sesion.component.css']
+  styleUrls: ['./sesion.component.css'],
 })
 export class SesionComponent implements OnInit {
-
   extensionModalAbierto: boolean = false;
   caducadaModalAbierto: boolean = false;
-  tiempoRestante: number = 60;
+  tiempoRestante: number = 6000;
   intervalo: any;
 
   usuario: Usuario = {};
@@ -29,7 +28,7 @@ export class SesionComponent implements OnInit {
     private loginService: LoginService,
     private router: Router,
     private authService: AuthService
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.datoSesion = this.authService.getUserData();
@@ -39,12 +38,14 @@ export class SesionComponent implements OnInit {
       this.idRol = this.datoSesion.idRol;
     }
 
-    if(this.idUsuario != null){
-      this.usuarioService.obtenerCredenciales(this.idUsuario).subscribe(res =>{
-        this.usuario = res;
-        console.log(res);
-        this.iniciarTemporizador();
-      });
+    if (this.idUsuario != null) {
+      this.usuarioService
+        .obtenerCredenciales(this.idUsuario)
+        .subscribe((res) => {
+          this.usuario = res;
+          console.log(res);
+          this.iniciarTemporizador();
+        });
     }
 
     // Restaurar tiempo restante desde localStorage si existe
@@ -52,7 +53,7 @@ export class SesionComponent implements OnInit {
 
     if (tiempoGuardado && this.idUsuario) {
       this.tiempoRestante = parseInt(tiempoGuardado, 10);
-      if(this.tiempoRestante <= 30 && this.tiempoRestante > 3){
+      if (this.tiempoRestante <= 30 && this.tiempoRestante > 3) {
         this.extensionModalAbierto = true;
       }
     }
@@ -60,7 +61,7 @@ export class SesionComponent implements OnInit {
 
   @HostListener('window:beforeunload', ['$event'])
   beforeUnloadHandler(event: Event) {
-    if(this.tiempoRestante > 0){
+    if (this.tiempoRestante > 0) {
       localStorage.setItem('tiempoRestante', this.tiempoRestante.toString());
     }
   }
@@ -75,11 +76,10 @@ export class SesionComponent implements OnInit {
         this.caducadaModalAbierto = true;
         this.extensionModalAbierto = false;
         setTimeout(() => {
-          window.location.href = '/login'; 
+          window.location.href = '/login';
           this.caducadaModalAbierto = false;
         }, 5000);
         clearInterval(this.intervalo);
-
       } else if (this.tiempoRestante == 30) {
         this.extensionModalAbierto = true;
       }
@@ -89,15 +89,15 @@ export class SesionComponent implements OnInit {
   extendSession(): void {
     this.tiempoRestante = 60;
     localStorage.removeItem('token');
-    this.loginService.inicio_sesion(this.usuario).subscribe((res: any) =>{
+    this.loginService.inicio_sesion(this.usuario).subscribe((res: any) => {
       const token = res.token;
       localStorage.setItem('token', token);
       this.extensionModalAbierto = false;
     });
   }
 
-  expiredSession(){
+  expiredSession() {
     window.location.href = '/login';
     this.caducadaModalAbierto = false;
-  } 
+  }
 }

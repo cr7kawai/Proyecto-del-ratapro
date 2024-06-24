@@ -18,7 +18,7 @@ import { MatStepperModule } from '@angular/material/stepper';
 import { MatCardModule } from '@angular/material/card';
 import { MatInputModule } from '@angular/material/input';
 import { ToastrModule } from 'ngx-toastr';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SesionComponent } from './components/sesion/sesion.component';
 import { AreasComponent } from './components/areas/areas.component';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -30,10 +30,19 @@ import { MapaComponent } from './components/mapa/mapa.component';
 import { RegisterEmpresaComponent } from './components/register-empresa/register-empresa.component';
 import { RegisterClienteComponent } from './components/register-cliente/register-cliente.component';
 import { RegisterWhoComponent } from './components/register-who/register-who.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatButtonModule } from '@angular/material/button';
+import { MatSortModule } from '@angular/material/sort';
+import { UsuarioComponent } from './components/usuario/usuario.component';
+import { MatIcon } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [
     AppComponent,
+    UsuarioComponent,
     NavbarComponent,
     FooterComponent,
     HomeComponent,
@@ -46,7 +55,7 @@ import { RegisterWhoComponent } from './components/register-who/register-who.com
     AreasComponent,
     PoliticaPrivacidadComponent,
     BuscadorComponent,
-    MapaComponent
+    MapaComponent,
   ],
   imports: [
     BrowserModule,
@@ -60,6 +69,14 @@ import { RegisterWhoComponent } from './components/register-who/register-who.com
     FormsModule,
     ToastrModule.forRoot(),
     MatDialogModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatButtonModule,
+    MatSortModule,
+    MatIcon,
+    MatTooltipModule,
   ],
   providers: [
     provideClientHydration(),

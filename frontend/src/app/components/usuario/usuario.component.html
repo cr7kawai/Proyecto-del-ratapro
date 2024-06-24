@@ -1,0 +1,803 @@
+<div class="page-title">
+  <h1>Empleados</h1>
+</div>
+<div class="breadcrumbs"><a href="/">Inicio</a> &gt;<span>Empleados</span></div>
+<div class="card white-card">
+  <div id="form_header">
+    <h2>Lista de Empleados</h2>
+    <div class="filter-add-container">
+      <mat-form-field appearance="outline">
+        <mat-label>Buscar Empleado</mat-label>
+        <input
+          matInput
+          (keyup)="applyFilter($event)"
+          placeholder="Buscar usuario"
+        />
+      </mat-form-field>
+      <button class="add-button" (click)="openUserDialog()">Agregar</button>
+    </div>
+  </div>
+  <div class="table-wrapper">
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+      <!-- Nombre Column -->
+      <ng-container matColumnDef="nombre">
+        <th mat-header-cell *matHeaderCellDef class="sticky-header">Nombre</th>
+        <td mat-cell *matCellDef="let element">{{ element.nombre }}</td>
+      </ng-container>
+
+      <!-- ApePaterno Column -->
+      <ng-container matColumnDef="apePaterno">
+        <th mat-header-cell *matHeaderCellDef class="sticky-header">
+          Apellido Paterno
+        </th>
+        <td mat-cell *matCellDef="let element">{{ element.apePaterno }}</td>
+      </ng-container>
+
+      <!-- ApeMaterno Column -->
+      <ng-container matColumnDef="apeMaterno">
+        <th mat-header-cell *matHeaderCellDef class="sticky-header">
+          Apellido Materno
+        </th>
+        <td mat-cell *matCellDef="let element">{{ element.apeMaterno }}</td>
+      </ng-container>
+
+      <!-- Email Column -->
+      <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef class="sticky-header">Email</th>
+        <td mat-cell *matCellDef="let element">{{ element.email }}</td>
+      </ng-container>
+
+      <!-- Telefono Column -->
+      <ng-container matColumnDef="telefono">
+        <th mat-header-cell *matHeaderCellDef class="sticky-header">
+          Teléfono
+        </th>
+        <td mat-cell *matCellDef="let element">{{ element.telefono }}</td>
+      </ng-container>
+
+      <!-- FechaNac Column -->
+      <ng-container matColumnDef="fechaNac">
+        <th mat-header-cell *matHeaderCellDef class="sticky-header">
+          Fecha Nacimiento
+        </th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.fechaNac | date : "short" }}
+        </td>
+      </ng-container>
+
+      <!-- Rol Column -->
+      <ng-container matColumnDef="rolFk">
+        <th mat-header-cell *matHeaderCellDef class="sticky-header">Rol</th>
+        <td mat-cell *matCellDef="let element">{{ element.rolFk }}</td>
+      </ng-container>
+
+      <!-- Empresa Column -->
+      <ng-container matColumnDef="empresaFk">
+        <th mat-header-cell *matHeaderCellDef class="sticky-header">Empresa</th>
+        <td mat-cell *matCellDef="let element">{{ element.empresaFk }}</td>
+      </ng-container>
+
+      <!-- Area Column -->
+      <ng-container matColumnDef="areaFk">
+        <th mat-header-cell *matHeaderCellDef class="sticky-header">Área</th>
+        <td mat-cell *matCellDef="let element">{{ element.areaFk }}</td>
+      </ng-container>
+
+      <!-- Acciones Column -->
+      <ng-container matColumnDef="acciones">
+        <th mat-header-cell *matHeaderCellDef class="sticky-header">
+          Acciones
+        </th>
+        <td mat-cell *matCellDef="let element">
+          <button
+            mat-icon-button
+            (click)="editUser(element)"
+            matTooltip="Editar Empleado"
+          >
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button
+            mat-icon-button
+            (click)="deleteUser(element)"
+            matTooltip="Eliminar Empleado"
+          >
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr
+        mat-header-row
+        *matHeaderRowDef="displayedColumns"
+        class="sticky-header"
+      ></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+  </div>
+  <mat-paginator
+    [pageSizeOptions]="[5, 10, 20]"
+    showFirstLastButtons
+  ></mat-paginator>
+</div>
+
+<ng-template #addUserDialog>
+  <div class="modal-content">
+    <div class="modal-body">
+      <div class="card" id="registerForm">
+        <div id="form_header">
+          <h2>Registrar Usuario</h2>
+        </div>
+        <form
+          id="addUserForm"
+          [formGroup]="addUserForm"
+          (ngSubmit)="saveUser()"
+          novalidate
+        >
+          <div id="inputs">
+            <div class="input-row row">
+              <div class="input-box col-md-4">
+                <label for="nombre">
+                  Nombre(s)
+                  <div class="input-field">
+                    <i class="fa-solid fa-user"></i>
+                    <input
+                      type="text"
+                      id="nombre"
+                      name="nombre"
+                      formControlName="nombre"
+                    />
+                  </div>
+                  <div
+                    *ngIf="
+                      addUserForm.get('nombre')?.errors &&
+                      (addUserForm.get('nombre')?.dirty ||
+                        addUserForm.get('nombre')?.touched)
+                    "
+                    class="error-message"
+                  >
+                    <div
+                      *ngIf="addUserForm.get('nombre')?.hasError('required')"
+                    >
+                      Este campo es obligatorio
+                    </div>
+                    <div
+                      *ngIf="addUserForm.get('nombre')?.hasError('minlength')"
+                    >
+                      El nombre debe tener al menos 3 caracteres
+                    </div>
+                    <div
+                      *ngIf="addUserForm.get('nombre')?.hasError('maxlength')"
+                    >
+                      El nombre no puede tener más de 50 caracteres
+                    </div>
+                  </div>
+                </label>
+              </div>
+              <div class="input-box col-md-4">
+                <label for="apePaterno">
+                  Apellido Paterno
+                  <div class="input-field">
+                    <i class="fa-solid fa-user"></i>
+                    <input
+                      type="text"
+                      id="apePaterno"
+                      name="apePaterno"
+                      formControlName="apePaterno"
+                    />
+                  </div>
+                  <div
+                    *ngIf="
+                      addUserForm.get('apePaterno')?.errors &&
+                      (addUserForm.get('apePaterno')?.dirty ||
+                        addUserForm.get('apePaterno')?.touched)
+                    "
+                    class="error-message"
+                  >
+                    <div
+                      *ngIf="
+                        addUserForm.get('apePaterno')?.hasError('required')
+                      "
+                    >
+                      Este campo es obligatorio
+                    </div>
+                    <div
+                      *ngIf="
+                        addUserForm.get('apePaterno')?.hasError('minlength')
+                      "
+                    >
+                      El apellido paterno debe tener al menos 3 caracteres
+                    </div>
+                    <div
+                      *ngIf="
+                        addUserForm.get('apePaterno')?.hasError('maxlength')
+                      "
+                    >
+                      El apellido paterno no puede tener más de 50 caracteres
+                    </div>
+                  </div>
+                </label>
+              </div>
+              <div class="input-box col-md-4">
+                <label for="apeMaterno">
+                  Apellido Materno
+                  <div class="input-field">
+                    <i class="fa-solid fa-user"></i>
+                    <input
+                      type="text"
+                      id="apeMaterno"
+                      name="apeMaterno"
+                      formControlName="apeMaterno"
+                    />
+                  </div>
+                  <div
+                    *ngIf="
+                      addUserForm.get('apeMaterno')?.errors &&
+                      (addUserForm.get('apeMaterno')?.dirty ||
+                        addUserForm.get('apeMaterno')?.touched)
+                    "
+                    class="error-message"
+                  >
+                    <div
+                      *ngIf="
+                        addUserForm.get('apeMaterno')?.hasError('required')
+                      "
+                    >
+                      Este campo es obligatorio
+                    </div>
+                    <div
+                      *ngIf="
+                        addUserForm.get('apeMaterno')?.hasError('minlength')
+                      "
+                    >
+                      El apellido materno debe tener al menos 3 caracteres
+                    </div>
+                    <div
+                      *ngIf="
+                        addUserForm.get('apeMaterno')?.hasError('maxlength')
+                      "
+                    >
+                      El apellido materno no puede tener más de 50 caracteres
+                    </div>
+                  </div>
+                </label>
+              </div>
+            </div>
+
+            <div class="input-row row">
+              <div class="input-box col-md-6">
+                <label for="fechaNach">
+                  Fecha de Nacimiento
+                  <div class="input-field">
+                    <i class="fa-solid fa-calendar"></i>
+                    <input
+                      type="date"
+                      style="width: 300px"
+                      id="fechaNach"
+                      name="fechaNach"
+                      formControlName="fechaNac"
+                    />
+                  </div>
+                  <div
+                    *ngIf="
+                      addUserForm.get('fechaNac')?.errors &&
+                      (addUserForm.get('fechaNac')?.dirty ||
+                        addUserForm.get('fechaNac')?.touched)
+                    "
+                    class="error-message"
+                  >
+                    <div
+                      *ngIf="addUserForm.get('fechaNac')?.hasError('required')"
+                    >
+                      Este campo es obligatorio
+                    </div>
+                    <div
+                      *ngIf="
+                        addUserForm.get('fechaNac')?.hasError('invalidDate')
+                      "
+                    >
+                      La fecha de nacimiento debe ser anterior a la fecha actual
+                    </div>
+                  </div>
+                </label>
+              </div>
+              <div class="input-box col-md-6">
+                <label for="area">
+                  Área
+                  <div class="input-field">
+                    <i class="fa-solid fa-building"></i>
+                    <select id="area" formControlName="areaFk">
+                      <option *ngFor="let area of areas" [value]="area.id">
+                        {{ area.nombre }}
+                      </option>
+                    </select>
+                  </div>
+                  <div
+                    *ngIf="
+                      addUserForm.get('areaFk')?.errors &&
+                      (addUserForm.get('areaFk')?.dirty ||
+                        addUserForm.get('areaFk')?.touched)
+                    "
+                    class="error-message"
+                  >
+                    Este campo es obligatorio
+                  </div>
+                </label>
+              </div>
+            </div>
+            <div class="input-row row">
+              <div class="input-box col-md-6">
+                <label for="email">
+                  E-mail
+                  <div class="input-field">
+                    <i class="fa-solid fa-envelope"></i>
+                    <input
+                      type="text"
+                      id="email"
+                      name="email"
+                      style="width: 300px"
+                      class="dobles"
+                      formControlName="email"
+                    />
+                  </div>
+                  <div
+                    *ngIf="
+                      addUserForm.get('email')?.errors &&
+                      (addUserForm.get('email')?.dirty ||
+                        addUserForm.get('email')?.touched)
+                    "
+                    class="error-message"
+                  >
+                    <div *ngIf="addUserForm.get('email')?.hasError('required')">
+                      Este campo es obligatorio
+                    </div>
+                    <div *ngIf="addUserForm.get('email')?.hasError('email')">
+                      Ingrese un correo electrónico válido
+                    </div>
+                  </div>
+                </label>
+              </div>
+              <div class="input-box col-md-6">
+                <label for="telefono">
+                  Teléfono
+                  <div class="input-field">
+                    <i class="fa-solid fa-phone"></i>
+                    <input
+                      type="text"
+                      id="telefono"
+                      name="telefono"
+                      style="width: 300px"
+                      class="dobles"
+                      formControlName="telefono"
+                    />
+                  </div>
+                  <div
+                    *ngIf="
+                      addUserForm.get('telefono')?.errors &&
+                      (addUserForm.get('telefono')?.dirty ||
+                        addUserForm.get('telefono')?.touched)
+                    "
+                    class="error-message"
+                  >
+                    <div
+                      *ngIf="addUserForm.get('telefono')?.hasError('required')"
+                    >
+                      Este campo es obligatorio
+                    </div>
+                    <div
+                      *ngIf="addUserForm.get('telefono')?.hasError('pattern')"
+                    >
+                      Ingrese un teléfono válido (10 dígitos numéricos)
+                    </div>
+                  </div>
+                </label>
+              </div>
+            </div>
+            <!-- CONTRASEÑA -->
+            <div class="input-row row">
+              <div class="input-box col-md-6">
+                <label for="password">
+                  Password
+                  <div class="input-field">
+                    <i class="fa-solid fa-key"></i>
+                    <input
+                      type="password"
+                      id="password"
+                      name="password"
+                      style="width: 300px"
+                      class="dobles"
+                      formControlName="password"
+                    />
+                  </div>
+                  <div
+                    *ngIf="
+                      addUserForm.get('password')?.errors &&
+                      (addUserForm.get('password')?.dirty ||
+                        addUserForm.get('password')?.touched)
+                    "
+                    class="error-message"
+                  >
+                    <div
+                      *ngIf="addUserForm.get('password')?.hasError('required')"
+                    >
+                      Este campo es obligatorio
+                    </div>
+                    <div
+                      *ngIf="addUserForm.get('password')?.hasError('minlength')"
+                    >
+                      La contraseña debe tener entre 8 y 16 caracteres
+                    </div>
+                    <div
+                      *ngIf="addUserForm.get('password')?.hasError('maxlength')"
+                    >
+                      La contraseña debe tener entre 8 y 16 caracteres
+                    </div>
+                    <div
+                      *ngIf="
+                        addUserForm.get('password')?.hasError('invalidPassword')
+                      "
+                    >
+                      La contraseña debe incluir al menos una letra mayúscula,
+                      una minúscula, un número y un carácter especial
+                    </div>
+                  </div>
+                </label>
+              </div>
+              <div class="input-box col-md-6">
+                <label for="confirmPassword">
+                  Confirmar Password
+                  <div class="input-field">
+                    <i class="fa-solid fa-key"></i>
+                    <input
+                      type="password"
+                      id="confirmPassword"
+                      name="confirmPassword"
+                      style="width: 300px"
+                      class="dobles"
+                      formControlName="confirmPassword"
+                    />
+                  </div>
+                  <div
+                    *ngIf="
+                      addUserForm.get('confirmPassword')?.errors &&
+                      (addUserForm.get('confirmPassword')?.dirty ||
+                        addUserForm.get('confirmPassword')?.touched)
+                    "
+                    class="error-message"
+                  >
+                    Este campo es obligatorio
+                  </div>
+                  <div
+                    *ngIf="
+                      addUserForm.hasError('passwordMismatch') &&
+                      (addUserForm.get('confirmPassword')?.dirty ||
+                        addUserForm.get('confirmPassword')?.touched)
+                    "
+                    class="error-message"
+                  >
+                    Las contraseñas no coinciden
+                  </div>
+                </label>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                (click)="dialogRef.close()"
+              >
+                Cancelar
+              </button>
+              <button
+                type="submit"
+                class="btn btn-primary"
+                [disabled]="addUserForm.invalid"
+              >
+                Registrar
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<!--EDITAR-->
+<!-- Existen otros códigos anteriores -->
+
+<ng-template #editUserDialog>
+  <div class="modal-content">
+    <div class="modal-body">
+      <div class="card" id="registerForm">
+        <div id="form_header">
+          <h2>Editar Usuario</h2>
+        </div>
+        <form
+          id="editUserForm"
+          [formGroup]="editUserForm"
+          (ngSubmit)="updateUser()"
+          novalidate
+        >
+          <div id="inputs">
+            <div class="input-row row">
+              <div class="input-box col-md-4">
+                <label for="nombre">
+                  Nombre(s)
+                  <div class="input-field">
+                    <i class="fa-solid fa-user"></i>
+                    <input
+                      type="text"
+                      id="nombre"
+                      name="nombre"
+                      formControlName="nombre"
+                    />
+                  </div>
+                  <div
+                    *ngIf="
+                      editUserForm.get('nombre')?.errors &&
+                      (editUserForm.get('nombre')?.dirty ||
+                        editUserForm.get('nombre')?.touched)
+                    "
+                    class="error-message"
+                  >
+                    <div
+                      *ngIf="editUserForm.get('nombre')?.hasError('required')"
+                    >
+                      Este campo es obligatorio
+                    </div>
+                    <div
+                      *ngIf="editUserForm.get('nombre')?.hasError('minlength')"
+                    >
+                      El nombre debe tener al menos 3 caracteres
+                    </div>
+                    <div
+                      *ngIf="editUserForm.get('nombre')?.hasError('maxlength')"
+                    >
+                      El nombre no puede tener más de 50 caracteres
+                    </div>
+                  </div>
+                </label>
+              </div>
+              <div class="input-box col-md-4">
+                <label for="apePaterno">
+                  Apellido Paterno
+                  <div class="input-field">
+                    <i class="fa-solid fa-user"></i>
+                    <input
+                      type="text"
+                      id="apePaterno"
+                      name="apePaterno"
+                      formControlName="apePaterno"
+                    />
+                  </div>
+                  <div
+                    *ngIf="
+                      editUserForm.get('apePaterno')?.errors &&
+                      (editUserForm.get('apePaterno')?.dirty ||
+                        editUserForm.get('apePaterno')?.touched)
+                    "
+                    class="error-message"
+                  >
+                    <div
+                      *ngIf="
+                        editUserForm.get('apePaterno')?.hasError('required')
+                      "
+                    >
+                      Este campo es obligatorio
+                    </div>
+                    <div
+                      *ngIf="
+                        editUserForm.get('apePaterno')?.hasError('minlength')
+                      "
+                    >
+                      El apellido paterno debe tener al menos 3 caracteres
+                    </div>
+                    <div
+                      *ngIf="
+                        editUserForm.get('apePaterno')?.hasError('maxlength')
+                      "
+                    >
+                      El apellido paterno no puede tener más de 50 caracteres
+                    </div>
+                  </div>
+                </label>
+              </div>
+              <div class="input-box col-md-4">
+                <label for="apeMaterno">
+                  Apellido Materno
+                  <div class="input-field">
+                    <i class="fa-solid fa-user"></i>
+                    <input
+                      type="text"
+                      id="apeMaterno"
+                      name="apeMaterno"
+                      formControlName="apeMaterno"
+                    />
+                  </div>
+                  <div
+                    *ngIf="
+                      editUserForm.get('apeMaterno')?.errors &&
+                      (editUserForm.get('apeMaterno')?.dirty ||
+                        editUserForm.get('apeMaterno')?.touched)
+                    "
+                    class="error-message"
+                  >
+                    <div
+                      *ngIf="
+                        editUserForm.get('apeMaterno')?.hasError('required')
+                      "
+                    >
+                      Este campo es obligatorio
+                    </div>
+                    <div
+                      *ngIf="
+                        editUserForm.get('apeMaterno')?.hasError('minlength')
+                      "
+                    >
+                      El apellido materno debe tener al menos 3 caracteres
+                    </div>
+                    <div
+                      *ngIf="
+                        editUserForm.get('apeMaterno')?.hasError('maxlength')
+                      "
+                    >
+                      El apellido materno no puede tener más de 50 caracteres
+                    </div>
+                  </div>
+                </label>
+              </div>
+            </div>
+
+            <div class="input-row row">
+              <div class="input-box col-md-6">
+                <label for="fechaNach">
+                  Fecha de Nacimiento
+                  <div class="input-field">
+                    <i class="fa-solid fa-calendar"></i>
+                    <input
+                      type="date"
+                      style="width: 300px"
+                      id="fechaNach"
+                      name="fechaNach"
+                      formControlName="fechaNac"
+                    />
+                  </div>
+                  <div
+                    *ngIf="
+                      editUserForm.get('fechaNac')?.errors &&
+                      (editUserForm.get('fechaNac')?.dirty ||
+                        editUserForm.get('fechaNac')?.touched)
+                    "
+                    class="error-message"
+                  >
+                    <div
+                      *ngIf="editUserForm.get('fechaNac')?.hasError('required')"
+                    >
+                      Este campo es obligatorio
+                    </div>
+                    <div
+                      *ngIf="
+                        editUserForm.get('fechaNac')?.hasError('invalidDate')
+                      "
+                    >
+                      La fecha de nacimiento debe ser anterior a la fecha actual
+                    </div>
+                  </div>
+                </label>
+              </div>
+              <div class="input-box col-md-6">
+                <label for="area">
+                  Área
+                  <div class="input-field">
+                    <i class="fa-solid fa-building"></i>
+                    <select id="area" formControlName="areaFk">
+                      <option *ngFor="let area of areas" [value]="area.id">
+                        {{ area.nombre }}
+                      </option>
+                    </select>
+                  </div>
+                  <div
+                    *ngIf="
+                      editUserForm.get('areaFk')?.errors &&
+                      (editUserForm.get('areaFk')?.dirty ||
+                        editUserForm.get('areaFk')?.touched)
+                    "
+                    class="error-message"
+                  >
+                    Este campo es obligatorio
+                  </div>
+                </label>
+              </div>
+            </div>
+            <div class="input-row row">
+              <div class="input-box col-md-6">
+                <label for="email">
+                  E-mail
+                  <div class="input-field">
+                    <i class="fa-solid fa-envelope"></i>
+                    <input
+                      type="text"
+                      id="email"
+                      name="email"
+                      style="width: 300px"
+                      class="dobles"
+                      formControlName="email"
+                    />
+                  </div>
+                  <div
+                    *ngIf="
+                      editUserForm.get('email')?.errors &&
+                      (editUserForm.get('email')?.dirty ||
+                        editUserForm.get('email')?.touched)
+                    "
+                    class="error-message"
+                  >
+                    <div
+                      *ngIf="editUserForm.get('email')?.hasError('required')"
+                    >
+                      Este campo es obligatorio
+                    </div>
+                    <div *ngIf="editUserForm.get('email')?.hasError('email')">
+                      Ingrese un correo electrónico válido
+                    </div>
+                  </div>
+                </label>
+              </div>
+              <div class="input-box col-md-6">
+                <label for="telefono">
+                  Teléfono
+                  <div class="input-field">
+                    <i class="fa-solid fa-phone"></i>
+                    <input
+                      type="text"
+                      id="telefono"
+                      name="telefono"
+                      style="width: 300px"
+                      class="dobles"
+                      formControlName="telefono"
+                    />
+                  </div>
+                  <div
+                    *ngIf="
+                      editUserForm.get('telefono')?.errors &&
+                      (editUserForm.get('telefono')?.dirty ||
+                        editUserForm.get('telefono')?.touched)
+                    "
+                    class="error-message"
+                  >
+                    <div
+                      *ngIf="editUserForm.get('telefono')?.hasError('required')"
+                    >
+                      Este campo es obligatorio
+                    </div>
+                    <div
+                      *ngIf="editUserForm.get('telefono')?.hasError('pattern')"
+                    >
+                      Ingrese un teléfono válido (10 dígitos numéricos)
+                    </div>
+                  </div>
+                </label>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                (click)="dialogRef.close()"
+              >
+                Cancelar
+              </button>
+              <button
+                type="submit"
+                class="btn btn-primary"
+                [disabled]="editUserForm.invalid"
+              >
+                Actualizar
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</ng-template>

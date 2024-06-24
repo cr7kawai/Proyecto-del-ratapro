@@ -1,1 +1,207 @@
-<p>areas works!</p>
+<div class="page-title">
+  <h1>Áreas y Mantenimientos</h1>
+</div>
+<div class="breadcrumbs">
+  <a href="/">Inicio</a> &gt;<span>Áreas y Mantenimientos</span>
+</div>
+<div class="areas-container">
+  <div class="card white-card">
+    <div class="header">
+      <div id="form_header">
+        <h2>Lista de Áreas</h2>
+      </div>
+      <div class="filter-add-container">
+        <div class="filter-container">
+          <input
+            type="text"
+            class="filter-input"
+            placeholder="Buscar área..."
+            [(ngModel)]="filterText"
+            (input)="filterAreas()"
+            (focus)="showDropdown = filterText.trim().length > 0"
+          />
+          <button
+            *ngIf="filterText"
+            class="clear-button"
+            (click)="clearFilter()"
+          >
+            x
+          </button>
+          <ul *ngIf="showDropdown" class="dropdown">
+            <li
+              *ngFor="let suggestion of filteredAreas"
+              (click)="selectArea(suggestion)"
+            >
+              {{ suggestion.nombre }}
+            </li>
+          </ul>
+        </div>
+        <button class="add-button" (click)="openDialog()">Agregar</button>
+      </div>
+    </div>
+    <div class="cards-container">
+      <div class="card" *ngFor="let area of filteredAreas">
+        <h3>{{ area.nombre }}</h3>
+        <p>{{ area.descripcion }}</p>
+        <button class="view-button" (click)="openMantenimientosDialog(area)">
+          Ver Mantenimientos
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #addAreaDialog>
+  <div class="modal-content">
+    <div class="modal-body">
+      <div class="card" id="registerForm">
+        <div id="form_header">
+          <h2>Registrar Área</h2>
+        </div>
+        <form
+          id="addAreaForm"
+          [formGroup]="addAreaForm"
+          (ngSubmit)="saveArea()"
+        >
+          <div class="input-box">
+            <label for="nombre">Nombre del Área</label>
+            <div class="input-field">
+              <i class="fa-solid fa-user"></i>
+              <input type="text" id="nombre" formControlName="nombre" />
+            </div>
+          </div>
+          <div class="input-box">
+            <label for="descripcion">Descripción del Área</label>
+            <div class="input-field">
+              <i class="fa-solid fa-user"></i>
+              <input
+                type="text"
+                id="descripcion"
+                formControlName="descripcion"
+              />
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              (click)="dialogRef.close()"
+            >
+              Cancelar
+            </button>
+            <button
+              type="submit"
+              class="btn btn-primary"
+              [disabled]="addAreaForm.invalid"
+            >
+              Registrar
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #mantenimientosDialog let-area="area">
+  <div class="modal-content fixed-size">
+    <div class="modal-header">
+      <div id="form_header">
+        <h2>Mantenimientos de Prueba</h2>
+      </div>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Buscar Mantenimiento</mat-label>
+        <input
+          matInput
+          (keyup)="applyFilter($event)"
+          placeholder="Buscar mantenimiento"
+        />
+      </mat-form-field>
+    </div>
+    <div class="modal-body scrollable-table-container">
+      <div class="mat-table-container">
+        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+          <ng-container matColumnDef="nombre">
+            <th mat-header-cell *matHeaderCellDef class="sticky-header">
+              Nombre
+            </th>
+            <td mat-cell *matCellDef="let element">{{ element.nombre }}</td>
+          </ng-container>
+          <ng-container matColumnDef="descripcion">
+            <th mat-header-cell *matHeaderCellDef class="sticky-header">
+              Descripción
+            </th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.descripcion }}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="empleadoFk">
+            <th mat-header-cell *matHeaderCellDef class="sticky-header">
+              Empleado
+            </th>
+            <td mat-cell *matCellDef="let element">{{ element.empleadoFk }}</td>
+          </ng-container>
+          <ng-container matColumnDef="fechaRegistro">
+            <th mat-header-cell *matHeaderCellDef class="sticky-header">
+              Fecha Registro
+            </th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.fechaRegistro | date : "short" }}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="fechaFin">
+            <th mat-header-cell *matHeaderCellDef class="sticky-header">
+              Fecha Fin
+            </th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.fechaFin | date : "short" }}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="aceptado">
+            <th mat-header-cell *matHeaderCellDef class="sticky-header">
+              Estatus Aceptación
+            </th>
+            <td mat-cell *matCellDef="let element">{{ element.aceptado }}</td>
+          </ng-container>
+          <ng-container matColumnDef="costo">
+            <th mat-header-cell *matHeaderCellDef class="sticky-header">
+              Costo
+            </th>
+            <td mat-cell *matCellDef="let element">{{ element.costo }}</td>
+          </ng-container>
+          <ng-container matColumnDef="estadoPago">
+            <th mat-header-cell *matHeaderCellDef class="sticky-header">
+              Estatus Pago
+            </th>
+            <td mat-cell *matCellDef="let element">{{ element.estadoPago }}</td>
+          </ng-container>
+          <ng-container matColumnDef="finalizado">
+            <th mat-header-cell *matHeaderCellDef class="sticky-header">
+              Estatus Mantenimiento
+            </th>
+            <td mat-cell *matCellDef="let element">{{ element.finalizado }}</td>
+          </ng-container>
+          <tr
+            mat-header-row
+            *matHeaderRowDef="displayedColumns"
+            class="sticky-header"
+          ></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        </table>
+      </div>
+    </div>
+    <div class="modal-footer custom-footer">
+      <mat-paginator
+        [pageSizeOptions]="[5, 10, 20]"
+        showFirstLastButtons
+      ></mat-paginator>
+      <button
+        class="btn-secondary close-btn"
+        (click)="closeMantenimientosDialog()"
+      >
+        Cerrar
+      </button>
+    </div>
+  </div>
+</ng-template>
