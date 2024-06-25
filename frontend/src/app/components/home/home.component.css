@@ -223,3 +223,13 @@ body {
   transform: translateY(-2px);
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
+
+.image-container {
+  text-align: center;
+  margin: 20px 0;
+}
+
+.responsive-image {
+  max-width: 40%;
+  height: auto;
+}
