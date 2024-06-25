@@ -23,6 +23,7 @@ import { MatSelectChange } from '@angular/material/select';
 import { MantenimientoService } from '../../services/mantenimiento.service';
 import { AuthService } from '../../services/auth.service';
 import { ComentarioService } from '../../services/comentario.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-mantenimientos-empleado',
@@ -36,7 +37,8 @@ export class MantenimientosEmpleadoComponent implements AfterViewInit, OnInit {
     private toastr: ToastrService,
     private mantenimientoService: MantenimientoService,
     private authService: AuthService,
-    private comentarioService: ComentarioService
+    private comentarioService: ComentarioService,
+    private router: Router
   ) {
     this.costoForm = this.fb.group({
       costo: [0, [Validators.required, this.costoMayorACero]], // Add custom validator
@@ -97,13 +99,18 @@ export class MantenimientosEmpleadoComponent implements AfterViewInit, OnInit {
       this.idRol = this.datoSesion.idRol;
       this.idArea = this.datoSesion.idArea;
 
-      this.mantenimientoService
-        .obtenerMantenimientosIncompletosEmpleado(this.idUsuario)
-        .subscribe((res) => {
-          this.mantenimientos = res;
-          console.log(this.idUsuario);
-          this.dataSource.data = this.mantenimientos;
+      if(this.idRol == 2){
+        this.mantenimientoService
+          .obtenerMantenimientosIncompletosEmpleado(this.idUsuario)
+          .subscribe((res) => {
+            this.mantenimientos = res;
+            console.log(this.idUsuario);
+            this.dataSource.data = this.mantenimientos;
         });
+      } else {
+        this.router.navigate(['/']);
+        return;
+      }
     }
   }
 
@@ -210,7 +217,7 @@ export class MantenimientosEmpleadoComponent implements AfterViewInit, OnInit {
     this.idMantenimiento = element.id
     this.loadComentarios(this.idMantenimiento);
     this.dialogRef = this.dialog.open(this.comentariosDialog, {
-      width: '600px'
+      width: 'auto'
     });
   }
 
@@ -313,7 +320,7 @@ export class MantenimientosEmpleadoComponent implements AfterViewInit, OnInit {
   openAceptMantenimientoDialog(element: Mantenimiento) {
     this.selectedMantenimiento = element.id;
     this.dialogRef = this.dialog.open(this.aceptMantenimientoDialog, {
-      width: '500px',
+      width: 'auto',
     });
   }
 

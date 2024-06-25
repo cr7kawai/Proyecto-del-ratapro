@@ -74,6 +74,7 @@ export class AreasComponent implements AfterViewInit, OnInit {
   }
 
   ngOnInit() {
+
     this.datoSesion = this.authService.getUserData();
 
     if (this.datoSesion) {
@@ -81,9 +82,11 @@ export class AreasComponent implements AfterViewInit, OnInit {
       this.idEmpresa = this.datoSesion.idEmpresa;
       this.idRol = this.datoSesion.idRol;
 
-      this.loadAreas();
-    } else{
-      window.location.href = '/'
+      if (this.idRol == 1) {
+        this.loadAreas();
+      } else {
+        this.router.navigate(['/']);
+      }
     }
   }
 

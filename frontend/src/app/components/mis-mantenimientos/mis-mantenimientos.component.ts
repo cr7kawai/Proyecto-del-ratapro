@@ -1,4 +1,4 @@
-import { Component, TemplateRef, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, TemplateRef, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { Mantenimiento } from '../../models/mantenimiento.interface';
 import {
@@ -18,6 +18,7 @@ import { MatSort } from '@angular/material/sort';
 import { Comentario } from '../../models/comentario.interface';
 import { MatSelectChange } from '@angular/material/select';
 import Swal from 'sweetalert2';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-mis-mantenimientos',
@@ -32,12 +33,16 @@ export class MisMantenimientosComponent {
     private mantenimientoService: MantenimientoService,
     private authService: AuthService,
     private comentarioService: ComentarioService,
-    private usuarioService: UsuarioService
+    private router: Router
   ) {
     this.costoForm = this.fb.group({
       costo: [0, [Validators.required, this.costoMayorACero]], // Add custom validator
       fecha: ['', [Validators.required, this.fechaMenoractual]],
     });
+
+    this.comentarioForm = this.fb.group({
+      descripcion: ['', [Validators.required]]
+    })
 
     this.paymentForm = this.fb.group({
       monto: [0, [Validators.required, this.montoMayorACero]],
@@ -75,6 +80,13 @@ export class MisMantenimientosComponent {
   selectedMantenimiento: any;
   costoForm: FormGroup;
   paymentForm: FormGroup;
+  comentarioForm: FormGroup;
+  pagoModal: boolean = false;
+
+  mantenimientoPago: Mantenimiento = {};
+  
+  idMantenimiento: any;
+  costoMantenimiento: any = 0;
 
   // Datos de la sesion
   datoSesion: any;
@@ -84,6 +96,31 @@ export class MisMantenimientosComponent {
   idArea: any = null;
 
   ngOnInit() {
+    if(this.costoMantenimiento > 0){
+     //PayPal
+     setTimeout(() => {
+      paypal.Buttons({
+        createOrder: (data: any, actions: any) => {
+          return actions.order.create({
+            purchase_units: [{
+              amount: {
+                value: this.costoMantenimiento
+              }
+            }]
+          });
+        },
+        onApprove: (data: any, actions: any) => {
+          return actions.order.capture().then((details: any) => {
+            this.realizarPago()
+          });
+        },
+        onError: (err: any) => {
+          console.log(err)
+          this.toastr.error('No se ha podido procesar el pago correctamente', 'Error', {timeOut: 3000});
+        }
+      }).render('#paypal-button-container');
+    }, 1000); // Esperar 1 segundo
+  }
     this.datoSesion = this.authService.getUserData();
 
     if (this.datoSesion) {
@@ -92,7 +129,20 @@ export class MisMantenimientosComponent {
       this.idRol = this.datoSesion.idRol;
       this.idArea = this.datoSesion.idArea;
 
-      this.obtenerTodosMantenimientosCliente();
+      if (this.idRol == 3) {
+        this.mantenimientoService
+        .obtenerMantenimientosIncompletosCliente(this.idUsuario)
+        .subscribe((res) => {
+          this.mantenimientos = res;
+
+          this.dataSource.data = this.mantenimientos;
+        });
+      } else if (this.idRol == 2){
+        this.router.navigate(['/mantenimiento']);
+        return;
+      } else {
+        this.router.navigate(['/']);
+      }
     }
   }
 
@@ -138,28 +188,6 @@ export class MisMantenimientosComponent {
     }
   }
 
-  obtenerTodosMantenimientosCliente() {
-    this.mantenimientoService
-      .obtenerMantenimientosIncompletosCliente(this.idUsuario)
-      .subscribe((incompletos) => {
-        this.mantenimientoService
-          .obtenerMantenimientosCompletosCliente(this.idUsuario)
-          .subscribe((completos) => {
-            this.mantenimientoService
-              .obtenerSolicitudesCliente(this.idUsuario)
-              .subscribe((solicitudes) => {
-                this.mantenimientos = [
-                  ...incompletos,
-                  ...completos,
-                  ...solicitudes,
-                ];
-
-                this.dataSource.data = this.mantenimientos;
-              });
-          });
-      });
-  }
-
   finalizarMantenimiento(element: Mantenimiento) {
     Swal.fire({
       title: '¿Está seguro?',
@@ -178,7 +206,13 @@ export class MisMantenimientosComponent {
               'El mantenimiento ha sido finalizado.',
               'Finalizado'
             );
-            this.obtenerTodosMantenimientosCliente();
+            this.mantenimientoService
+            .obtenerMantenimientosIncompletosCliente(this.idUsuario)
+            .subscribe((res) => {
+              this.mantenimientos = res;
+
+              this.dataSource.data = this.mantenimientos;
+            });
           },
           (err) => {
             this.toastr.error(
@@ -192,38 +226,75 @@ export class MisMantenimientosComponent {
   }
 
   openComentariosDialog(element: Mantenimiento) {
-    this.comentarioService.obtenerComentarios(element.id).subscribe((res) => {
-      this.comentarios = res;
-    });
+    this.idMantenimiento = element.id
+    this.loadComentarios(this.idMantenimiento);
     this.dialogRef = this.dialog.open(this.comentariosDialog, {
-      width: '600px',
+      width: 'auto'
     });
   }
 
-  openPaymentDialog(element: Mantenimiento) {
-    this.selectedMantenimiento = element;
-    this.dialogRef = this.dialog.open(this.paymentDialog, {
-      width: '400px',
+  loadComentarios(id: any){
+    this.comentarioService.obtenerComentarios(id).subscribe((res) => {
+      this.comentarios = res;
+    },err=>{
+      this.toastr.error(
+        'No se han podido obtener los comentarios',
+        'Error'
+      );
     });
   }
 
-  realizarPago() {
-    if (this.paymentForm.valid) {
-      const formValue = this.paymentForm.value;
-      const monto = formValue.monto;
-
-      // Aquí estamos asumiendo que el pago se realiza exitosamente
-      this.selectedMantenimiento.estadoPago = 'Pagado';
-      this.toastr.success('El pago ha sido realizado.', 'Pago');
-      this.obtenerTodosMantenimientosCliente();
-      this.paymentForm.reset();
-      this.dialogRef.close();
+  addComentario(){
+    if (this.comentarioForm.valid) {
+      const newComentario: Comentario = {
+        ...this.comentarioForm.value,
+      };
+      newComentario.usuarioFk = this.idUsuario;
+      newComentario.mantenimientoFk = this.idMantenimiento;
+      newComentario.fecha = this.getFormattedDate(new Date());
+      this.comentarioService.registrarComentario(newComentario).subscribe(res =>{
+        this.comentarioForm.reset();
+        this.loadComentarios(this.idMantenimiento);
+        this.toastr.success('Comentario registrado exitosamente', 'Éxito');
+      },err =>{
+        this.toastr.error('No se ha podido registrar el comentario', 'Error');
+      })
     }
   }
 
-  verComentarios(element: Mantenimiento) {
-    // Lógica para ver comentarios
-    console.log('Ver Comentarios:', element);
+  getFormattedDate(date: Date): string {
+    const year = date.getFullYear();
+    const month = ('0' + (date.getMonth() + 1)).slice(-2);
+    const day = ('0' + date.getDate()).slice(-2);
+    return `${year}-${month}-${day}`;
+  }
+
+  openPaymentDialog(element: Mantenimiento) {
+    this.idMantenimiento = element.id;
+    this.costoMantenimiento = element.costo;
+    this.dialogRef = this.dialog.open(this.paymentDialog, {
+      width: 'auto',
+    });
+    this.ngOnInit()
+  }
+
+  realizarPago() {
+    // Aquí estamos asumiendo que el pago se realiza exitosamente
+    this.mantenimientoPago.id = this.idMantenimiento,
+    this.mantenimientoPago.estadoPago = 'Pagado'
+    this.mantenimientoService.modificarMantenimiento(this.mantenimientoPago.id, this.mantenimientoPago).subscribe(res =>{
+      this.toastr.success('El pago ha sido realizado exitosamente.', 'Éxito');
+      this.mantenimientoService
+        .obtenerMantenimientosIncompletosCliente(this.idUsuario)
+        .subscribe((res) => {
+          this.mantenimientos = res;
+
+          this.dataSource.data = this.mantenimientos;
+        });
+      this.dialogRef.close();
+    },err =>{
+      this.toastr.error('No se ha podido realizar el pago, inténtelo más tarde', 'Error');
+    })
   }
 
   rechazarMantenimiento(element: Mantenimiento) {
@@ -243,7 +314,12 @@ export class MisMantenimientosComponent {
               'El mantenimiento ha sido rechazado.',
               'Rechazado'
             );
-            this.obtenerTodosMantenimientosCliente();
+            this.mantenimientoService
+            .obtenerSolicitudesCliente(this.idUsuario)
+            .subscribe((res) => {
+              this.mantenimientos = res;
+              this.dataSource.data = this.mantenimientos;
+            });
           },
           (err) => {
             this.toastr.error(
@@ -269,7 +345,13 @@ export class MisMantenimientosComponent {
       if (result.isConfirmed) {
         this.mantenimientoService.cancelarMantenimiento(element.id).subscribe(
           (res) => {
-            this.obtenerTodosMantenimientosCliente();
+            this.mantenimientoService
+            .obtenerMantenimientosIncompletosCliente(this.idUsuario)
+            .subscribe((res) => {
+              this.mantenimientos = res;
+
+              this.dataSource.data = this.mantenimientos;
+            });
             this.toastr.success(
               'El mantenimiento ha sido rechazado.',
               'Rechazado'
@@ -307,7 +389,12 @@ export class MisMantenimientosComponent {
               'El mantenimiento ha sido aceptado.',
               'Aceptado'
             );
-            this.obtenerTodosMantenimientosCliente();
+            this.mantenimientoService
+            .obtenerSolicitudesCliente(this.idUsuario)
+            .subscribe((res) => {
+              this.mantenimientos = res;
+              this.dataSource.data = this.mantenimientos;
+            });
             this.costoForm.reset();
             this.dialogRef.close();
           },

@@ -58,21 +58,29 @@ export class MapaComponent implements OnInit {
       ['Registro de Cliente','/registro-cliente']
     ];
 
-    // Privilegios solo de admin, y CEO
-      this.siteMap['administracion'] = [
-        ['Areas', '/areas']
-      ];
-
-    // Privilegios solo de admin, CEO y supervisor
-    if (!this.siteMap['administracion']) {
-      this.siteMap['administracion'] = [];
-    }
-    this.siteMap['administracion'].push(['Usuarios', '/usuarios']);
-
-    // Privilegios de todos los logueados
+    if (this.rol == 1) {
       if (!this.siteMap['administracion']) {
         this.siteMap['administracion'] = [];
       }
-      this.siteMap['administracion'].push(['Mantenimientos', '/mantenimientos']);
+      this.siteMap['administracion'].push(['Áreas y Mantenimientos', '/areas']);
+      this.siteMap['administracion'].push(['Empleados', '/usuario']);
+    }
+
+    // Privilegios de empleado
+    if (this.rol == 2) {
+      if (!this.siteMap['administracion']) {
+        this.siteMap['administracion'] = [];
+      }
+      this.siteMap['administracion'].push(['Mantenimientos', '/mantenimiento']);
+    }
+
+    // Privilegios de cliente
+    if (this.rol == 3) {
+      if (!this.siteMap['administracion']) {
+        this.siteMap['administracion'] = [];
+      }
+      this.siteMap['administracion'].push(['Empresas, Áreas y Mantenimientos', '/empresas']);
+      this.siteMap['administracion'].push(['Mis Mantenimientos', '/mis-mantenimientos']);
+    }
   }
 }

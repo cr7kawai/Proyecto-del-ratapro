@@ -14,7 +14,7 @@ import { LoginService } from '../../services/login.service';
 export class SesionComponent implements OnInit {
   extensionModalAbierto: boolean = false;
   caducadaModalAbierto: boolean = false;
-  tiempoRestante: number = 6000;
+  tiempoRestante: number = 180;
   intervalo: any;
 
   usuario: Usuario = {};
@@ -86,7 +86,7 @@ export class SesionComponent implements OnInit {
   }
 
   extendSession(): void {
-    this.tiempoRestante = 60;
+    this.tiempoRestante = 180;
     localStorage.removeItem('token');
     this.loginService.inicio_sesion(this.usuario).subscribe((res: any) => {
       const token = res.token;

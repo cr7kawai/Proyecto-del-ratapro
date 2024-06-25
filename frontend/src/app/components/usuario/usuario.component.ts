@@ -22,6 +22,7 @@ import { ToastrService } from 'ngx-toastr';
 import { UsuarioService } from '../../services/usuario.service';
 import { AuthService } from '../../services/auth.service';
 import { AreaService } from '../../services/area.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-usuario',
@@ -63,7 +64,8 @@ export class UsuarioComponent implements AfterViewInit, OnInit {
     private toastr: ToastrService,
     private usuarioService: UsuarioService,
     private authService: AuthService,
-    private areaService: AreaService
+    private areaService: AreaService,
+    private router: Router
   ) {
     this.addUserForm = this.fb.group(
       {
@@ -153,9 +155,13 @@ export class UsuarioComponent implements AfterViewInit, OnInit {
       this.idEmpresa = this.datoSesion.idEmpresa;
       this.idRol = this.datoSesion.idRol;
 
-      this.areaService.obtenerAreas(this.idEmpresa).subscribe(res =>{
-        this.areas = res
-      })
+      if (this.idRol == 1) {
+        this.areaService.obtenerAreas(this.idEmpresa).subscribe(res =>{
+          this.areas = res
+        })
+      } else {
+        this.router.navigate(['/']);
+      }
     }
   }
 

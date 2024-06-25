@@ -63,22 +63,26 @@ export class BuscadorComponent implements OnInit {
       this.keywordService.addKeywords('/cambiar-contrasena', passwordKeywords)
     }
 
-    // Privilegios de admin y cliente
-    if(this.rol == 1 || this.rol == 3){
-      const equipoAreasKeywords = ['Áreas', 'Departamentos'];
-      this.keywordService.addKeywords('/areas', equipoAreasKeywords);
-    }
-
-    // Privilegios solo de admin
+    // Privilegios de admin
     if(this.rol == 1){
-      const usuarioKeywords = ['Usuarios', 'Empleados', 'Clientes'];
-      this.keywordService.addKeywords('/usuarios', usuarioKeywords);
+      const equipoAreasKeywords = ['Áreas', 'Servicios', 'Mantenimientos'];
+      this.keywordService.addKeywords('/areas', equipoAreasKeywords);
+      const empleadoKeywords = ['Empleados'];
+      this.keywordService.addKeywords('usuario', empleadoKeywords)
     }
 
-    // Privilegios de todos los logueados
-    if(this.rol != null){
-      const proyectoKeywords = ['Proyectos','Actividades','Trabajos','Mantenimientos'];
-      this.keywordService.addKeywords('/mantenimientos', proyectoKeywords);
+    // Privilegios de empleado
+    if(this.rol == 2){
+      const mantenimientoKeywords = ['Mantenimientos', 'Servicios'];
+      this.keywordService.addKeywords('/mantenimiento', mantenimientoKeywords);
+    }
+
+    // Privilegios de cliente
+    if(this.rol == 3){
+      const mantenimientoKeywords = ['Mantenimientos', 'Servicios'];
+      this.keywordService.addKeywords('/mis-mantenimientos', mantenimientoKeywords);
+      const empresaKeywords = ['Empresas', 'Áreas', 'Solicitud de Mantenimiento', 'Nuevo Mantenimiento'];
+      this.keywordService.addKeywords('/empresas', empresaKeywords);
     }
 
     this.filterKeywords();

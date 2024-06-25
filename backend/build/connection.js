@@ -8,7 +8,7 @@ const pool = promise_mysql_1.default.createPool({
     host: "localhost",
     port: 3306,
     user: "root",
-    password: "Root123.",
+    password: "123456",
     database: "agenda",
 });
 pool.getConnection().then((connection) => {
