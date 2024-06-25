@@ -277,7 +277,7 @@ export class MantenimientosEmpleadoComponent implements AfterViewInit, OnInit {
   openAceptMantenimientoDialog(element: Mantenimiento) {
     this.selectedMantenimiento = element.id;
     this.dialogRef = this.dialog.open(this.aceptMantenimientoDialog, {
-      width: '400px',
+      width: '500px',
     });
   }
 
