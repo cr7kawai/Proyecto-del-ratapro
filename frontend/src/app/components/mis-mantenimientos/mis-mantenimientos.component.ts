@@ -12,6 +12,7 @@ import { ToastrService } from 'ngx-toastr';
 import { MantenimientoService } from '../../services/mantenimiento.service';
 import { AuthService } from '../../services/auth.service';
 import { ComentarioService } from '../../services/comentario.service';
+import { UsuarioService } from '../../services/usuario.service';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { Comentario } from '../../models/comentario.interface';
@@ -30,17 +31,23 @@ export class MisMantenimientosComponent {
     private toastr: ToastrService,
     private mantenimientoService: MantenimientoService,
     private authService: AuthService,
-    private comentarioService: ComentarioService
+    private comentarioService: ComentarioService,
+    private usuarioService: UsuarioService
   ) {
     this.costoForm = this.fb.group({
       costo: [0, [Validators.required, this.costoMayorACero]], // Add custom validator
       fecha: ['', [Validators.required, this.fechaMenoractual]],
+    });
+
+    this.paymentForm = this.fb.group({
+      monto: [0, [Validators.required, this.montoMayorACero]],
     });
   }
 
   @ViewChild('aceptMantenimientoDialog')
   aceptMantenimientoDialog!: TemplateRef<any>;
   @ViewChild('comentariosDialog') comentariosDialog!: TemplateRef<any>;
+  @ViewChild('paymentDialog') paymentDialog!: TemplateRef<any>;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
@@ -58,6 +65,7 @@ export class MisMantenimientosComponent {
 
   selectedFilter: string = 'pendiente';
   mantenimientos: Mantenimiento[] = [];
+  usuarios: { [key: number]: string } = {};
 
   dataSource = new MatTableDataSource<Mantenimiento>([]);
   comentarios: Comentario[] = [];
@@ -66,6 +74,7 @@ export class MisMantenimientosComponent {
   selectedComentarios: Comentario[] = [];
   selectedMantenimiento: any;
   costoForm: FormGroup;
+  paymentForm: FormGroup;
 
   // Datos de la sesion
   datoSesion: any;
@@ -100,7 +109,6 @@ export class MisMantenimientosComponent {
     }
   }
 
-  // FILTRO DE MANTENIMIENTOS
   applyStatusFilter(event: MatSelectChange) {
     const filterValue = event.value;
 
@@ -109,6 +117,7 @@ export class MisMantenimientosComponent {
         .obtenerMantenimientosIncompletosCliente(this.idUsuario)
         .subscribe((res) => {
           this.mantenimientos = res;
+
           this.dataSource.data = this.mantenimientos;
         });
     } else if (filterValue === 'completado') {
@@ -116,6 +125,7 @@ export class MisMantenimientosComponent {
         .obtenerMantenimientosCompletosCliente(this.idUsuario)
         .subscribe((res) => {
           this.mantenimientos = res;
+
           this.dataSource.data = this.mantenimientos;
         });
     } else if (filterValue === 'solicitud') {
@@ -143,6 +153,7 @@ export class MisMantenimientosComponent {
                   ...completos,
                   ...solicitudes,
                 ];
+
                 this.dataSource.data = this.mantenimientos;
               });
           });
@@ -187,6 +198,27 @@ export class MisMantenimientosComponent {
     this.dialogRef = this.dialog.open(this.comentariosDialog, {
       width: '600px',
     });
+  }
+
+  openPaymentDialog(element: Mantenimiento) {
+    this.selectedMantenimiento = element;
+    this.dialogRef = this.dialog.open(this.paymentDialog, {
+      width: '400px',
+    });
+  }
+
+  realizarPago() {
+    if (this.paymentForm.valid) {
+      const formValue = this.paymentForm.value;
+      const monto = formValue.monto;
+
+      // Aquí estamos asumiendo que el pago se realiza exitosamente
+      this.selectedMantenimiento.estadoPago = 'Pagado';
+      this.toastr.success('El pago ha sido realizado.', 'Pago');
+      this.obtenerTodosMantenimientosCliente();
+      this.paymentForm.reset();
+      this.dialogRef.close();
+    }
   }
 
   verComentarios(element: Mantenimiento) {
@@ -304,5 +336,9 @@ export class MisMantenimientosComponent {
     fechaActual.setHours(0, 0, 0, 0); // Ajustar la fecha actual para comparar solo año, mes y día
 
     return fechaSeleccionada >= fechaActual ? null : { fechaInvalida: true };
+  }
+
+  private montoMayorACero(control: AbstractControl) {
+    return control.value > 0 ? null : { montoInvalido: true };
   }
 }

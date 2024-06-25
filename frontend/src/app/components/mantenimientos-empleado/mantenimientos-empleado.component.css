@@ -361,3 +361,87 @@ mat-paginator {
   padding: 16px;
   border-top: 1px solid #ccc;
 }
+
+/* Inputs */
+.input-box > label {
+  font-size: 16px;
+  color: #797984;
+}
+
+.input-field {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 3px;
+  border-bottom: 1px solid #7ba4ad;
+  cursor: text;
+  margin: 0 10px 0 0;
+}
+
+.input-field i {
+  font-size: 18px;
+  cursor: text;
+  color: #000;
+}
+
+.input-field input {
+  border: none;
+  background-color: transparent;
+  font-size: 15px;
+  padding: 0px 5px;
+  width: 100%;
+}
+
+.input-field input:focus {
+  outline: none;
+}
+
+/* Modal Footer */
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.modal-footer {
+  flex: 0 0 auto;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 16px;
+  border-top: 1px solid #ccc;
+}
+
+.btn-secondary {
+  background-color: #8b0000;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 5px;
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.btn-secondary:hover {
+  background-color: #a52a2a;
+}
+
+.btn-primary {
+  background-color: #1b263b;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #fff;
+  border-radius: 5px;
+}
+
+.btn-primary:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.btn-primary:hover {
+  background-color: #415a77;
+}

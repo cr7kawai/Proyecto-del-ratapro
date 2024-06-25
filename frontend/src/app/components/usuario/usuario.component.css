@@ -314,3 +314,59 @@ mat-paginator {
 .input-field select:focus {
   outline: none;
 }
+
+/* Responsivo */
+@media (max-width: 768px) {
+  #form_header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .filter-add-container {
+    flex-direction: column;
+    align-items: flex-start;
+    margin-top: 10px; /* Añade un margen superior para separación */
+    width: 100%;
+  }
+
+  .mat-form-field {
+    width: 100%;
+  }
+
+  .add-button {
+    margin-top: 10px;
+    width: 100%;
+    text-align: center;
+  }
+
+  .table-wrapper {
+    overflow-x: auto;
+  }
+
+  .mat-header-cell,
+  .mat-cell {
+    padding: 8px;
+  }
+
+  mat-paginator {
+    display: flex;
+    justify-content: center;
+  }
+
+  .input-row {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .input-field input,
+  .input-field select {
+    width: 100%;
+  }
+
+  #fechaNach,
+  #empresa,
+  .dobles {
+    width: 100%;
+    max-width: 100%;
+  }
+}
