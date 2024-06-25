@@ -4,7 +4,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.6); /* Color de fondo oscuro y opacidad */
+    background: rgba(0, 0, 0, 1); /* Color de fondo oscuro y opacidad */
     z-index: 9999; /* Z-index alto para cubrir todo */
     display: flex;
     justify-content: center;

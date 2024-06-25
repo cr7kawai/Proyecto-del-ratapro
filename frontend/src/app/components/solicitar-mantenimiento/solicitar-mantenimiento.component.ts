@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { EmpresaService } from '../../services/empresa.service';
 import { Empresa } from '../../models/empresa.interface';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-solicitar-mantenimiento',
@@ -14,10 +15,30 @@ export class SolicitarMantenimientoComponent implements OnInit {
   filterText: string = '';
   showDropdown: boolean = false;
 
-  constructor(private empresaService: EmpresaService, private router: Router) {}
+    // Datos de la sesion
+    datoSesion: any;
+    idUsuario: any = null;
+    idEmpresa: any = null;
+    idRol: any = null;
+    idArea: any = null;
+
+  constructor(private empresaService: EmpresaService, private router: Router, private authService: AuthService) {}
 
   ngOnInit(): void {
-    this.obtenerEmpresas();
+    this.datoSesion = this.authService.getUserData();
+
+    if (this.datoSesion) {
+      this.idUsuario = this.datoSesion.id;
+      this.idEmpresa = this.datoSesion.idEmpresa;
+      this.idRol = this.datoSesion.idRol;
+      this.idArea = this.datoSesion.idArea;
+
+      if (this.idRol == 3) {
+        this.obtenerEmpresas();
+      } else {
+        this.router.navigate(['/']);
+      }
+    }
   }
 
   obtenerEmpresas(): void {

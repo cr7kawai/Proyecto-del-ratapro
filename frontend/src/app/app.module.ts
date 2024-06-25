@@ -32,7 +32,7 @@ import { RegisterClienteComponent } from './components/register-cliente/register
 import { RegisterWhoComponent } from './components/register-who/register-who.component';
 import { MatFormFieldModule, MatLabel } from '@angular/material/form-field';
 import { MatTableModule } from '@angular/material/table';
-import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatPaginatorIntl, MatPaginatorModule } from '@angular/material/paginator';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSortModule } from '@angular/material/sort';
 import { UsuarioComponent } from './components/usuario/usuario.component';
@@ -44,6 +44,7 @@ import { MatOptionModule } from '@angular/material/core';
 import { SolicitarMantenimientoComponent } from './components/solicitar-mantenimiento/solicitar-mantenimiento.component';
 import { AreasClienteComponent } from './components/areas-cliente/areas-cliente.component';
 import { MisMantenimientosComponent } from './components/mis-mantenimientos/mis-mantenimientos.component';
+import { CustomPaginatorIntl } from './services/customPaginatorIntl.service';
 
 @NgModule({
   declarations: [
@@ -93,6 +94,10 @@ import { MisMantenimientosComponent } from './components/mis-mantenimientos/mis-
   ],
   providers: [
     provideClientHydration(),
+    {
+      provide: MatPaginatorIntl,
+      useClass: CustomPaginatorIntl,
+    },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,

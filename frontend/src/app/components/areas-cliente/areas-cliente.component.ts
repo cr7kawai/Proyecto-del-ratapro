@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { AreaService } from '../../services/area.service';
@@ -29,6 +29,13 @@ export class AreasClienteComponent implements OnInit {
   dialogRef!: MatDialogRef<any>;
   selectedArea!: Area; // Propiedad para almacenar el área seleccionada
 
+  // Datos de la sesion
+  datoSesion: any;
+  idUsuario: any = null;
+  idEmpresa: any = null;
+  idRol: any = null;
+  idArea: any = null;
+
   constructor(
     private areaService: AreaService,
     private authService: AuthService,
@@ -37,7 +44,8 @@ export class AreasClienteComponent implements OnInit {
     public dialog: MatDialog,
     private usuarioService: UsuarioService,
     private mantenimientoService: MantenimientoService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private router: Router
   ) {
     this.empresaId = this.route.snapshot.params['id'];
     const usuario = this.authService.getUserData();
@@ -72,7 +80,20 @@ export class AreasClienteComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.obtenerAreas();
+    this.datoSesion = this.authService.getUserData();
+
+    if (this.datoSesion) {
+      this.idUsuario = this.datoSesion.id;
+      this.idEmpresa = this.datoSesion.idEmpresa;
+      this.idRol = this.datoSesion.idRol;
+      this.idArea = this.datoSesion.idArea;
+
+      if (this.idRol == 3) {
+        this.obtenerAreas();
+      } else {
+        this.router.navigate(['/']);
+      }
+    }
   }
 
   obtenerAreas(): void {

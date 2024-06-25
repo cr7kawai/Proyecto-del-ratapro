@@ -101,7 +101,7 @@
           Fecha Fin
         </th>
         <td mat-cell *matCellDef="let element">
-          {{ element.fechaFin | date : "short" }}
+          {{ element.fechaFin | date: 'yyyy-MM-dd' }}
         </td>
       </ng-container>
 
@@ -286,7 +286,7 @@
           <mat-error *ngIf="comentarioForm.get('descripcion')?.hasError('required')">La descripción es requerida</mat-error>
         </mat-form-field>
         <br>
-        <button class="btn btn-primary" style="margin-top: -30px;" type="submit" [disabled]="comentarioForm.invalid">Agregar Comentario</button>
+        <button class="btn btn-primary" style="margin-top: -25px;" type="submit" [disabled]="comentarioForm.invalid">Agregar Comentario</button>
       </form>
     </div>
     <div class="modal-footer">

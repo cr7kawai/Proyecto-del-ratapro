@@ -113,18 +113,23 @@
           </h6>
           <div id="linksMenu" class="collapse">
             <p><a href="/" class="text-reset">Inicio</a></p>
-            <p *ngIf="rol != 3 && rol != null">
+            <p *ngIf="rol == 1 && rol != null">
               <a href="/areas" class="text-reset">Áreas</a>
             </p>
             <p *ngIf="rol == 1 && rol != null">
               <a href="/usuario" class="text-reset">Empleados</a>
             </p>
-            <p *ngIf="rol != 1">
+            <p *ngIf="rol == 3 && rol != null">
               <a href="/empresas" class="text-reset">Empresas</a>
             </p>
-            <p *ngIf="rol != 1">
+            <p *ngIf="rol == 3 && rol != null">
               <a href="/mis-mantenimientos" class="text-reset"
                 >Mis Mantenimientos</a
+              >
+            </p>
+            <p *ngIf="rol == 2 && rol != null">
+              <a href="/mantenimiento" class="text-reset"
+                >Mantenimientos</a
               >
             </p>
             <p *ngIf="rol == null">

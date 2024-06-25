@@ -179,24 +179,35 @@
       <h2>Comentarios</h2>
     </div>
     <div class="modal-body scrollable-cards-container">
-      <div class="card blue-card" *ngFor="let comentario of comentarios">
+      <div
+        class="card"
+        *ngFor="let comentario of comentarios"
+        [ngClass]="{
+          'blue-card': comentario.usuarioFk !== undefined && comentario.usuarioFk == idUsuario,
+          'white-card': comentario.usuarioFk !== undefined && comentario.usuarioFk != idUsuario
+        }"
+      >
         <div class="card-body">
           <p>{{ comentario.descripcion }}</p>
-          <p>{{ comentario.fecha | date : "short" }}</p>
+          <p>{{ comentario.fecha | date: 'yyyy-MM-dd' }}</p>
         </div>
       </div>
+      <form [formGroup]="comentarioForm" (ngSubmit)="addComentario()" class="comentario-form">
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Descripción</mat-label>
+          <textarea matInput formControlName="descripcion"></textarea>
+          <mat-error *ngIf="comentarioForm.get('descripcion')?.hasError('required')">La descripción es requerida</mat-error>
+        </mat-form-field>
+        <br>
+        <button class="btn btn-primary" style="margin-top: -25px;" type="submit" [disabled]="comentarioForm.invalid">Agregar Comentario</button>
+      </form>
     </div>
     <div class="modal-footer">
-      <button
-        type="button"
-        class="btn btn-secondary"
-        (click)="dialogRef.close()"
-      >
-        Cerrar
-      </button>
+      <button type="button" class="btn btn-secondary" (click)="closeDialog()">Cerrar</button>
     </div>
   </div>
 </ng-template>
+
 
 <ng-template #aceptMantenimientoDialog>
   <div class="modal-content">
@@ -241,40 +252,41 @@
 <ng-template #paymentDialog>
   <div class="modal-content">
     <div class="modal-body">
-      <div class="card" id="paymentForm">
+      <div class="card" id="registerForm" style="padding: 10px;">
         <div id="form_header">
-          <h2>Realizar Pago</h2>
+          <h2>Pago del Mantenimiento</h2>
         </div>
-        <form [formGroup]="paymentForm" (ngSubmit)="realizarPago()">
-          <mat-form-field class="input-box">
-            <mat-label>Monto</mat-label>
-            <input matInput formControlName="monto" type="number" />
-            <mat-error *ngIf="paymentForm.get('monto')?.hasError('required')"
-              >El monto es requerido</mat-error
-            >
-            <mat-error
-              *ngIf="paymentForm.get('monto')?.hasError('montoInvalido')"
-              >El monto debe ser mayor a cero</mat-error
-            >
-          </mat-form-field>
-          <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-secondary"
-              (click)="closeDialog()"
-            >
-              Cancelar
-            </button>
-            <button
-              type="submit"
-              class="btn btn-primary"
-              [disabled]="paymentForm.invalid"
-            >
-              Pagar
-            </button>
+        <div style="margin-top: -30px;">
+          <h6>Monto Total: $ {{costoMantenimiento}} MXN</h6>
+        </div>
+        <div class="col-md-12" *ngIf="costoMantenimiento > 0">
+          <div class="row paypal-button-container">
+            <div id="paypal-button-container"></div>
           </div>
-        </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="closeDialog()">Cerrar</button>
+        </div>
       </div>
     </div>
   </div>
 </ng-template>
+
+
+
+<!--<div class="overlay" *ngIf="pagoModal">
+  <mat-dialog-content class="modal-dialog-right registro">
+    <div class="centered-form">
+      <div class="form-title">
+        <h2 style="color: #020061">Datos del pago</h2>
+      </div>
+      <div class="row">
+        <div class="col-md-12" *ngIf="costoMantenimiento > 0">
+          <div class="row paypal-button-container">
+            <div id="paypal-button-container"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </mat-dialog-content>
+</div>-->
