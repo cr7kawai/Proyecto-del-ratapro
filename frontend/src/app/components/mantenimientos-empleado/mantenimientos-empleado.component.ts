@@ -40,7 +40,7 @@ export class MantenimientosEmpleadoComponent implements AfterViewInit, OnInit {
   ) {
     this.costoForm = this.fb.group({
       costo: [0, [Validators.required, this.costoMayorACero]], // Add custom validator
-      fecha: ['', [Validators.required, this.fechaMenoractual]]
+      fecha: ['', [Validators.required, this.fechaMenoractual]],
     });
   }
 
@@ -63,10 +63,7 @@ export class MantenimientosEmpleadoComponent implements AfterViewInit, OnInit {
   ];
 
   selectedFilter: string = 'pendiente';
-<<<<<<< funcionalidades2
   mantenimientos: Object[] = [];
-=======
->>>>>>> main
 
   dataSource = new MatTableDataSource<Mantenimiento>([]);
 
@@ -94,11 +91,13 @@ export class MantenimientosEmpleadoComponent implements AfterViewInit, OnInit {
       this.idRol = this.datoSesion.idRol;
       this.idArea = this.datoSesion.idArea;
 
-      this.mantenimientoService.obtenerMantenimientosIncompletosEmpleado(this.idUsuario).subscribe(res =>{
-        this.mantenimientos = res
-        console.log(this.idUsuario)
-        this.dataSource.data = this.mantenimientos
-      })
+      this.mantenimientoService
+        .obtenerMantenimientosIncompletosEmpleado(this.idUsuario)
+        .subscribe((res) => {
+          this.mantenimientos = res;
+          console.log(this.idUsuario);
+          this.dataSource.data = this.mantenimientos;
+        });
     }
   }
 
@@ -120,42 +119,54 @@ export class MantenimientosEmpleadoComponent implements AfterViewInit, OnInit {
     const filterValue = event.value;
 
     if (filterValue === 'pendiente') {
-      this.mantenimientoService.obtenerMantenimientosIncompletosEmpleado(this.idUsuario).subscribe(res =>{
-        this.mantenimientos = res;
-        this.dataSource.data = this.mantenimientos
-      })
+      this.mantenimientoService
+        .obtenerMantenimientosIncompletosEmpleado(this.idUsuario)
+        .subscribe((res) => {
+          this.mantenimientos = res;
+          this.dataSource.data = this.mantenimientos;
+        });
     } else if (filterValue === 'completado') {
-      this.mantenimientoService.obtenerMantenimientosCompletosEmpleado(this.idUsuario).subscribe(res =>{
-        this.mantenimientos = res;
-        this.dataSource.data = this.mantenimientos
-      })
+      this.mantenimientoService
+        .obtenerMantenimientosCompletosEmpleado(this.idUsuario)
+        .subscribe((res) => {
+          this.mantenimientos = res;
+          this.dataSource.data = this.mantenimientos;
+        });
     } else if (filterValue === 'solicitud') {
-      this.mantenimientoService.obtenerSolicitudesEmpleado(this.idUsuario).subscribe(res =>{
-        this.mantenimientos = res;
-        this.dataSource.data = this.mantenimientos
-      })
+      this.mantenimientoService
+        .obtenerSolicitudesEmpleado(this.idUsuario)
+        .subscribe((res) => {
+          this.mantenimientos = res;
+          this.dataSource.data = this.mantenimientos;
+        });
     }
   }
 
-  obtenerMantenimientosIncompletosEmpleado(){
-    this.mantenimientoService.obtenerMantenimientosIncompletosEmpleado(this.idUsuario).subscribe(res =>{
-      this.mantenimientos = res;
-      this.dataSource.data = this.mantenimientos
-    })
+  obtenerMantenimientosIncompletosEmpleado() {
+    this.mantenimientoService
+      .obtenerMantenimientosIncompletosEmpleado(this.idUsuario)
+      .subscribe((res) => {
+        this.mantenimientos = res;
+        this.dataSource.data = this.mantenimientos;
+      });
   }
 
-  obtenerMantenimientosCompletosEmpleado(){
-    this.mantenimientoService.obtenerMantenimientosCompletosEmpleado(this.idUsuario).subscribe(res =>{
-      this.mantenimientos = res;
-      this.dataSource.data = this.mantenimientos
-    })
+  obtenerMantenimientosCompletosEmpleado() {
+    this.mantenimientoService
+      .obtenerMantenimientosCompletosEmpleado(this.idUsuario)
+      .subscribe((res) => {
+        this.mantenimientos = res;
+        this.dataSource.data = this.mantenimientos;
+      });
   }
 
-  obtenerSolicitudesEmpleado(){
-    this.mantenimientoService.obtenerSolicitudesEmpleado(this.idUsuario).subscribe(res =>{
-      this.mantenimientos = res;
-      this.dataSource.data = this.mantenimientos
-    })
+  obtenerSolicitudesEmpleado() {
+    this.mantenimientoService
+      .obtenerSolicitudesEmpleado(this.idUsuario)
+      .subscribe((res) => {
+        this.mantenimientos = res;
+        this.dataSource.data = this.mantenimientos;
+      });
   }
 
   finalizarMantenimiento(element: Mantenimiento) {
@@ -170,26 +181,29 @@ export class MantenimientosEmpleadoComponent implements AfterViewInit, OnInit {
       cancelButtonText: 'Cancelar',
     }).then((result) => {
       if (result.isConfirmed) {
-        this.mantenimientoService.terminarMantenimiento(element.id).subscribe(res =>{
-          this.toastr.success(
-            'El mantenimiento ha sido finalizado.',
-            'Finalizado'
-          );
-          this.obtenerMantenimientosIncompletosEmpleado()
-        },err=>{
-          this.toastr.error(
-            'No se ha podido finalizar el mantenimiento.',
-            'Error'
-          );
-        }) 
+        this.mantenimientoService.terminarMantenimiento(element.id).subscribe(
+          (res) => {
+            this.toastr.success(
+              'El mantenimiento ha sido finalizado.',
+              'Finalizado'
+            );
+            this.obtenerMantenimientosIncompletosEmpleado();
+          },
+          (err) => {
+            this.toastr.error(
+              'No se ha podido finalizar el mantenimiento.',
+              'Error'
+            );
+          }
+        );
       }
     });
   }
 
   openComentariosDialog(element: Mantenimiento) {
-    this.comentarioService.obtenerComentarios(element.id).subscribe(res =>{
-      this.comentarios = res
-    })
+    this.comentarioService.obtenerComentarios(element.id).subscribe((res) => {
+      this.comentarios = res;
+    });
     this.dialogRef = this.dialog.open(this.comentariosDialog, {
       width: '600px',
     });
@@ -211,12 +225,21 @@ export class MantenimientosEmpleadoComponent implements AfterViewInit, OnInit {
       cancelButtonText: 'Cancelar',
     }).then((result) => {
       if (result.isConfirmed) {
-        this.mantenimientoService.rechazarMantenimiento(element.id).subscribe(res =>{
-          this.toastr.success('El mantenimiento ha sido rechazado.', 'Rechazado');
-          this.obtenerSolicitudesEmpleado();
-        }, err => {
-          this.toastr.error('No se ha podido eliminar el mantenimiento.', 'Error');
-        })
+        this.mantenimientoService.rechazarMantenimiento(element.id).subscribe(
+          (res) => {
+            this.toastr.success(
+              'El mantenimiento ha sido rechazado.',
+              'Rechazado'
+            );
+            this.obtenerSolicitudesEmpleado();
+          },
+          (err) => {
+            this.toastr.error(
+              'No se ha podido eliminar el mantenimiento.',
+              'Error'
+            );
+          }
+        );
       }
     });
   }
@@ -232,12 +255,21 @@ export class MantenimientosEmpleadoComponent implements AfterViewInit, OnInit {
       cancelButtonText: 'Cancelar',
     }).then((result) => {
       if (result.isConfirmed) {
-        this.mantenimientoService.cancelarMantenimiento(element.id).subscribe(res =>{
-          this.obtenerMantenimientosIncompletosEmpleado();
-          this.toastr.success('El mantenimiento ha sido rechazado.', 'Rechazado');
-        }, err => {
-          this.toastr.error('No se ha podido eliminar el mantenimiento.', 'Error');
-        })
+        this.mantenimientoService.cancelarMantenimiento(element.id).subscribe(
+          (res) => {
+            this.obtenerMantenimientosIncompletosEmpleado();
+            this.toastr.success(
+              'El mantenimiento ha sido rechazado.',
+              'Rechazado'
+            );
+          },
+          (err) => {
+            this.toastr.error(
+              'No se ha podido eliminar el mantenimiento.',
+              'Error'
+            );
+          }
+        );
       }
     });
   }
@@ -250,26 +282,31 @@ export class MantenimientosEmpleadoComponent implements AfterViewInit, OnInit {
   }
 
   aceptarMantenimiento() {
-    console.log(this.selectedMantenimiento)
+    console.log(this.selectedMantenimiento);
     if (this.costoForm.valid) {
       const formValue = this.costoForm.value;
       const acept = formValue.costo;
-      const fechaFin = formValue.fecha; 
-      console.log()
-      this.mantenimientoService.aceptarMantenimiento(this.selectedMantenimiento, acept, fechaFin).subscribe(res=>{
-        this.toastr.success(
-          'El mantenimiento ha sido aceptado.',
-          'Aceptado'
+      const fechaFin = formValue.fecha;
+      console.log();
+      this.mantenimientoService
+        .aceptarMantenimiento(this.selectedMantenimiento, acept, fechaFin)
+        .subscribe(
+          (res) => {
+            this.toastr.success(
+              'El mantenimiento ha sido aceptado.',
+              'Aceptado'
+            );
+            this.obtenerSolicitudesEmpleado();
+            this.costoForm.reset();
+            this.dialogRef.close();
+          },
+          (err) => {
+            this.toastr.error(
+              'No se ha podido aceptar el mantenimiento.',
+              'Error'
+            );
+          }
         );
-        this.obtenerSolicitudesEmpleado();
-        this.costoForm.reset();
-        this.dialogRef.close();
-      },err=>{
-        this.toastr.error(
-          'No se ha podido aceptar el mantenimiento.',
-          'Error'
-        );
-      })
     }
   }
 
@@ -282,7 +319,7 @@ export class MantenimientosEmpleadoComponent implements AfterViewInit, OnInit {
     return control.value > 0 ? null : { costoInvalido: true };
   }
 
-  private fechaMenoractual(control: AbstractControl){
+  private fechaMenoractual(control: AbstractControl) {
     const fechaSeleccionada = new Date(control.value);
     const fechaActual = new Date();
     fechaActual.setHours(0, 0, 0, 0); // Ajustar la fecha actual para comparar solo año, mes y día
