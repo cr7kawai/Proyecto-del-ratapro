@@ -42,6 +42,9 @@ export class MantenimientosEmpleadoComponent implements AfterViewInit, OnInit {
       costo: [0, [Validators.required, this.costoMayorACero]], // Add custom validator
       fecha: ['', [Validators.required, this.fechaMenoractual]],
     });
+    this.comentarioForm = this.fb.group({
+      descripcion: ['', [Validators.required]]
+    })
   }
 
   @ViewChild('aceptMantenimientoDialog')
@@ -74,6 +77,9 @@ export class MantenimientosEmpleadoComponent implements AfterViewInit, OnInit {
 
   selectedMantenimiento: any;
   costoForm: FormGroup;
+  comentarioForm: FormGroup;
+
+  idMantenimiento: any;
 
   // Datos de la sesion
   datoSesion: any;
@@ -201,17 +207,47 @@ export class MantenimientosEmpleadoComponent implements AfterViewInit, OnInit {
   }
 
   openComentariosDialog(element: Mantenimiento) {
-    this.comentarioService.obtenerComentarios(element.id).subscribe((res) => {
-      this.comentarios = res;
-    });
+    this.idMantenimiento = element.id
+    this.loadComentarios(this.idMantenimiento);
     this.dialogRef = this.dialog.open(this.comentariosDialog, {
-      width: '600px',
+      width: '600px'
     });
   }
 
-  verComentarios(element: Mantenimiento) {
-    // Lógica para ver comentarios
-    console.log('Ver Comentarios:', element);
+  loadComentarios(id: any){
+    this.comentarioService.obtenerComentarios(id).subscribe((res) => {
+      this.comentarios = res;
+    },err=>{
+      this.toastr.error(
+        'No se han podido obtener los comentarios',
+        'Error'
+      );
+    });
+  }
+
+  addComentario(){
+    if (this.comentarioForm.valid) {
+      const newComentario: Comentario = {
+        ...this.comentarioForm.value,
+      };
+      newComentario.usuarioFk = this.idUsuario;
+      newComentario.mantenimientoFk = this.idMantenimiento;
+      newComentario.fecha = this.getFormattedDate(new Date());
+      this.comentarioService.registrarComentario(newComentario).subscribe(res =>{
+        this.comentarioForm.reset();
+        this.loadComentarios(this.idMantenimiento);
+        this.toastr.success('Comentario registrado exitosamente', 'Éxito');
+      },err =>{
+        this.toastr.error('No se ha podido registrar el comentario', 'Error');
+      })
+    }
+  }
+
+  getFormattedDate(date: Date): string {
+    const year = date.getFullYear();
+    const month = ('0' + (date.getMonth() + 1)).slice(-2);
+    const day = ('0' + date.getDate()).slice(-2);
+    return `${year}-${month}-${day}`;
   }
 
   rechazarMantenimiento(element: Mantenimiento) {

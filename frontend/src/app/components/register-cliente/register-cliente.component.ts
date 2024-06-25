@@ -141,7 +141,7 @@ export class RegisterClienteComponent implements OnInit {
 
   register(){
     this.usuario.areaFk =  null;
-    this.usuario.rolFk = 1;
+    this.usuario.rolFk = 3;
     this.usuarioService.registrarUsuario(this.usuario).subscribe(res =>{
       this.login()
     },err =>{
