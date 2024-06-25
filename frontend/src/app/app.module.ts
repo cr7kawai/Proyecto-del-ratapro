@@ -30,7 +30,7 @@ import { MapaComponent } from './components/mapa/mapa.component';
 import { RegisterEmpresaComponent } from './components/register-empresa/register-empresa.component';
 import { RegisterClienteComponent } from './components/register-cliente/register-cliente.component';
 import { RegisterWhoComponent } from './components/register-who/register-who.component';
-import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatFormFieldModule, MatLabel } from '@angular/material/form-field';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatButtonModule } from '@angular/material/button';
@@ -89,6 +89,7 @@ import { MisMantenimientosComponent } from './components/mis-mantenimientos/mis-
     MatTooltipModule,
     MatSelectModule,
     MatOptionModule,
+    MatLabel,
   ],
   providers: [
     provideClientHydration(),

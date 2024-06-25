@@ -4,3 +4,193 @@
 <div class="breadcrumbs">
   <a href="/">Inicio</a> &gt;<span>Mis Mantenimientos</span>
 </div>
+
+<div class="card white-card">
+  <div id="form_header">
+    <h2>Lista de Mantenimientos</h2>
+    <div class="filter-add-container">
+      <mat-form-field appearance="outline">
+        <mat-label>Buscar Mantenimiento</mat-label>
+        <input
+          matInput
+          (keyup)="applyFilter($event)"
+          placeholder="Buscar mantenimiento"
+        />
+      </mat-form-field>
+      <!-- Dropdown para filtrar mantenimientos -->
+      <mat-form-field appearance="outline" style="margin-left: 10px">
+        <mat-label>Filtrar por</mat-label>
+        <mat-select
+          [(value)]="selectedFilter"
+          (selectionChange)="applyStatusFilter($event)"
+        >
+          <mat-option value="pendiente">Pendientes</mat-option>
+          <mat-option value="completado">Completados</mat-option>
+          <mat-option value="solicitud">Solicitudes</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="table-wrapper">
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+      <!-- Nombre Column -->
+      <ng-container matColumnDef="nombre">
+        <th mat-header-cell *matHeaderCellDef class="sticky-header">Nombre</th>
+        <td mat-cell *matCellDef="let element">{{ element.nombre }}</td>
+      </ng-container>
+
+      <!-- Descripcion Column -->
+      <ng-container matColumnDef="descripcion">
+        <th mat-header-cell *matHeaderCellDef class="sticky-header">
+          Descripción
+        </th>
+        <td mat-cell *matCellDef="let element">{{ element.descripcion }}</td>
+      </ng-container>
+
+      <!-- Direccion Column -->
+      <ng-container matColumnDef="direccion">
+        <th mat-header-cell *matHeaderCellDef class="sticky-header">
+          Dirección
+        </th>
+        <td mat-cell *matCellDef="let element">{{ element.direccion }}</td>
+      </ng-container>
+
+      <!-- Encargado Column -->
+      <ng-container matColumnDef="encargado">
+        <th mat-header-cell *matHeaderCellDef class="sticky-header">
+          Encargado
+        </th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.nombreEmpleado }}
+        </td>
+      </ng-container>
+
+      <!-- Costo Column -->
+      <ng-container matColumnDef="costo">
+        <th mat-header-cell *matHeaderCellDef class="sticky-header">Costo</th>
+        <td mat-cell *matCellDef="let element">
+          {{
+            element.costo !== 0
+              ? (element.costo | currency)
+              : "Sin Costo Asignado"
+          }}
+        </td>
+      </ng-container>
+
+      <!-- Área Column -->
+      <ng-container matColumnDef="area">
+        <th mat-header-cell *matHeaderCellDef class="sticky-header">Área</th>
+        <td mat-cell *matCellDef="let element">{{ element.area }}</td>
+      </ng-container>
+
+      <!-- Finalizado Column -->
+      <ng-container matColumnDef="finalizado">
+        <th mat-header-cell *matHeaderCellDef class="sticky-header">Estatus</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.finalizado ? "Sí" : "No" }}
+        </td>
+      </ng-container>
+
+      <!-- FechaFin Column -->
+      <ng-container matColumnDef="fechaFin">
+        <th mat-header-cell *matHeaderCellDef class="sticky-header">
+          Fecha Fin
+        </th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.fechaFin | date : "short" }}
+        </td>
+      </ng-container>
+
+      <!-- Acciones Column -->
+      <ng-container matColumnDef="acciones">
+        <th mat-header-cell *matHeaderCellDef class="sticky-header">
+          Acciones
+        </th>
+        <td mat-cell *matCellDef="let element" class="actions-cell">
+          <div class="actions-container">
+            <ng-container *ngIf="element.finalizado">
+              <button
+                mat-icon-button
+                matTooltip="Ver Comentarios"
+                (click)="openComentariosDialog(element)"
+              >
+                <mat-icon>comment</mat-icon>
+              </button>
+            </ng-container>
+            <ng-container *ngIf="!element.finalizado">
+              <ng-container
+                *ngIf="
+                  element.aceptado == 1 &&
+                  element.estadoPago === 'Pagado' &&
+                  element.costo !== 0 &&
+                  !element.finalizado
+                "
+              >
+                <button
+                  mat-icon-button
+                  matTooltip="Finalizar Mantenimiento"
+                  (click)="finalizarMantenimiento(element)"
+                >
+                  <mat-icon>done</mat-icon>
+                </button>
+              </ng-container>
+              <ng-container *ngIf="element.aceptado == 1">
+                <button
+                  mat-icon-button
+                  matTooltip="Ver Comentarios"
+                  (click)="openComentariosDialog(element)"
+                >
+                  <mat-icon>comment</mat-icon>
+                </button>
+              </ng-container>
+              <ng-container
+                *ngIf="element.finalizado != 1 && element.aceptado == 0"
+              >
+                <button
+                  mat-icon-button
+                  matTooltip="Aceptar Mantenimiento"
+                  (click)="openAceptMantenimientoDialog(element)"
+                >
+                  <mat-icon>thumb_up</mat-icon>
+                </button>
+                <button
+                  mat-icon-button
+                  matTooltip="Rechazar Mantenimiento"
+                  (click)="rechazarMantenimiento(element)"
+                >
+                  <mat-icon>thumb_down</mat-icon>
+                </button>
+              </ng-container>
+              <ng-container
+                *ngIf="
+                  element.aceptado == 1 &&
+                  element.estadoPago === 'Pendiente' &&
+                  element.finalizado != 1
+                "
+              >
+                <button
+                  mat-icon-button
+                  matTooltip="Cancelar Servicio"
+                  (click)="cancelarServicio(element)"
+                >
+                  <mat-icon>cancel</mat-icon>
+                </button>
+              </ng-container>
+            </ng-container>
+          </div>
+        </td>
+      </ng-container>
+
+      <tr
+        mat-header-row
+        *matHeaderRowDef="displayedColumns"
+        class="sticky-header"
+      ></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+  </div>
+  <mat-paginator
+    [pageSizeOptions]="[5, 10, 20]"
+    showFirstLastButtons
+  ></mat-paginator>
+</div>

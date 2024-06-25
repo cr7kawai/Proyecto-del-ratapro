@@ -27,7 +27,7 @@ class UsuarioController {
     obtenerUsuarios(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { idEmpresa } = req.params;
-            const usuarios = yield connection_1.default.query("SELECT u.*, a.nombre as nombreArea from usuario as u LEFT JOIN area as a ON u.areaFk = a.id WHERE u.empresaFk = ?", idEmpresa);
+            const usuarios = yield connection_1.default.query("SELECT u.*, a.nombre as nombreArea from usuario as u INNER JOIN area as a ON u.areaFk = a.id WHERE u.empresaFk = ?", idEmpresa);
             if (usuarios.length > 0) {
                 return res.json(usuarios);
             }
@@ -42,7 +42,9 @@ class UsuarioController {
                 res.json(empleados);
             }
             else {
-                res.status(404).json({ text: "Seleccione otra área, esta no tiene empleados" });
+                res
+                    .status(404)
+                    .json({ text: "Seleccione otra área, esta no tiene empleados" });
             }
         });
     }
@@ -50,7 +52,9 @@ class UsuarioController {
     verUsuario(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { id } = req.params;
-            const usuario = yield connection_1.default.query("SELECT * FROM usuario WHERE id = ?", [id]);
+            const usuario = yield connection_1.default.query("SELECT * FROM usuario WHERE id = ?", [
+                id,
+            ]);
             if (usuario.length > 0) {
                 return res.json(usuario[0]);
             }
@@ -110,9 +114,7 @@ class UsuarioController {
                         console.log("Correo electrónico enviado:", info.response);
                     }
                 });
-                res
-                    .status(201)
-                    .json({
+                res.status(201).json({
                     message: "Se registró el usuario correctamente",
                     insertedId: result.insertId,
                 });
@@ -157,9 +159,7 @@ class UsuarioController {
                         console.log("Correo electrónico enviado:", info.response);
                     }
                 });
-                res
-                    .status(201)
-                    .json({
+                res.status(201).json({
                     message: "Se envió el correo correctamente",
                     insertedId: codigo,
                 });
@@ -176,10 +176,7 @@ class UsuarioController {
             try {
                 const { id, email } = req.params;
                 const usuario = req.body;
-                yield connection_1.default.query("UPDATE usuario SET ? WHERE id = ?", [
-                    req.body,
-                    id,
-                ]);
+                yield connection_1.default.query("UPDATE usuario SET ? WHERE id = ?", [req.body, id]);
                 const transporter = nodemailer.createTransport({
                     service: "Gmail",
                     auth: {
@@ -218,10 +215,7 @@ class UsuarioController {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const { id } = req.params;
-                yield connection_1.default.query("UPDATE usuario SET ? WHERE id = ?", [
-                    req.body,
-                    id,
-                ]);
+                yield connection_1.default.query("UPDATE usuario SET ? WHERE id = ?", [req.body, id]);
                 res.json({ message: "El usuario ha sido actualizado" });
             }
             catch (error) {
@@ -260,18 +254,18 @@ class UsuarioController {
                         idEmpresa: user.idEmpresa,
                         nomEmpresa: user.nomEmpresa,
                         idArea: user.idArea,
-                        nomArea: user.nomArea
+                        nomArea: user.nomArea,
                     };
-                    const token = jsonwebtoken_1.default.sign(payload, 'oxIJjs8XYPjNk1hXsaeoybsVU9tx90byhpU6FSa90--6iWM45UlsDkFG5X9q4Rs3', { expiresIn: '24h' });
-                    res.status(200).json({ message: 'El usuario se ha logueado', token });
+                    const token = jsonwebtoken_1.default.sign(payload, "oxIJjs8XYPjNk1hXsaeoybsVU9tx90byhpU6FSa90--6iWM45UlsDkFG5X9q4Rs3", { expiresIn: "24h" });
+                    res.status(200).json({ message: "El usuario se ha logueado", token });
                 }
                 else {
-                    res.status(401).json({ message: 'Credenciales incorrectas' });
+                    res.status(401).json({ message: "Credenciales incorrectas" });
                 }
             }
             catch (error) {
-                console.error('Error al iniciar sesión:', error);
-                res.status(500).json({ message: 'Error al iniciar sesión' });
+                console.error("Error al iniciar sesión:", error);
+                res.status(500).json({ message: "Error al iniciar sesión" });
             }
         });
     }
@@ -294,9 +288,9 @@ class UsuarioController {
                         idEmpresa: user.idEmpresa,
                         nomEmpresa: user.nomEmpresa,
                         idArea: user.idArea,
-                        nomArea: user.nomArea
+                        nomArea: user.nomArea,
                     };
-                    const token = jsonwebtoken_1.default.sign(payload, 'oxIJjs8XYPjNk1hXsaeoybsVU9tx90byhpU6FSa90--6iWM45UlsDkFG5X9q4Rs3', { expiresIn: '24h' });
+                    const token = jsonwebtoken_1.default.sign(payload, "oxIJjs8XYPjNk1hXsaeoybsVU9tx90byhpU6FSa90--6iWM45UlsDkFG5X9q4Rs3", { expiresIn: "24h" });
                     const transporter = nodemailer.createTransport({
                         service: "Gmail",
                         auth: {
@@ -316,13 +310,15 @@ class UsuarioController {
                     transporter.sendMail(mailOptions, (error, info) => {
                         if (error) {
                             console.error("Error al enviar el correo electrónico:", error);
-                            res.status(500).json({ message: "Error al enviar el correo electrónico" });
+                            res
+                                .status(500)
+                                .json({ message: "Error al enviar el correo electrónico" });
                         }
                         else {
                             console.log("Correo electrónico enviado: " + info.response);
                             res.status(200).json({
                                 message: "OTP enviado a tu correo electrónico",
-                                token
+                                token,
                             });
                         }
                     });
@@ -345,19 +341,29 @@ class UsuarioController {
                 // Verificar si el correo ya está registrado
                 const usuarioCorreo = yield connection_1.default.query("SELECT * FROM usuario WHERE email = ?", [email]);
                 if (usuarioCorreo.length > 0) {
-                    return res.status(400).json({ message: "El correo electrónico ya ha sido registrado" });
+                    return res
+                        .status(400)
+                        .json({ message: "El correo electrónico ya ha sido registrado" });
                 }
                 // Verificar si el teléfono ya está registrado
                 const usuarioTelefono = yield connection_1.default.query("SELECT * FROM usuario WHERE telefono = ?", [telefono]);
                 if (usuarioTelefono.length > 0) {
-                    return res.status(400).json({ message: "El teléfono ya ha sido registrado" });
+                    return res
+                        .status(400)
+                        .json({ message: "El teléfono ya ha sido registrado" });
                 }
                 // Si el correo y el teléfono no están registrados, retornar éxito
-                res.status(200).json({ message: "El correo y el teléfono están disponibles para registro" });
+                res
+                    .status(200)
+                    .json({
+                    message: "El correo y el teléfono están disponibles para registro",
+                });
             }
             catch (error) {
                 console.error("Error al validar el correo y el teléfono:", error);
-                res.status(500).json({ message: "Error al validar el correo y el teléfono" });
+                res
+                    .status(500)
+                    .json({ message: "Error al validar el correo y el teléfono" });
             }
         });
     }
