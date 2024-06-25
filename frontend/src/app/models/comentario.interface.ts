@@ -1,7 +1,7 @@
 export interface Comentario {
     id?: number;
     descripcion?: string;
-    fecha?: Date;
+    fecha?: any;
     mantenimientoFk?: any;
     usuarioFk?: any;
 }

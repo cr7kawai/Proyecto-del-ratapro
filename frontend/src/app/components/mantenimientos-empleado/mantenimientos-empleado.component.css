@@ -215,16 +215,6 @@ mat-paginator {
   text-align: left; /* Ensure text alignment is consistent */
 }
 
-.white-card {
-  background-color: #fff;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  width: 100%;
-  max-width: 1200px;
-  margin: 20px auto; /* Added margin for spacing */
-}
-
 .add-button {
   border: none;
   background: linear-gradient(45deg, #1b263b 0%, #415a77 50%);
@@ -318,12 +308,26 @@ mat-paginator {
 /* Estilo de las cards azules */
 .blue-card {
   background-color: #3e4a61;
-  padding: 20px;
+  padding: 10px;
   border-radius: 10px;
-  width: 100%;
-  text-align: center;
+  height: 70%;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   margin-bottom: 10px;
+  text-align: end;
+}
+
+.white-card {
+  background-color: #FFF;
+  padding: 10px;
+  border-radius: 10px;
+  text-align: start;
+  height: 70%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  margin-bottom: 10px;
+}
+
+.white-card p{
+  color: #000;
 }
 
 .blue-card p {
@@ -444,4 +448,30 @@ mat-paginator {
 
 .btn-primary:hover {
   background-color: #415a77;
+}
+
+.fixed-size {
+  max-width: 600px;
+  width: max-content;
+  height: auto;
+}
+
+.scrollable-cards-container {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.comentario-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.mat-form-field {
+  width: 100%;
 }
